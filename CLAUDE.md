@@ -1,0 +1,132 @@
+# CLAUDE.md
+## OWL Website Project Rules
+This project is connected to the OWL Obsidian Brain.
+Before making ANY changes, always read the following files first:
+1. C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain\13_Claude_Source_Of_Truth\CLAUDE_READ_FIRST.md
+2. C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain\13_Claude_Source_Of_Truth\OWL_BUILD_RULES.md
+3. C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain\13_Claude_Source_Of_Truth\PROJECT_CONTEXT.md
+## Vault Location
+C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain
+## Source of Truth
+The Obsidian vault contains:
+- business strategy
+- website architecture
+- curriculum systems
+- CRM requirements
+- store requirements
+- newsletter systems
+- blog systems
+- design systems
+- technical requirements
+- deployment planning
+Always use the Obsidian brain as the source of truth before:
+- coding
+- planning
+- debugging
+- redesigning
+- restructuring
+- deploying
+## Working Rules
+Always preserve:
+- OWL brand identity
+- cinematic educational design language
+- warm premium aesthetic
+- parent-friendly UX
+- child-focused learning systems
+- admin CRM architecture
+- curriculum scalability
+Never make large architectural decisions without checking:
+- PROJECT_CONTEXT.md
+- WEBSITE_REQUIREMENTS.md
+- TECH_STACK.md
+- ADMIN_CRM_REQUIREMENTS.md
+## Visual Source of Truth
+Before building any page, review the matching wireframe from `C:\Users\Ricko\OneDrive\Desktop\OWL Sing Together\OWL Wireframes` and use the matching header image from `C:\Users\Ricko\OneDrive\Desktop\OWL Sing Together\OWL Website Header Images`.
+The 23 production header images are mirrored into `public/images/headers/` and `public/images/brand/` and surfaced via the typed manifest at `src/lib/images.ts`. The 13 wireframes are mirrored (gitignored) to `public/images/wireframes-reference/` for dev convenience. The canonical mapping of wireframes → routes and headers → pages lives in `ASSET_IMPLEMENTATION_PLAN.md`.
+Follow the wireframes first, the Obsidian source-of-truth second. Preserve OWL's warm, premium, cinematic, child-friendly education style. Use the provided header images whenever possible. Do not replace the provided visual direction with generic templates. Ask before deleting, renaming, or overwriting source assets.
+
+## Startup Procedure
+Every session:
+1. Read CLAUDE.md
+2. Read CLAUDE_READ_FIRST.md
+3. Read PROJECT_CONTEXT.md
+4. Read ASSET_IMPLEMENTATION_PLAN.md (when working on any page)
+5. Read DESIGN.md (when working on any frontend / UI / layout)
+6. Read .claude/skills/ui-ux-pro-max/SKILL.md (when working on any frontend / UI / layout)
+7. Summarize understanding before coding
+
+## Frontend Workflow (mandatory for any UI / layout / redesign task)
+
+Every frontend task — building a new page, redesigning the front of the website, adding a component, fixing layout, polishing animations — must follow this workflow. No exceptions.
+
+### 1. Read the brief
+- `DESIGN.md` (repo root) — the design source of truth for agents
+- `.claude/skills/ui-ux-pro-max/SKILL.md` — the workflow the UI UX Pro Max skill expects
+- `ASSET_IMPLEMENTATION_PLAN.md` — wireframe and header mapping for this page
+- The matching wireframe at `public/images/wireframes-reference/` (if one exists for this route)
+- The brand source of truth at `..\OWL-Obsidian-Brain\09_Design_System\DESIGN_STYLE_GUIDE.md`
+
+### 2. Activate the UI UX Pro Max skill
+This skill is installed two ways in this repo:
+- **Marketplace (preferred):** `/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill` then `/plugin install ui-ux-pro-max@ui-ux-pro-max-skill`
+- **Manual fallback:** `.claude/skills/ui-ux-pro-max/SKILL.md` (this repo)
+- **User-global mirror:** also installed at `~/.claude/skills/ui-ux-pro-max/` (see SETUP_MCP.md). If a Claude Code session can't see the project-scoped skill, the global copy activates.
+
+If a user-global skill is installed, prefer it (it has the full 161-rule reasoning engine). Otherwise use the fallback.
+
+### 3. Required tooling per frontend task
+- **UI UX Pro Max skill** — activate at task start. It generates a tailored design system (pattern + style + colors + typography + effects + anti-patterns + checklist) before any code is written.
+- **DESIGN.md** — read once per session, re-read if redesigning. Defines OWL's tokens and rules.
+- **Playwright MCP** — browser testing. Take screenshots at 375 / 768 / 1280. Verify keyboard nav. Verify no horizontal scroll.
+- **Chrome DevTools MCP** — debugging. Inspect computed styles, layout shift, console errors, network requests, performance traces.
+- **Framer Motion** — tasteful transitions only. Respect `prefers-reduced-motion`. Use `<SectionReveal>` for reveals, hover lifts on cards (2–4px), 150ms button hover.
+- **Tailwind state utilities** — `hover:`, `focus-visible:`, `active:`, `disabled:`, `group-hover:`, `peer-focus:`, `motion-safe:`, `motion-reduce:`. Every interactive element specifies them.
+- **shadcn/ui patterns** — use Radix primitives + cva variants. Copy components into `src/components/ui/`. Don't install as a package.
+- **Responsive design check** — desktop (1280), tablet (768), mobile (375). Mandatory before declaring done.
+
+### 4. Anti-patterns (instant rejection — see DESIGN.md §11)
+- Purple/pink AI gradients · Glass cards on neon · Inter/Roboto/Arial · Emoji icons · Pure white backgrounds · Pure black text · Dark mode (without explicit ask) · Mouse-trail particles · Autoplay audio · Centered-three-feature-cards lazy layouts · Cards with no hover · Buttons with no transition.
+
+### 5. Pre-delivery checklist
+Every frontend task must run the checklist from `.claude/skills/ui-ux-pro-max/SKILL.md` and `DESIGN.md §13` before declaring complete. Paste the checklist into the session summary with each item ticked.
+
+### 6. Verification gate
+A frontend change is not done until:
+- Playwright MCP has screenshotted the page at desktop + mobile
+- Chrome DevTools MCP shows console clean, CLS < 0.1, LCP < 2.5s
+- Keyboard navigation reaches every interactive element with visible focus
+- Contrast verified at WCAG AA on body and large text
+- `npm run lint` clean (zero new errors)
+- `npm run typecheck` clean (zero new errors)
+
+## MCP Servers (installed at user scope)
+
+This project assumes the following MCPs are available in Claude Code. See `SETUP_MCP.md` for install commands and `claude mcp list` to verify.
+
+| MCP | Purpose | Required for |
+|---|---|---|
+| Perplexity | Up-to-date research, citations | Pre-design research, competitor scans |
+| Playwright | Browser automation, screenshots, e2e | Every frontend verification |
+| Firecrawl | Web scraping, structured extraction | Sourcing references, content imports |
+| Glif | AI creative generation (images, content) | Asset ideation, draft illustrations |
+| Chrome DevTools | Layout, console, network, performance debug | Every frontend verification |
+| Higgsfield | AI video / motion generation | Hero motion R&D, brand video drafts |
+
+## Project Skills
+
+| Skill | Location | Use for |
+|---|---|---|
+| UI UX Pro Max (full) | marketplace / `~/.claude/skills/ui-ux-pro-max/` (user-global) | Any UI/UX task — primary |
+| UI UX Pro Max (fallback) | `.claude/skills/ui-ux-pro-max/SKILL.md` (project) | Same task if marketplace install missing |
+
+## Active phased work
+
+- **Wireframe pixel-for-pixel rebuild (in progress).** See [`WIREFRAME_REBUILD_PLAN.md`](./WIREFRAME_REBUILD_PLAN.md) — 14-turn page-by-page redesign matching the 13 wireframes at `..\OWL Sing Together\OWL Wireframes\`. Start with `/watch`, `/music`, `/shop` (flagged broken by user).
+- **YouTube channel wiring.** See [`YOUTUBE_WIRING.md`](./YOUTUBE_WIRING.md) — `npm run fetch:youtube:write` populates `SEED_VIDEOS[*].youtubeId` from the public RSS feed of [Owl Sing Together Channel](https://www.youtube.com/@Owlsingtogetherchannel).
+
+## Claude Code Plugins (user scope)
+
+| Plugin | Install | Use for |
+|---|---|---|
+| WOZCODE | `/plugin marketplace add WithWoz/wozcode-plugin` then `/plugin install woz@wozcode-marketplace` | Token-reduction layer over Claude Code's built-in file tools. Batches search + edit operations. Login via `/woz-login`. Savings via `/woz-savings`. Full setup: `WOZCODE_SETUP_REPORT.md`. |
+| UI UX Pro Max | `/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill` then `/plugin install ui-ux-pro-max@ui-ux-pro-max-skill` | UI/UX design system generator. Activates on UI tasks. |

@@ -1,0 +1,61 @@
+# OWL Sing Together — Website
+
+The OWL Sing Together public website, blog, store, newsletter, admin CRM, and curriculum portal.
+
+> **Source of truth lives in the Obsidian vault** at `../OWL-Obsidian-Brain/`. Always read [`CLAUDE.md`](./CLAUDE.md) before making changes.
+
+## Stack
+
+Next.js 15 · TypeScript · Tailwind CSS · App Router · `src/` directory · ESLint · Framer Motion · Sanity (CMS) · Supabase · Shopify · Stripe · Beehiiv · Resend · Cloudflare R2.
+
+Full stack reference: [`../OWL-Obsidian-Brain/11_Tech_Requirements/TECH_STACK.md`](../OWL-Obsidian-Brain/11_Tech_Requirements/TECH_STACK.md).
+
+## Getting started
+
+```bash
+# install dependencies
+npm install
+
+# copy env template and fill in real values
+cp .env.local.example .env.local
+
+# run dev server
+npm run dev
+```
+
+Open <http://localhost:3000>.
+
+## Scripts
+
+- `npm run dev` — local dev server
+- `npm run build` — production build
+- `npm run start` — production server
+- `npm run lint` — ESLint
+- `npm run typecheck` — `tsc --noEmit`
+
+## Project structure
+
+```
+src/
+├── app/                    # App Router pages (one folder per route)
+├── components/             # Reusable components, grouped by domain
+│   └── ui/                 # Design-system primitives (Button, Card, Chip, etc.)
+├── lib/
+│   ├── tokens.ts           # Brand tokens (mirrors DESIGN_STYLE_GUIDE.md)
+│   └── cn.ts               # Tailwind classname merger
+public/                     # Static assets
+```
+
+## Brand + build rules
+
+The Obsidian brain has the canonical answers:
+
+- [`CLAUDE_READ_FIRST.md`](../OWL-Obsidian-Brain/13_Claude_Source_Of_Truth/CLAUDE_READ_FIRST.md) — permanent facts and non-negotiables
+- [`OWL_BUILD_RULES.md`](../OWL-Obsidian-Brain/13_Claude_Source_Of_Truth/OWL_BUILD_RULES.md) — engineering contract
+- [`PROJECT_CONTEXT.md`](../OWL-Obsidian-Brain/13_Claude_Source_Of_Truth/PROJECT_CONTEXT.md) — current sprint
+- [`DESIGN_STYLE_GUIDE.md`](../OWL-Obsidian-Brain/09_Design_System/DESIGN_STYLE_GUIDE.md) — visual identity
+- [`WEBSITE_REQUIREMENTS.md`](../OWL-Obsidian-Brain/03_Website_Build/WEBSITE_REQUIREMENTS.md) — pages + modules
+- [`ADMIN_CRM_REQUIREMENTS.md`](../OWL-Obsidian-Brain/04_CRM_Admin/ADMIN_CRM_REQUIREMENTS.md)
+- [`CURRICULUM_SYSTEM.md`](../OWL-Obsidian-Brain/05_Curriculum/CURRICULUM_SYSTEM.md)
+- [`STORE_REQUIREMENTS.md`](../OWL-Obsidian-Brain/06_Store_Commerce/STORE_REQUIREMENTS.md)
+- [`BLOG_NEWSLETTER_SYSTEM.md`](../OWL-Obsidian-Brain/07_Blog_Newsletter/BLOG_NEWSLETTER_SYSTEM.md)

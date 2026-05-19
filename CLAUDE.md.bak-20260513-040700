@@ -1,0 +1,49 @@
+# CLAUDE.md
+## OWL Website Project Rules
+This project is connected to the OWL Obsidian Brain.
+Before making ANY changes, always read the following files first:
+1. C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain\13_Claude_Source_Of_Truth\CLAUDE_READ_FIRST.md
+2. C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain\13_Claude_Source_Of_Truth\OWL_BUILD_RULES.md
+3. C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain\13_Claude_Source_Of_Truth\PROJECT_CONTEXT.md
+## Vault Location
+C:\Users\Ricko\OneDrive\Documents\Claude\Projects\OWL Website Build\OWL-Obsidian-Brain
+## Source of Truth
+The Obsidian vault contains:
+- business strategy
+- website architecture
+- curriculum systems
+- CRM requirements
+- store requirements
+- newsletter systems
+- blog systems
+- design systems
+- technical requirements
+- deployment planning
+Always use the Obsidian brain as the source of truth before:
+- coding
+- planning
+- debugging
+- redesigning
+- restructuring
+- deploying
+## Working Rules
+Always preserve:
+- OWL brand identity
+- cinematic educational design language
+- warm premium aesthetic
+- parent-friendly UX
+- child-focused learning systems
+- admin CRM architecture
+- curriculum scalability
+Never make large architectural decisions without checking:
+- PROJECT_CONTEXT.md
+- WEBSITE_REQUIREMENTS.md
+- TECH_STACK.md
+- ADMIN_CRM_REQUIREMENTS.md
+## Visual Source of Truth
+Before building any page, review the matching wireframe from `C:\Users\Ricko\OneDrive\Desktop\OWL Sing Together\OWL Wireframes` and use the matching header image from `C:\Users\Ricko\OneDrive\Desktop\OWL Sing Together\OWL Website Header Images`.
+The 23 production header images are mirrored into `public/images/headers/` and `public/images/brand/` and surfaced via the typed manifest at `src/lib/images.ts`. The 13 wireframes are mirrored (gitignored) to `public/images/wireframes-reference/` for dev convenience. The canonical mapping of wireframes → routes and headers → pages lives in `ASSET_IMPLEMENTATION_PLAN.md`.
+Follow the wireframes first, the Obsidian source-of-truth second. Preserve OWL's warm, premium, cinematic, child-friendly education style. Use the provided header images whenever possible. Do not replace the provided visual direction with generic templates. Ask before deleting, renaming, or overwriting source assets.
+
+## Startup Procedure
+Every se

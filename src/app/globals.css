@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * OWL global styles.
+ * Source of truth: ../../OWL-Obsidian-Brain/09_Design_System/DESIGN_STYLE_GUIDE.md
+ *
+ * v2 (redesign foundation):
+ *   - Adds CSS scroll-driven animation utilities (native, no JS).
+ *   - Adds glass + ambient + parallax helpers.
+ *   - Adds site-wide motion setting honoring data-motion="off".
+ */
+
+@layer base {
+  :root {
+    --owl-cream: #fbf6ec;
+    --owl-cream-deep: #f3ebda;
+    --owl-teal: #1a9994;
+    --owl-teal-deep: #137070;
+    --owl-amber: #f5a623;
+    --owl-amber-soft: #f8c975;
+    --owl-forest: #2d4a3a;
+    --owl-ink: #1c2b4a;
+    --owl-mist: #7a8794;
+    --owl-rose: #e89f8e;
+    --owl-white: #ffffff;
+  }
+
+  html {
+    background-color: var(--owl-cream);
+    color: var(--owl-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display), system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* OS-level reduced motion — kill mascot loops, fades, transitions */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Site-wide motion setting — overrides regardless of OS pref.
+   * Set data-motion="off" on <html> to disable all animation.
+   * Set data-motion="on" to force on (overrides OS reduced-motion).
+   * Default = "system" (respect OS).
+   */
+  html[data-motion="off"] *,
+  html[data-motion="off"] *::before,
+  html[data-motion="off"] *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  /* Skip-to-content link — appears on tab focus */
+  .skip-link {
+    @apply absolute -top-12 left-2 z-overlay rounded-owl-btn bg-owl-teal px-4 py-2 text-white transition-all focus:top-2;
+  }
+
+  /* ==========================================================================
+   * Global focus-visible safety net.
+   *
+   * Most interactive primitives in this codebase already specify a
+   * `focus-visible:ring-*` class. This rule guarantees that any interactive
+   * element that DIDN'T set one still gets a visible OWL-teal focus ring when
+   * reached by keyboard. It only applies on :focus-visible (so mouse focus
+   * never paints the ring — keeps the visual quiet for sighted users).
+   *
+   * Selector list intentionally narrow — buttons, links, summary, form fields,
+   * anything carrying tabindex. Skipped on elements that already have
+   * `outline-none` set inline (those owners are managing their own ring).
+   * ========================================================================== */
+  :where(a, button, summary, [role="button"], [tabindex]:not([tabindex="-1"]),
+         input, select, textarea):focus-visible {
+    outline: 2px solid var(--owl-teal);
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  /* ==========================================================================
+   * Subtle Glass — DESIGN_STYLE_GUIDE §12 anti-pattern is glass heavy enough to
+   * obscure text. These tokens cap blur at 16px and opacity at 18%.
+   * ========================================================================== */
+  .owl-glass {
+    background-color: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px) saturate(1.05);
+    -webkit-backdrop-filter: blur(12px) saturate(1.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow:
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.6),
+      0 8px 24px -8px rgba(28, 43, 74, 0.12);
+  }
+  .owl-glass-cream {
+    background-color: rgba(251, 246, 236, 0.65);
+    backdrop-filter: blur(10px) saturate(1.05);
+    -webkit-backdrop-filter: blur(10px) saturate(1.05);
+    border: 1px solid rgba(243, 235, 218, 0.8);
+  }
+  .owl-glass-forest {
+    background-color: rgba(45, 74, 58, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+}
+
+@layer utilities {
+  /* ==========================================================================
+   * Scroll-linked animations (native CSS where supported).
+   * https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timeline
+   *
+   * Usage: <div className="owl-scroll-banner-parallax">
+   * Falls back to a single keyframe pass on browsers without scroll timeline.
+   * ========================================================================== */
+  @supports (animation-timeline: scroll()) {
+    .owl-scroll-banner-parallax {
+      animation: owl-banner-parallax linear both;
+      animation-timeline: scroll();
+      animation-range: 0% 60%;
+    }
+    .owl-scroll-banner-fade {
+      animation: owl-banner-fade linear both;
+      animation-timeline: scroll();
+      animation-range: 0% 70%;
+    }
+    .owl-scroll-section-rise {
+      animation: owl-section-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+  }
+
+  /* Fallback for browsers without scroll-driven animation support.
+   * The wrapper component (<ScrollScene>) will hydrate JS scroll-linking. */
+  @supports not (animation-timeline: scroll()) {
+    .owl-scroll-banner-parallax,
+    .owl-scroll-banner-fade,
+    .owl-scroll-section-rise {
+      /* No animation by default — JS hooks attach when needed. */
+    }
+  }
+
+  /* When motion is off, neutralize the scroll-linked animations too. */
+  html[data-motion="off"] .owl-scroll-banner-parallax,
+  html[data-motion="off"] .owl-scroll-banner-fade,
+  html[data-motion="off"] .owl-scroll-section-rise {
+    animation: none !important;
+  }
+
+  /* Hard-cut helper — for ambient SVG slots that should not flicker on cache hits. */
+  .owl-no-ambient *[data-ambient] {
+    display: none !important;
+  }
+
+  /* ScrollProgress bar — native CSS scroll-driven animation. */
+  @supports (animation-timeline: scroll()) {
+    .owl-scroll-progress {
+      transform-origin: left center;
+      transform: scaleX(0);
+      animation: owl-scroll-progress-grow linear both;
+      animation-timeline: scroll(root);
+    }
+    @keyframes owl-scroll-progress-grow {
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+  /* JS-less fallback: stays at 0% on Safari today (cosmetic only). */
+  @supports not (animation-timeline: scroll()) {
+    .owl-scroll-progress {
+      transform: scaleX(0);
+    }
+  }
+  html[data-motion="off"] .owl-scroll-progress {
+    animation: none !important;
+    transform: scaleX(0);
+  }
+
+  /* Scrollbar-hide for horizontal rails on mobile.
+   * Visible focus-ring still works for keyboard users — just no visible bar. */
+  .owl-rail-hide-scrollbar {
+    scrollbar-width: none;
+  }
+  .owl-rail-hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
