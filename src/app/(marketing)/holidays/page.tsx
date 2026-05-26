@@ -13,6 +13,7 @@ import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
 import { HolidayCard } from "@/components/marketing/holiday-card";
 import { PrintableCard } from "@/components/marketing/printable-card";
+import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { OwlMark } from "@/components/brand/owl-logo";
 
@@ -336,4 +337,3 @@ export default function HolidaysPage() {
     </>
   );
 }
-                  

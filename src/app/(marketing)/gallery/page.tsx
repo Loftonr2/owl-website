@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, Music2, Play, Share2 } from "lucide-react";
+import { Search, Music2, Play, Share2, ShoppingBag } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
 import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
@@ -61,7 +61,7 @@ const RELATED_LINKS = [
   {
     label: "Shop",
     href: "/shop",
-    icon: Download,
+    icon: ShoppingBag,
     bg: "bg-owl-rose/10 text-owl-rose",
   },
 ];
