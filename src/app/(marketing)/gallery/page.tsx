@@ -304,3 +304,6 @@ export default function GalleryPage() {
       <SectionReveal>
         <NewsletterSection />
       </SectionReveal>
+    </>
+  );
+}
