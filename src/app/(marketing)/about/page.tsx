@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Heart, Globe2, GraduationCap } from "lucide-react";
+import { Sparkles, Heart, Globe2, GraduationCap, BookOpen, Music2, Users } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
 // Shared system primitives
@@ -20,46 +21,85 @@ export const metadata = pageMetadata({
 });
 
 /**
- * /about — v3 (Visual-track Phase 3, calmer motion).
+ * /about — v4 (Wireframe-matched redesign).
  *
- * Page sections:
- *   1. Welcome hero (CinematicHero, sequenceSlug=about-welcome, slug=about)
- *   2. Larissa story block (long-form prose, narrow column)
- *   3. Mission block (companion prose, narrow column)
- *   4. Values row (3 tiles)
- *   5. Community impact (statement + CTA)
- *   6. Newsletter band
- *
- * Motion vocabulary: calmer than the homepage. <SectionReveal> uses larger
- * offsets (16–24px) and longer durations (520–640ms) so the page feels like
- * scrollable prose rather than a marketing reel. Reduced-motion mode renders
- * each section instantly via SectionReveal's existing useReducedMotion guard.
+ * Sections per wireframe:
+ *   1. Hero Banner (Larissa, children, owls, classroom setting)
+ *   2. Personal Story + Brand Mission (side-by-side cards)
+ *   3. Educational & Creative Inspiration (polaroid-style row)
+ *   4. Values Row (Inclusivity, Community, Education)
+ *   5. Community Impact (forest band with stats)
+ *   6. Newsletter CTA
  */
 
 const VALUES = [
   {
     icon: Heart,
     title: "Inclusivity",
-    body: "Every child sees themselves in the cast. No defaults, no afterthoughts.",
+    body: "Every child sees themselves in the cast — no defaults, no afterthoughts. We make every child feel they belong.",
+    color: "bg-owl-rose/10 text-owl-rose",
   },
   {
     icon: Globe2,
     title: "Community",
-    body: "Slow content for fast lives. We make things you can use today.",
+    body: "We build slow content for fast lives. Songs, printables, and stories that connect families and caregivers.",
+    color: "bg-owl-teal/10 text-owl-teal",
   },
   {
     icon: GraduationCap,
     title: "Education",
-    body: "Multicultural, evidence-based, classroom-ready — not screen-time filler.",
+    body: "Multicultural, evidence-based, classroom-ready — real learning that grows with your child from birth to 14.",
+    color: "bg-owl-amber/10 text-owl-amber",
   },
 ] as const;
+
+const MISSION_POINTS = [
+  {
+    icon: BookOpen,
+    text: "Our learners deserve options to resources and educational mission.",
+  },
+  {
+    icon: Music2,
+    text: "Our music creates operator-led multicultural and educational opportunities.",
+  },
+  {
+    icon: Users,
+    text: "Our mediums are rooted in advocacy to actively create awareness, entertainment, and emotional inclusion.",
+  },
+];
+
+const INSPIRATION_CARDS = [
+  {
+    label: "Larissa",
+    bg: "bg-owl-amber-soft/60",
+    imgSrc: "/images/headers/about-hero.png",
+  },
+  {
+    label: "Children Learning",
+    bg: "bg-owl-teal/20",
+    imgSrc: "/images/headers/educators-hero.png",
+  },
+  {
+    label: "Reading Books",
+    bg: "bg-owl-rose/20",
+    imgSrc: "/images/headers/blog-hero.png",
+  },
+  {
+    label: "Active Memory",
+    bg: "bg-owl-forest/10",
+    imgSrc: "/images/headers/holidays-hero.png",
+  },
+  {
+    label: "Creative Memory",
+    bg: "bg-owl-amber/15",
+    imgSrc: "/images/headers/music-hero.png",
+  },
+];
 
 export default function AboutPage() {
   return (
     <>
-      {/* 1 — Welcome hero. CinematicHero falls back to banner image until the
-            240-frame "about-welcome" sequence is commissioned + flipped to
-            available: true. */}
+      {/* 1 — Welcome hero */}
       <CinematicHero
         tone="cream"
         slug="about"
@@ -68,21 +108,21 @@ export default function AboutPage() {
         eyebrow="Meet Larissa"
         heading={
           <>
-            Welcome to our{" "}
-            <span className="text-owl-teal">heartfelt journey.</span>
+            Welcome to Our{" "}
+            <span className="text-owl-teal">Heartfelt Journey.</span>
           </>
         }
-        subhead="OWL Sing Together is the work of two people who believe every child deserves to be seen, heard, and sung to — slowly, kindly, every day."
+        subhead="OWL Sing Together carries the tradition of Mr. Rogers into a digital, multicultural age — where every child feels seen, heard, and sung to."
         primaryCta={
-          <Button intent="secondary" size="lg" asChild>
+          <Button intent="primary" size="lg" asChild>
             <Link href="/watch">
               <Sparkles className="h-4 w-4" aria-hidden />
-              Watch a video
+              Explore Now
             </Link>
           </Button>
         }
         secondaryCta={
-          <Button intent="tertiary" size="lg" asChild>
+          <Button intent="secondary" size="lg" asChild>
             <Link href="/newsletter">Subscribe to the OWL Weekly</Link>
           </Button>
         }
@@ -94,63 +134,120 @@ export default function AboutPage() {
         ambient={<AmbientLayer pattern="leaves" density={3} seed={37} />}
       />
 
-      {/* 2 — Larissa story block (calm prose) */}
-      <SectionReveal offset={16}>
-        <Section width="narrow" pad="lg" bg="cream">
-          <SectionIntro
-            eyebrow="The story"
-            title="Larissa's personal story"
-          />
-          <div className="space-y-5 text-base leading-relaxed text-owl-ink/85">
-            <p>
-              Larissa grew up between languages and music. Her grandmother sang to her in two
-              languages and taught her to listen for kindness — in tone, in word, in everything.
-              That listening became a career: as a teacher, a performer, and now as the voice of
-              OWL.
-            </p>
-            <p>
-              She founded OWL Sing Together to do for today&apos;s children what Mr. Rogers did
-              for a previous generation — slow down, name the feeling, make every child feel they
-              belong. The difference: every child means <em>every</em> child. The cast around her
-              looks like the world.
-            </p>
-          </div>
-        </Section>
-      </SectionReveal>
-
-      {/* 3 — Mission block */}
-      <SectionReveal offset={20}>
-        <Section width="narrow" pad="lg" bg="white">
-          <SectionIntro eyebrow="The mission" title="Why OWL exists" />
-          <div className="space-y-5 text-base leading-relaxed text-owl-ink/85">
-            <p>
-              Most children&apos;s media is built for the algorithm — fast, loud, default-white.
-              OWL is built for the family. We move slowly on purpose. We name feelings. We honor
-              confusion. We never shame a child.
-            </p>
-            <p>
-              Every video is paired with a printable. Every song is on every streaming platform.
-              Every curriculum tier is aligned with the standards your educators trust. We made
-              the thing we wished existed when we were small.
-            </p>
-          </div>
-        </Section>
-      </SectionReveal>
-
-      {/* 4 — Values row.
-            Calm tone: 3 tiles on cream, individual <SectionReveal> wrappers
-            cascade in one-by-one with small delay offsets so they feel like
-            reading sentences, not loading a marketing grid. */}
+      {/* 2 — Personal Story + Brand Mission (side-by-side) */}
       <SectionReveal offset={16}>
         <Section width="wide" pad="lg" bg="cream">
-          <SectionIntro eyebrow="What we stand for" title="Values" />
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Personal Story card */}
+            <div className="relative flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-white p-7 shadow-owl-2">
+              <div className="mb-5 flex items-center gap-4">
+                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full ring-4 ring-owl-teal/20 shadow-owl-1">
+                  <Image
+                    src="/images/headers/about-hero.png"
+                    alt="Larissa, founder of OWL Sing Together"
+                    fill
+                    className="object-cover object-top"
+                    sizes="80px"
+                  />
+                </div>
+                <div>
+                  <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">
+                    Personal Story
+                  </p>
+                  <h2 className="mt-1 font-display text-2xl font-extrabold text-owl-ink">
+                    Larissa
+                  </h2>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed text-owl-ink/80">
+                Larissa is a mission-led educator, entertainer, and committed advocate for culturally affirming early childhood experiences.
+              </p>
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-owl-ink/80">
+                <p>
+                  My community-centered coalitions challenged me to deliver stories and engage classroom opportunities to empower underserved children.
+                </p>
+                <p className="italic text-owl-mist">
+                  &ldquo;Education is not a tool for controlling children — it&apos;s a space for growing them into who they are meant to be.&rdquo;
+                </p>
+              </div>
+              <div className="mt-5">
+                <Button intent="primary" size="sm" asChild>
+                  <Link href="/watch">Learn More</Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Brand Mission card */}
+            <div className="relative flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-white p-7 shadow-owl-2">
+              <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">
+                Brand Mission
+              </p>
+              <h2 className="mt-2 font-display text-2xl font-extrabold text-owl-ink">
+                Why OWL Exists
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-owl-ink/80">
+                Our goal has three hidden cornerstones: no resources and educational mission.
+              </p>
+              <ul className="mt-4 space-y-4">
+                {MISSION_POINTS.map(({ icon: Icon, text }) => (
+                  <li key={text} className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal">
+                      <Icon className="h-4 w-4" aria-hidden />
+                    </span>
+                    <p className="text-sm leading-relaxed text-owl-ink/75">{text}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+      </SectionReveal>
+
+      {/* 3 — Educational & Creative Inspiration (polaroid-style row) */}
+      <SectionReveal offset={20}>
+        <Section width="wide" pad="lg" bg="white">
+          <SectionIntro
+            eyebrow="Inspiration"
+            title="Larissa's Educational and Creative Inspiration"
+            subtitle="The people, memories, and moments that shaped everything OWL stands for."
+          />
+          <div className="mt-8 flex flex-wrap justify-center gap-5 sm:flex-nowrap">
+            {INSPIRATION_CARDS.map((card) => (
+              <div
+                key={card.label}
+                className={`group relative flex w-40 shrink-0 flex-col items-center overflow-hidden rounded-[0.75rem] ${card.bg} p-2 shadow-owl-2 ring-1 ring-owl-cream-deep transition-all duration-300 ease-owl hover:-rotate-1 hover:scale-105 hover:shadow-owl-3`}
+              >
+                {/* Polaroid image area */}
+                <div className="relative aspect-square w-full overflow-hidden rounded-[0.5rem] bg-owl-cream-deep">
+                  <Image
+                    src={card.imgSrc}
+                    alt={card.label}
+                    fill
+                    className="object-cover transition-transform duration-500 ease-owl group-hover:scale-105"
+                    sizes="160px"
+                  />
+                </div>
+                {/* Polaroid caption */}
+                <p className="mt-2.5 mb-1 text-center font-display text-xs font-semibold text-owl-ink/80">
+                  {card.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      </SectionReveal>
+
+      {/* 4 — Values Row */}
+      <SectionReveal offset={16}>
+        <Section width="wide" pad="lg" bg="cream">
+          <SectionIntro eyebrow="What we stand for" title="Values Row" />
           <ul role="list" className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {VALUES.map(({ icon: Icon, title, body }, idx) => (
+            {VALUES.map(({ icon: Icon, title, body, color }, idx) => (
               <SectionReveal key={title} offset={12} delay={idx * 0.12}>
-                <li className="h-full rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2">
+                <li className="h-full rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-0.5 hover:shadow-owl-2">
                   <span
                     aria-hidden
-                    className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal"
+                    className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full ${color}`}
                   >
                     <Icon className="h-5 w-5" />
                   </span>

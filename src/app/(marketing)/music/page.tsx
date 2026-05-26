@@ -9,6 +9,11 @@ import {
   Search,
   Download,
   GraduationCap,
+  Bird,
+  BookOpen,
+  Leaf,
+  Palette,
+  MoreHorizontal,
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -56,12 +61,24 @@ export const metadata = pageMetadata({
  */
 
 const BROWSE_CATEGORIES = [
-  { value: "alphabet", label: "Alphabet", icon: Music2 },
+  { value: "animals", label: "Animals", icon: Bird },
+  { value: "alphabet", label: "Alphabet", icon: BookOpen },
+  { value: "seasons", label: "Seasons", icon: Leaf },
+  { value: "theme", label: "Theme", icon: Palette },
   { value: "feelings", label: "Feelings", icon: HeartHandshake },
-  { value: "holiday", label: "Holiday", icon: Sparkles },
-  { value: "bedtime", label: "Bedtime", icon: Moon },
-  { value: "movement", label: "Movement", icon: Wind },
-  { value: "counting", label: "Counting", icon: Sun },
+  { value: "others", label: "Others", icon: MoreHorizontal },
+];
+
+const AGE_CHIPS = [
+  { value: "toddler", label: "Toddler" },
+  { value: "prek", label: "Pre-K" },
+  { value: "k5", label: "K–5" },
+];
+
+const TEMPO_CHIPS = [
+  { value: "ago", label: "Ago" },
+  { value: "calm", label: "Calm" },
+  { value: "upbeat", label: "Upbeat" },
 ];
 
 export default function MusicPage() {
@@ -84,8 +101,8 @@ export default function MusicPage() {
         eyebrow="Music"
         heading={
           <>
-            Explore our{" "}
-            <span className="text-owl-teal">sing-along playlists.</span>
+            Explore Our{" "}
+            <span className="text-owl-teal">Sing-Along Playlists!</span>
           </>
         }
         subhead="Same songs, every platform. Stream on Spotify, Apple Music, YouTube Music, or Amazon Music — or download the activity sheets."
@@ -126,32 +143,43 @@ export default function MusicPage() {
         ambient={<AmbientLayer pattern="notes" density={5} seed={47} />}
       />
 
-      {/* 2 — Search + filter chips */}
+      {/* 2 — Search + filter chips (Age × Theme × Tempo) */}
       <SectionReveal>
         <Section width="wide" pad="md" bg="cream">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <label className="relative block max-w-md flex-1">
-              <span className="sr-only">Search playlists</span>
+          <div className="flex flex-col gap-4">
+            {/* Search bar */}
+            <label className="relative block w-full max-w-2xl mx-auto">
+              <span className="sr-only">Search playlists, songs, topics</span>
               <Search
                 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-owl-mist"
                 aria-hidden
               />
               <input
                 type="search"
-                placeholder="Search by song, theme, or feeling"
-                className="h-11 w-full rounded-owl-btn border border-owl-cream-deep bg-owl-white pl-9 pr-4 text-sm text-owl-ink shadow-owl-1 transition-colors duration-150 placeholder:text-owl-mist focus:border-owl-teal focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                placeholder="Search playlists, songs, topics..."
+                className="h-12 w-full rounded-owl-btn border border-owl-cream-deep bg-owl-white pl-9 pr-4 text-sm text-owl-ink shadow-owl-1 transition-colors duration-150 placeholder:text-owl-mist focus:border-owl-teal focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
               />
             </label>
-
-            <div className="flex flex-wrap gap-2">
-              {PLAYLIST_CATEGORY_OPTIONS.map((c) => (
-                <CategoryChip
-                  key={c.value}
-                  href={`/music?category=${c.value}`}
-                  label={c.label}
-                  intent="teal"
-                />
-              ))}
+            {/* Filter rows */}
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-owl-mist">Age</p>
+                {AGE_CHIPS.map((c) => (
+                  <CategoryChip key={c.value} href={`/music?age=${c.value}`} label={c.label} intent="teal" />
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 sm:ml-4">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-owl-mist">Theme</p>
+                {PLAYLIST_CATEGORY_OPTIONS.slice(0, 3).map((c) => (
+                  <CategoryChip key={c.value} href={`/music?category=${c.value}`} label={c.label} intent="amber" />
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 sm:ml-4">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-owl-mist">Tempo</p>
+                {TEMPO_CHIPS.map((c) => (
+                  <CategoryChip key={c.value} href={`/music?tempo=${c.value}`} label={c.label} intent="teal" />
+                ))}
+              </div>
             </div>
           </div>
         </Section>

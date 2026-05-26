@@ -16,7 +16,6 @@ import { CinematicHero } from "@/components/marketing/cinematic-hero";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
-import { Chip } from "@/components/ui/chip";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
@@ -55,23 +54,52 @@ export const metadata = pageMetadata({
 const BENEFITS = [
   {
     icon: ShieldCheck,
-    title: "Standards aligned",
-    body: "Head Start ELOF, CDC milestones, Common Core, and state PreK crosswalks.",
+    title: "Standards Aligned",
+    body: "Explore Head Start ELOF, Common Core standards, and CDC milestones aligned.",
+    color: "bg-owl-teal/10 text-owl-teal",
   },
   {
     icon: Globe2,
-    title: "Multicultural first",
-    body: "Every video, song, and printable casts diverse children — not as a sidebar.",
+    title: "Inclusive Content",
+    body: "Capture more cantra content, awareness/outcomes, and meaning.",
+    color: "bg-owl-rose/10 text-owl-rose",
+  },
+  {
+    icon: Music2,
+    title: "Engaging Multimedia",
+    body: "Explore launch activities with engaging multimedia.",
+    color: "bg-owl-amber/10 text-owl-amber",
+  },
+] as const;
+
+const FEATURED_TOOLS = [
+  {
+    icon: FileText,
+    title: "Core Lesson Plans",
+    badge: "Download",
+    href: "/printables",
+    color: "bg-owl-teal/10 text-owl-teal",
   },
   {
     icon: ClipboardCheck,
-    title: "Classroom-ready",
-    body: "Daily lesson plans, printable activity sheets, and matching videos.",
+    title: "Activity Bundles Calendar",
+    badge: "Download",
+    href: "/printables",
+    color: "bg-owl-amber/10 text-owl-amber",
   },
   {
-    icon: GraduationCap,
-    title: "Calm pacing",
-    body: "Designed to support transitions and focus, not over-stimulate.",
+    icon: BookOpen,
+    title: "Cultural Celebration Copies",
+    badge: "Download",
+    href: "/holidays",
+    color: "bg-owl-rose/10 text-owl-rose",
+  },
+  {
+    icon: Music2,
+    title: "Curated Audio Playlists",
+    badge: "Download",
+    href: "/music",
+    color: "bg-owl-forest/10 text-owl-forest",
   },
 ] as const;
 
@@ -117,55 +145,58 @@ export default function EducatorsPage() {
 
   return (
     <>
-      {/* 1 — Classroom-focused hero. Forest tone — trust signal. */}
+      {/* 1 — Classroom-focused hero */}
       <CinematicHero
-        tone="forest"
+        tone="cream"
         slug="educators"
         sequenceSlug="educators-classroom"
         bannerAspect="wide"
-        eyebrow="For educators"
+        eyebrow="For Educators"
         heading={
           <>
-            Empower your classroom with{" "}
-            <span className="text-owl-amber-soft">culturally inclusive learning.</span>
+            Empower Your Classroom with{" "}
+            <span className="text-owl-teal">Culturally Inclusive Learning!</span>
           </>
         }
-        subhead="Birth–5 curriculum tiers, multicultural printables, and classroom-ready videos. Built with Larissa, trusted by teachers."
+        subhead="Classroom-ready multicultural learning resources. Explores and certify curriculums including educators and classrooms."
         primaryCta={
           <Button intent="primary" size="lg" asChild>
-            <Link href="/contact">
-              <ClipboardCheck className="h-4 w-4" aria-hidden />
-              Request access
+            <Link href="#tools">
+              <GraduationCap className="h-4 w-4" aria-hidden />
+              Explore Now
             </Link>
           </Button>
         }
         secondaryCta={
-          <Button intent="inverted" size="lg" asChild>
-            <Link href="#pricing">View license tiers</Link>
+          <Button intent="secondary" size="lg" asChild>
+            <Link href="/contact">Request Access</Link>
           </Button>
         }
-        meta={<p>Used by 12 Title I sites + 4 Head Start programs (May 2026 target).</p>}
         ambient={<AmbientLayer pattern="leaves" density={4} seed={61} />}
       />
 
-      {/* 2 — Benefits row (structured stagger) */}
+      {/* 2 — Benefits row (Classroom-Ready Multicultural Learning Resources) */}
       <Section width="wide" pad="lg" bg="cream">
-        <SectionIntro eyebrow="Why OWL" title="What sets us apart" />
+        <SectionIntro
+          eyebrow="Why OWL"
+          title="Classroom-Ready Multicultural Learning Resources."
+          subtitle="Explores and certify curriculums includes educators and classrooms."
+        />
         <StaggerGrid
           asList
           ariaLabel="OWL educator benefits"
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          className="grid grid-cols-1 gap-5 sm:grid-cols-3"
           stagger={0.06}
           offsetY={14}
         >
-          {BENEFITS.map(({ icon: Icon, title, body }) => (
+          {BENEFITS.map(({ icon: Icon, title, body, color }) => (
             <div
               key={title}
               className="h-full rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
             >
               <span
                 aria-hidden
-                className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal"
+                className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full ${color}`}
               >
                 <Icon className="h-5 w-5" />
               </span>
@@ -176,37 +207,41 @@ export default function EducatorsPage() {
         </StaggerGrid>
       </Section>
 
-      {/* 3 — Featured tools / resources (structured stagger) */}
+      {/* 3 — Featured Educator Tools (with Download buttons) */}
       <SectionReveal>
-        <Section width="wide" pad="lg" bg="white">
+        <Section width="wide" pad="lg" bg="white" id="tools">
           <SectionIntro
-            eyebrow="What's inside"
-            title="Featured tools & resources"
-            subtitle="The educator portal launches alongside Phase 3 of the OWL roadmap. Early-access list is open."
+            eyebrow="Tools"
+            title="Featured Educator Tools"
+            subtitle="Download classroom-ready resources — lesson plans, bundles, and playlists."
           />
           <StaggerGrid
             asList
             ariaLabel="OWL educator tools"
-            className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4"
+            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
             stagger={0.07}
             offsetY={14}
           >
-            {TOOLS.map(({ icon: Icon, title, body, badge }) => (
+            {FEATURED_TOOLS.map(({ icon: Icon, title, badge, href, color }) => (
               <div
                 key={title}
-                className="relative h-full rounded-owl-card border border-owl-cream-deep bg-owl-cream p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
+                className="relative h-full flex flex-col rounded-owl-card border border-owl-cream-deep bg-owl-cream p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
               >
-                <Chip intent="amber" className="absolute right-3 top-3">
-                  {badge}
-                </Chip>
                 <span
                   aria-hidden
-                  className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-owl-amber/15 text-owl-amber"
+                  className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full ${color}`}
                 >
                   <Icon className="h-5 w-5" />
                 </span>
-                <h3 className="font-display text-base font-semibold text-owl-ink">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-owl-mist">{body}</p>
+                <h3 className="font-display text-base font-semibold text-owl-ink flex-1">{title}</h3>
+                <div className="mt-4">
+                  <Button intent="primary" size="sm" asChild>
+                    <Link href={href}>
+                      <GraduationCap className="h-3.5 w-3.5 mr-1" aria-hidden />
+                      {badge}
+                    </Link>
+                  </Button>
+                </div>
               </div>
             ))}
           </StaggerGrid>
@@ -258,6 +293,57 @@ export default function EducatorsPage() {
               />
             ))}
           </MediaRail>
+        </Section>
+      </SectionReveal>
+
+      {/* 5b — Trust Signals / Testimonials */}
+      <SectionReveal>
+        <Section width="wide" pad="lg" bg="cream">
+          <SectionIntro eyebrow="Trusted by teachers" title="Trust Signals" />
+          <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div className="rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1">
+              <div className="flex items-center gap-1 mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} aria-hidden className="text-owl-amber text-sm">★</span>
+                ))}
+              </div>
+              <p className="text-sm leading-relaxed text-owl-ink/80 italic">
+                &ldquo;You created a amazing teacher, starter ideas for one teacher matters, and students are coming along.&rdquo;
+              </p>
+              <p className="mt-3 font-display text-xs font-bold text-owl-teal">ELA Standard K.R.7.2</p>
+            </div>
+            <div className="rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1">
+              <div className="flex items-center gap-1 mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} aria-hidden className="text-owl-amber text-sm">★</span>
+                ))}
+              </div>
+              <p className="text-sm leading-relaxed text-owl-ink/80 italic">
+                &ldquo;These materials are learning tools for all, and our students are growing tremendously.&rdquo;
+              </p>
+              <p className="mt-3 font-display text-xs font-bold text-owl-teal">ELA Standard K.R.1.2</p>
+            </div>
+          </div>
+        </Section>
+      </SectionReveal>
+
+      {/* 5c — Educator Inner Circle Signup */}
+      <SectionReveal>
+        <Section width="wide" pad="lg" bg="teal">
+          <div className="flex flex-col items-center gap-5 text-center">
+            <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-owl-amber-soft">
+              Join the community
+            </p>
+            <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">
+              Join the Educator Inner Circle
+            </h2>
+            <p className="text-white/85 max-w-prose">
+              Access lesson plans, school-based discounts, and get notified when the full portal launches.
+            </p>
+            <Button intent="primary" size="lg" asChild>
+              <Link href="/newsletter">Sign Up Now</Link>
+            </Button>
+          </div>
         </Section>
       </SectionReveal>
 

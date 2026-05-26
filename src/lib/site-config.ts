@@ -25,22 +25,22 @@ export const siteConfig = {
     pinterest: "https://www.pinterest.com/owlsingtogether",
     facebook: "https://www.facebook.com/owlsingtogether",
   },
-  /** Canonical primary navigation per WEBSITE_REQUIREMENTS.md § Site Map */
+  /** Canonical primary navigation per wireframes (v3 redesign) */
   nav: {
     primary: [
-      { label: "Home", href: "/" },
       { label: "Watch", href: "/watch" },
       { label: "Music", href: "/music" },
-      { label: "Shop", href: "/shop" },
       { label: "Printables", href: "/printables" },
-      { label: "Holidays", href: "/holidays" },
+      { label: "Shop", href: "/shop" },
       { label: "Educators", href: "/educators" },
       { label: "About", href: "/about" },
+      { label: "Newsletter", href: "/newsletter" },
     ],
     utility: [
-      { label: "Newsletter", href: "/newsletter" },
       { label: "Blog", href: "/blog" },
       { label: "Contact", href: "/contact" },
+      { label: "Holidays", href: "/holidays" },
+      { label: "Gallery", href: "/gallery" },
     ],
   },
 } as const;

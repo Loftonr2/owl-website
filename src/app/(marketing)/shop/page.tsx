@@ -10,11 +10,11 @@ import {
 import { pageMetadata } from "@/lib/seo/metadata";
 
 import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { HeroVideo } from "@/components/marketing/hero-video";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
 import { CategoryChip } from "@/components/ui/category-chip";
-import { GlassPanel } from "@/components/ui/glass-panel";
 import { Chip } from "@/components/ui/chip";
 import { ProductCard } from "@/components/marketing/product-card";
 import { MediaRail } from "@/components/marketing/media-rail";
@@ -23,6 +23,7 @@ import { SectionReveal } from "@/components/marketing/section-reveal";
 import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 
+import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
 import { SEED_PRODUCTS, PRODUCT_CATEGORY_OPTIONS } from "@/lib/seed/products";
 
 export const metadata = pageMetadata({
@@ -91,41 +92,41 @@ export default function ShopPage() {
 
   return (
     <>
-      {/* 1 — Premium shopping hero (cream, sparkles, shop-flatlay sequence) */}
+      {/* 1 — Premium shopping hero with store video */}
       <CinematicHero
         tone="cream"
         slug="shop"
-        sequenceSlug="shop-flatlay"
         bannerAspect="wide"
+        bannerSlot={
+          <HeroVideo
+            src="/videos/store-hero.mp4"
+            poster="/images/headers/shop-hero.png"
+          />
+        }
         eyebrow="Shop OWLsome goods"
         heading={
           <>
-            Goods that grow with{" "}
-            <span className="text-owl-teal">your child.</span>
+            Shop Our{" "}
+            <span className="text-owl-teal">OWLsome</span>{" "}
+            Sing-Along Goods!
           </>
         }
         subhead="Print-on-demand plush, flashcards, coloring books, and digital bundles. Multicultural, classroom-ready, parent-approved."
         primaryCta={
           <Button intent="primary" size="lg" asChild>
-            <Link href="/newsletter">
-              <Sparkles className="h-4 w-4" aria-hidden />
-              Get launch updates
+            <Link href="#featured">
+              <ShoppingBag className="h-4 w-4" aria-hidden />
+              Shop now
             </Link>
           </Button>
         }
         secondaryCta={
           <Button intent="secondary" size="lg" asChild>
-            <Link href="#bestsellers">
-              <ShoppingBag className="h-4 w-4" aria-hidden />
-              Browse all goods
+            <Link href="/newsletter">
+              <Sparkles className="h-4 w-4" aria-hidden />
+              Get launch updates
             </Link>
           </Button>
-        }
-        meta={
-          <p>
-            Cart wakes up alongside Stripe + Shopify in Phase 3. Every card below
-            shows its truthful state — "Coming Soon" ribbons aren't decoration.
-          </p>
         }
         ambient={<AmbientLayer pattern="sparkles" density={4} seed={167} />}
       />
@@ -315,6 +316,34 @@ export default function ShopPage() {
               />
             ))}
           </MediaRail>
+        </Section>
+      </SectionReveal>
+
+      {/* Streaming + Download CTA row */}
+      <SectionReveal>
+        <Section width="wide" pad="lg" bg="cream-deep">
+          <SectionIntro
+            eyebrow="Listen & download"
+            title="Music + free activity sheets"
+            subtitle="Stream OWL songs on your favorite platform, or download free activity sheets for every video."
+            align="center"
+          />
+          <div className="mt-6 flex justify-center">
+            <StreamingPlatforms
+              spotify="https://open.spotify.com/artist/example"
+              appleMusic="https://music.apple.com/artist/example"
+              youtubeMusic="https://music.youtube.com/channel/example"
+              amazonMusic="https://music.amazon.com/artists/example"
+            />
+          </div>
+          <div className="mt-5 flex justify-center">
+            <Button intent="tertiary" size="lg" asChild>
+              <Link href="/printables">
+                <Download className="h-4 w-4" aria-hidden />
+                Download free activity sheets
+              </Link>
+            </Button>
+          </div>
         </Section>
       </SectionReveal>
 

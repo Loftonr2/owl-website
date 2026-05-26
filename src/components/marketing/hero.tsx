@@ -5,6 +5,7 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { CinematicHero } from "./cinematic-hero";
 import { HeroMascots } from "./hero-mascots";
 import { HomeAmbient } from "./home-ambient";
+import { HeroVideo } from "./hero-video";
 
 /**
  * Homepage hero — v3 (Phase 5).
@@ -33,6 +34,12 @@ export function Hero() {
       slug="home"
       sequenceSlug="home-kitchen-walkin"
       bannerAspect="square"
+      bannerSlot={
+        <HeroVideo
+          src="/videos/landing-hero.mp4"
+          poster="/images/headers/home-hero.png"
+        />
+      }
       eyebrow="OWL Sing Together — With Larissa"
       heading={
         <>
