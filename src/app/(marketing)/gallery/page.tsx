@@ -135,18 +135,17 @@ export default function GalleryPage() {
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream" id="gallery">
           <div className="flex items-center justify-between mb-6">
-            <SectionIntro
-              eyebrow="Spotlighted"
-              title="Featured Collection"
-              className="mb-0"
-            />
+            <div>
+              <p className="font-display text-xs uppercase tracking-[0.2em] text-owl-teal">Spotlighted</p>
+              <h2 className="mt-2 font-display text-3xl font-bold text-owl-ink sm:text-4xl">Featured Collection</h2>
+            </div>
             <span className="rounded-full bg-owl-teal px-3 py-1 text-xs font-bold text-white shadow-owl-1">
               Soon New
             </span>
           </div>
           <MediaRail
             ariaLabel="Featured gallery collection"
-            columns={{ md: 3, lg: 6 }}
+            columns={{ md: 3, lg: 4 }}
             stagger={0.06}
           >
             {featured.map((item) => (

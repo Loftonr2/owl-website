@@ -3,9 +3,6 @@ import {
   ShoppingBag,
   Sparkles,
   Download,
-  Package,
-  Plus,
-  PackageOpen,
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 

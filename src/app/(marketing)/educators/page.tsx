@@ -103,32 +103,6 @@ const FEATURED_TOOLS = [
   },
 ] as const;
 
-const TOOLS = [
-  {
-    icon: FileText,
-    title: "Lesson plan builder",
-    body: "Drag activities + printables + videos into a weekly schedule. Export to PDF.",
-    badge: "Phase 3",
-  },
-  {
-    icon: BookOpen,
-    title: "Standards crosswalk",
-    body: "Drop a state + grade band; we map every lesson to your district's framework.",
-    badge: "Phase 3",
-  },
-  {
-    icon: Sparkles,
-    title: "Multilingual variants",
-    body: "EN / ES today. Mandarin + Arabic ship as the curriculum tier expands.",
-    badge: "Phase 4",
-  },
-  {
-    icon: Music2,
-    title: "Playlist licensing",
-    body: "Pre-cleared classroom-use rights for every OWL song, every streaming platform.",
-    badge: "Phase 5",
-  },
-] as const;
 
 const LICENSE_TIERS = [
   { name: "Individual teacher", price: "$199 / year", best: "One teacher, one classroom" },

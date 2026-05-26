@@ -2,10 +2,6 @@ import Link from "next/link";
 import {
   Music2,
   HeartHandshake,
-  Sparkles,
-  Moon,
-  Wind,
-  Sun,
   Search,
   Download,
   GraduationCap,

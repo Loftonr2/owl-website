@@ -207,7 +207,6 @@ export default function ContactPage() {
                 eyebrow="Send us a note"
                 title="Inquiry Form"
                 subtitle="Fill in the details below and we'll be in touch within 2–3 business days."
-                className="mb-6"
               />
               <div className="rounded-owl-card border border-owl-cream-deep bg-owl-cream p-6 shadow-owl-1 sm:p-8">
                 <ContactForm />

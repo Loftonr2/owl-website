@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { LucideIcon } from "lucide-react";
-import { Chip, type ChipProps } from "./chip";
+import { type ChipProps } from "./chip";
 import { useMouseMagnet } from "@/lib/motion/mouse";
 import { cn } from "@/lib/cn";
 

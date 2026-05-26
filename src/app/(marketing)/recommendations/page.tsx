@@ -1,11 +1,9 @@
 import Link from "next/link";
 import {
-  BookOpen,
   ShieldCheck,
   Heart,
   Search,
   Sparkles,
-  Star,
   Award,
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
