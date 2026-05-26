@@ -4,13 +4,12 @@ import { Sparkles, Heart, Globe2, GraduationCap, BookOpen, Music2, Users } from 
 import { pageMetadata } from "@/lib/seo/metadata";
 
 // Shared system primitives
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { Button } from "@/components/ui/button";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 
 export const metadata = pageMetadata({
@@ -99,39 +98,18 @@ const INSPIRATION_CARDS = [
 export default function AboutPage() {
   return (
     <>
-      {/* 1 — Welcome hero */}
-      <CinematicHero
-        tone="cream"
-        slug="about"
-        sequenceSlug="about-welcome"
-        bannerAspect="wide"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/about-hero.mp4"
+        poster="/images/headers/about-hero.png"
         eyebrow="Meet Larissa"
         heading={
-          <>
-            Welcome to Our{" "}
-            <span className="text-owl-teal">Heartfelt Journey.</span>
-          </>
+          <>Welcome to Our{" "}<span className="text-owl-teal">Heartfelt Journey.</span></>
         }
         subhead="OWL Sing Together carries the tradition of Mr. Rogers into a digital, multicultural age — where every child feels seen, heard, and sung to."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="/watch">
-              <Sparkles className="h-4 w-4" aria-hidden />
-              Explore Now
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="/newsletter">Subscribe to the OWL Weekly</Link>
-          </Button>
-        }
-        meta={
-          <p className="italic">
-            &ldquo;I&apos;m so glad you&apos;re here today.&rdquo; — Larissa
-          </p>
-        }
-        ambient={<AmbientLayer pattern="leaves" density={3} seed={37} />}
+        primaryCta={{ label: "Explore Now", href: "/watch" }}
+        secondaryCta={{ label: "Subscribe to the OWL Weekly", href: "/newsletter" }}
+        meta={<p className="italic">&ldquo;I&apos;m so glad you&apos;re here today.&rdquo; — Larissa</p>}
       />
 
       {/* 2 — Personal Story + Brand Mission (side-by-side) */}

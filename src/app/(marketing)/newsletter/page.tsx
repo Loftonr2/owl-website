@@ -14,13 +14,11 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
-import { GlassPanel } from "@/components/ui/glass-panel";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterForm } from "@/components/marketing/newsletter-form";
 import { OwlMark } from "@/components/brand/owl-logo";
 
@@ -166,11 +164,9 @@ export default function NewsletterPage() {
       {/* 1 — Warm signup hero. Cream tone, sparkles ambient, single CTA.
             The hero's overlay slot carries the email form so the visitor
             can subscribe without scrolling. */}
-      <CinematicHero
-        tone="cream"
-        slug="newsletter"
-        sequenceSlug="newsletter-welcome"
-        bannerAspect="wide"
+      <VideoHeroBanner
+        src="/videos/newsletter-hero.mp4"
+        poster="/images/headers/newsletter-hero.png"
         eyebrow="The OWL Weekly"
         heading={
           <>
@@ -184,23 +180,6 @@ export default function NewsletterPage() {
             &ldquo;I&apos;m so glad you&apos;re here today.&rdquo; — Larissa
           </p>
         }
-        overlay={
-          <GlassPanel variant="frost" className="mx-auto max-w-md">
-            <div className="mb-2 inline-flex items-center gap-2">
-              <Mail className="h-4 w-4 text-owl-teal" aria-hidden />
-              <p className="font-display text-xs font-bold uppercase tracking-wide text-owl-teal">
-                Subscribe in one line
-              </p>
-            </div>
-            <NewsletterForm
-              source="other"
-              ctaLabel="Send me Sunday's letter"
-              headline=""
-              body=""
-            />
-          </GlassPanel>
-        }
-        ambient={<AmbientLayer pattern="sparkles" density={3} seed={71} />}
       />
 
       {/* 2 — Segmented signup cards (parents / educators / kids).
@@ -331,12 +310,6 @@ export default function NewsletterPage() {
           <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
             {/* Featured printable preview */}
             <div className="relative isolate flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-amber-soft/40 p-6 shadow-owl-1 md:p-8">
-              <AmbientLayer
-                pattern="paper"
-                density={3}
-                seed={89}
-                className="inset-0"
-              />
               <div className="relative z-text">
                 <Sparkles className="mb-3 h-5 w-5 text-owl-amber" aria-hidden />
                 <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">
@@ -357,12 +330,6 @@ export default function NewsletterPage() {
 
             {/* Featured playlist preview */}
             <div className="relative isolate flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-teal/15 p-6 shadow-owl-1 md:p-8">
-              <AmbientLayer
-                pattern="notes"
-                density={3}
-                seed={97}
-                className="inset-0"
-              />
               <div className="relative z-text">
                 <Music2 className="mb-3 h-5 w-5 text-owl-teal" aria-hidden />
                 <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">

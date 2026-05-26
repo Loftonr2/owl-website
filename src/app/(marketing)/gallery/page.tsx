@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Search, Download, Music2, Play, Share2 } from "lucide-react";
+import { Search, Music2, Play, Share2 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import { CategoryChip } from "@/components/ui/category-chip";
 import { GalleryCard } from "@/components/marketing/gallery-card";
 import { MediaRail } from "@/components/marketing/media-rail";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { SEED_GALLERY } from "@/lib/seed/gallery";
 
@@ -75,28 +74,17 @@ export default function GalleryPage() {
 
   return (
     <>
-      {/* 1 — Modest hero banner */}
-      <CinematicHero
-        tone="cream"
-        slug="gallery"
-        bannerAspect="wide"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/gallery-hero.mp4"
+        poster="/images/headers/gallery-hero.png"
         eyebrow="OWL Image Gallery"
         heading={
-          <>
-            Explore, Inspire, and{" "}
-            <span className="text-owl-teal">Create Together</span>
-          </>
+          <>Explore, Inspire, and{" "}<span className="text-owl-teal">Create Together</span></>
         }
-        subhead="Explore our colorful world of OWL-related artwork and photos — character art, seasonal scenes, and behind-the-scenes moments."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#gallery">
-              <Download className="h-4 w-4" aria-hidden />
-              Download Now
-            </Link>
-          </Button>
-        }
-        ambient={<AmbientLayer pattern="sparkles" density={3} seed={73} />}
+        subhead="Colorful OWL artwork, seasonal scenes, character art, and behind-the-scenes moments."
+        primaryCta={{ label: "Browse Gallery", href: "#gallery" }}
+        secondaryCta={{ label: "Download Free Art", href: "/newsletter" }}
       />
 
       {/* 2 — Search + Filter chips */}
@@ -316,6 +304,3 @@ export default function GalleryPage() {
       <SectionReveal>
         <NewsletterSection />
       </SectionReveal>
-    </>
-  );
-}

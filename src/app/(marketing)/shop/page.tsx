@@ -1,13 +1,8 @@
 import Link from "next/link";
-import {
-  ShoppingBag,
-  Sparkles,
-  Download,
-} from "lucide-react";
+import { Download } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
-import { HeroVideo } from "@/components/marketing/hero-video";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -17,7 +12,6 @@ import { ProductCard } from "@/components/marketing/product-card";
 import { MediaRail } from "@/components/marketing/media-rail";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 
 import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
@@ -89,43 +83,17 @@ export default function ShopPage() {
 
   return (
     <>
-      {/* 1 — Premium shopping hero with store video */}
-      <CinematicHero
-        tone="cream"
-        slug="shop"
-        bannerAspect="wide"
-        bannerSlot={
-          <HeroVideo
-            src="/videos/store-hero.mp4"
-            poster="/images/headers/shop-hero.png"
-          />
-        }
-        eyebrow="Shop OWLsome goods"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/shop-hero.mp4"
+        poster="/images/headers/shop-hero.png"
+        eyebrow="Shop"
         heading={
-          <>
-            Shop Our{" "}
-            <span className="text-owl-teal">OWLsome</span>{" "}
-            Sing-Along Goods!
-          </>
+          <>Shop Our{" "}<span className="text-owl-teal">OWLsome Sing-Along Goods!</span></>
         }
-        subhead="Print-on-demand plush, flashcards, coloring books, and digital bundles. Multicultural, classroom-ready, parent-approved."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#featured">
-              <ShoppingBag className="h-4 w-4" aria-hidden />
-              Shop now
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="/newsletter">
-              <Sparkles className="h-4 w-4" aria-hidden />
-              Get launch updates
-            </Link>
-          </Button>
-        }
-        ambient={<AmbientLayer pattern="sparkles" density={4} seed={167} />}
+        subhead="Books, plush toys, flash cards, and classroom bundles — each one designed to make learning feel like play."
+        primaryCta={{ label: "Shop Now", href: "#featured" }}
+        secondaryCta={{ label: "Free Printables", href: "/printables" }}
       />
 
       {/* 2 — Shop-by-category row */}
@@ -197,7 +165,6 @@ export default function ShopPage() {
                 key={b.name}
                 className="relative isolate flex h-full flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-cream p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
               >
-                <AmbientLayer pattern="sparkles" density={3} seed={b.name.length * 11} />
                 <div className="relative z-text">
                   <Chip intent={b.tone} className="mb-3 self-start">
                     {b.eyebrow}
@@ -365,3 +332,4 @@ export default function ShopPage() {
     </>
   );
 }
+                                                                                                

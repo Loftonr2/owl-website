@@ -3,12 +3,11 @@ import {
   ShieldCheck,
   Heart,
   Search,
-  Sparkles,
   Award,
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -18,7 +17,6 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { ProductCard } from "@/components/marketing/product-card";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 
@@ -141,12 +139,10 @@ export default function RecommendationsPage() {
   return (
     <>
       {/* 1 — Editorial hero (cream / sparkles + stars) */}
-      <CinematicHero
-        tone="cream"
-        slug="recommendations"
-        sequenceSlug="recommendations-bookshelf"
-        bannerAspect="wide"
-        eyebrow="Larissa's picks"
+      <VideoHeroBanner
+        src="/videos/blog-hero.mp4"
+        poster="/images/headers/blog-hero.png"
+        eyebrow="Larissa's Picks"
         heading={
           <>
             Editorial picks for{" "}
@@ -154,23 +150,9 @@ export default function RecommendationsPage() {
           </>
         }
         subhead="OWL-made favorites and a few trusted partners. Each pick supports a specific learning goal — no fluff, no algorithm-chasing."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#picks">
-              <Sparkles className="h-4 w-4" aria-hidden />
-              See this week's picks
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="#compare">Compare with alternatives</Link>
-          </Button>
-        }
-        meta={
-          <p>Updated every Sunday in the OWL Weekly. Affiliate links disclosed.</p>
-        }
-        ambient={<AmbientLayer pattern="stars" density={3} seed={131} />}
+        primaryCta={{ label: "See this week's picks", href: "#picks" }}
+        secondaryCta={{ label: "Compare with alternatives", href: "#compare" }}
+        meta={<p>Updated every Sunday in the OWL Weekly. Affiliate links disclosed.</p>}
       />
 
       {/* 2 — Search + filter chips */}

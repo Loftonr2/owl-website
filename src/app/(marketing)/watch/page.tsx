@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  Play,
   Search,
   Download,
   Music2,
@@ -13,7 +12,7 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -23,7 +22,6 @@ import { VideoCard } from "@/components/marketing/video-card";
 import { MediaRail } from "@/components/marketing/media-rail";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 
@@ -77,37 +75,17 @@ export default function WatchPage() {
 
   return (
     <>
-      {/* 1 — Video-nook hero (cream, notes ambient) */}
-      <CinematicHero
-        tone="cream"
-        slug="watch"
-        sequenceSlug="watch-archive"
-        bannerAspect="wide"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/watch-hero.mp4"
+        poster="/images/headers/watch-hero.png"
         eyebrow="Watch"
         heading={
-          <>
-            Explore & sing together in our{" "}
-            <span className="text-owl-teal">video nook.</span>
-          </>
+          <>Watch, Sing, and{" "}<span className="text-owl-teal">Learn Together.</span></>
         }
-        subhead="Every video is multicultural, slow-paced, and tied to a free printable. Pick by age, theme, or holiday."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#featured">
-              <Play className="h-4 w-4" aria-hidden />
-              Featured this week
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="#archive">Browse the archive</Link>
-          </Button>
-        }
-        meta={
-          <p>No autoplay anywhere. Players load only after you click the poster.</p>
-        }
-        ambient={<AmbientLayer pattern="notes" density={4} seed={181} />}
+        subhead="Free multicultural sing-along videos for children Birth–14. New songs every month."
+        primaryCta={{ label: "Browse Videos", href: "#videos" }}
+        secondaryCta={{ label: "Watch on YouTube", href: "https://www.youtube.com/@Owlsingtogetherchannel" }}
       />
 
       {/* 2 — Featured videos rail */}
@@ -259,7 +237,6 @@ export default function WatchPage() {
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream-deep">
           <div className="relative isolate overflow-hidden rounded-owl-hero bg-owl-amber-soft/40 p-8 shadow-owl-1 md:p-12">
-            <AmbientLayer pattern="paper" density={3} seed={191} className="inset-0" />
             <div className="relative z-text grid grid-cols-1 items-center gap-8 md:grid-cols-[1.3fr,1fr]">
               <div>
                 <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-owl-teal">

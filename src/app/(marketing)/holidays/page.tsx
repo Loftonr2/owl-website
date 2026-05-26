@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Sparkles, Calendar, Globe2, Church, Palette, Moon } from "lucide-react";
+import { Sparkles, Globe2, Church, Palette, Moon } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,6 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { HolidayCard } from "@/components/marketing/holiday-card";
 import { PrintableCard } from "@/components/marketing/printable-card";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
@@ -106,40 +105,18 @@ export default function HolidaysPage() {
 
   return (
     <>
-      {/* 1 — Celebration hero (amber, sparkles ambient) */}
-      <CinematicHero
-        tone="amber"
-        slug="holidays"
-        sequenceSlug="holidays-celebration"
-        bannerAspect="wide"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/holidays-hero.mp4"
+        poster="/images/headers/holidays-hero.png"
         eyebrow="Holidays"
         heading={
-          <>
-            Celebrate learning{" "}
-            <span className="text-owl-teal-deep">all year.</span>
-          </>
+          <>Celebrate Learning{" "}<span className="text-owl-teal">All Year.</span></>
         }
         subhead="Eleven cultural celebrations with videos, printables, and parent-friendly explainers — refreshed annually."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#hubs">
-              <Sparkles className="h-4 w-4" aria-hidden />
-              Explore the hubs
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="#by-month">
-              <Calendar className="h-4 w-4" aria-hidden />
-              Browse by month
-            </Link>
-          </Button>
-        }
-        meta={
-          <p>11 cultural hubs · refreshed each year · always free to read.</p>
-        }
-        ambient={<AmbientLayer pattern="sparkles" density={5} seed={91} />}
+        primaryCta={{ label: "Explore the Hubs", href: "#hubs" }}
+        secondaryCta={{ label: "Browse by Month", href: "#by-month" }}
+        meta={<p>11 cultural hubs · refreshed each year · always free to read.</p>}
       />
 
       {/* 2 — Browse-by-month strip */}
@@ -359,3 +336,4 @@ export default function HolidaysPage() {
     </>
   );
 }
+                  

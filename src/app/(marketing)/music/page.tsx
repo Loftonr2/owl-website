@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,6 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { PlaylistCard } from "@/components/marketing/playlist-card";
 import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
@@ -88,12 +87,10 @@ export default function MusicPage() {
 
   return (
     <>
-      {/* 1 — Music hero (cream, notes ambient, streaming overlay) */}
-      <CinematicHero
-        tone="cream"
-        slug="music"
-        sequenceSlug="music-recording-room"
-        bannerAspect="wide"
+      {/* 1 — Music hero */}
+      <VideoHeroBanner
+        src="/videos/music-hero.mp4"
+        poster="/images/headers/music-hero.png"
         eyebrow="Music"
         heading={
           <>
@@ -102,41 +99,9 @@ export default function MusicPage() {
           </>
         }
         subhead="Same songs, every platform. Stream on Spotify, Apple Music, YouTube Music, or Amazon Music — or download the activity sheets."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#playlists">
-              <Music2 className="h-4 w-4" aria-hidden />
-              Browse playlists
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="#streaming">Listen on every platform</Link>
-          </Button>
-        }
-        meta={
-          <p>
-            All songs mastered at 432 Hz, –14 LUFS. No autoplay anywhere on this site.
-          </p>
-        }
-        overlay={
-          <GlassPanel variant="frost" className="text-center sm:text-left">
-            <p className="font-display text-xs font-bold uppercase tracking-wide text-owl-teal">
-              Stream OWL
-            </p>
-            <div className="mt-2">
-              <StreamingPlatforms
-                spotify="https://open.spotify.com/artist/example"
-                appleMusic="https://music.apple.com/artist/example"
-                youtubeMusic="https://music.youtube.com/channel/example"
-                amazonMusic="https://music.amazon.com/artists/example"
-                size="sm"
-              />
-            </div>
-          </GlassPanel>
-        }
-        ambient={<AmbientLayer pattern="notes" density={5} seed={47} />}
+        primaryCta={{ label: "Browse playlists", href: "#playlists" }}
+        secondaryCta={{ label: "Listen on every platform", href: "#streaming" }}
+        meta={<p>All songs mastered at 432 Hz, –14 LUFS.</p>}
       />
 
       {/* 2 — Search + filter chips (Age × Theme × Tempo) */}
@@ -262,7 +227,6 @@ export default function MusicPage() {
       <SectionReveal>
         <Section width="wide" pad="lg" bg="white">
           <div className="relative isolate overflow-hidden rounded-owl-hero bg-owl-amber-soft/40 p-8 shadow-owl-1 md:p-12">
-            <AmbientLayer pattern="notes" density={3} seed={59} className="inset-0" />
             <div className="relative z-text grid grid-cols-1 items-center gap-8 md:grid-cols-[1.3fr,1fr]">
               <div>
                 <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-owl-teal">

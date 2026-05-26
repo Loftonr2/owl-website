@@ -16,12 +16,11 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { ContactForm } from "@/components/marketing/contact-form";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 
@@ -151,20 +150,17 @@ const FAQ = [
 export default function ContactPage() {
   return (
     <>
-      {/* 1 — Hero */}
-      <CinematicHero
-        tone="cream"
-        slug="contact"
-        bannerAspect="wide"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/about-hero.mp4"
+        poster="/images/headers/contact-hero.png"
         eyebrow="Contact & Licensing"
         heading={
-          <>
-            We&apos;d Love to{" "}
-            <span className="text-owl-teal">Hear from You.</span>
-          </>
+          <>We&apos;d Love to{" "}<span className="text-owl-teal">Hear from You.</span></>
         }
         subhead="OWL is a small, mission-led team. Your message goes straight to a real human. Pick the segment that fits and we'll route you to the right place."
-        ambient={<AmbientLayer pattern="leaves" density={3} seed={77} />}
+        primaryCta={{ label: "Send a Message", href: "#inquiry" }}
+        secondaryCta={{ label: "Licensing Inquiry", href: "#inquiry" }}
       />
 
       {/* 2 — Contact Segment Cards */}
@@ -356,3 +352,4 @@ export default function ContactPage() {
     </>
   );
 }
+                                 

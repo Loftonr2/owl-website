@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { Search, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
 import { CategoryChip } from "@/components/ui/category-chip";
 import { BlogCard } from "@/components/marketing/blog-card";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { SEED_BLOG_ARTICLES, SEED_BLOG_CATEGORIES } from "@/lib/seed/blog";
 
@@ -58,36 +57,17 @@ export default function BlogPage() {
 
   return (
     <>
-      {/* 1 — Hero with search bar */}
-      <CinematicHero
-        tone="cream"
-        slug="blog"
-        bannerAspect="wide"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/blog-hero.mp4"
+        poster="/images/headers/blog-hero.png"
         eyebrow="Blog & Resources"
         heading={
-          <>
-            Resources for{" "}
-            <span className="text-owl-teal">Learning Together</span>
-          </>
+          <>Resources for{" "}<span className="text-owl-teal">Learning Together</span></>
         }
         subhead="Articles, guides, and seasonal content for parents, educators, and curious families."
-        ambient={<AmbientLayer pattern="paper" density={3} seed={103} />}
-        overlay={
-          <div className="mx-auto max-w-lg">
-            <label className="relative block">
-              <span className="sr-only">Search articles, topics...</span>
-              <Search
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-owl-mist"
-                aria-hidden
-              />
-              <input
-                type="search"
-                placeholder="Search articles, topics..."
-                className="h-11 w-full rounded-owl-btn border border-owl-cream-deep bg-owl-white/90 pl-9 pr-4 text-sm text-owl-ink shadow-owl-1 placeholder:text-owl-mist focus:border-owl-teal focus:outline-none focus:ring-2 focus:ring-owl-teal/40 backdrop-blur-sm"
-              />
-            </label>
-          </div>
-        }
+        primaryCta={{ label: "Browse Articles", href: "#articles" }}
+        secondaryCta={{ label: "Free Printables", href: "/printables" }}
       />
 
       {/* 2 — Topic Filter Chips */}
@@ -288,3 +268,4 @@ export default function BlogPage() {
     </>
   );
 }
+                                                               

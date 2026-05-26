@@ -12,14 +12,13 @@ import {
 import { pageMetadata } from "@/lib/seo/metadata";
 
 // Shared system primitives
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { PrintableCard } from "@/components/marketing/printable-card";
 import { PlaylistCard } from "@/components/marketing/playlist-card";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
@@ -120,11 +119,9 @@ export default function EducatorsPage() {
   return (
     <>
       {/* 1 — Classroom-focused hero */}
-      <CinematicHero
-        tone="cream"
-        slug="educators"
-        sequenceSlug="educators-classroom"
-        bannerAspect="wide"
+      <VideoHeroBanner
+        src="/videos/educators-hero.mp4"
+        poster="/images/headers/educators-hero.png"
         eyebrow="For Educators"
         heading={
           <>
@@ -132,21 +129,9 @@ export default function EducatorsPage() {
             <span className="text-owl-teal">Culturally Inclusive Learning!</span>
           </>
         }
-        subhead="Classroom-ready multicultural learning resources. Explores and certify curriculums including educators and classrooms."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#tools">
-              <GraduationCap className="h-4 w-4" aria-hidden />
-              Explore Now
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="/contact">Request Access</Link>
-          </Button>
-        }
-        ambient={<AmbientLayer pattern="leaves" density={4} seed={61} />}
+        subhead="Classroom-ready multicultural learning resources. Standards-aligned, inclusive, and educator-approved."
+        primaryCta={{ label: "Explore Tools", href: "#tools" }}
+        secondaryCta={{ label: "Request Access", href: "/contact" }}
       />
 
       {/* 2 — Benefits row (Classroom-Ready Multicultural Learning Resources) */}
