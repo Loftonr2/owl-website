@@ -13,9 +13,11 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { VideoCard } from "@/components/marketing/video-card";
 import { MediaRail } from "@/components/marketing/media-rail";
 import { SectionReveal } from "@/components/marketing/section-reveal";
+// VideoCard + MediaRail still used by featured rail above
 import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { OwlDiscoveryArcade } from "@/components/marketing/owl-discovery-arcade";
+import { BrowseVideosSection } from "@/components/marketing/browse-videos-section";
 
 import { SEED_VIDEOS } from "@/lib/seed/videos";
 
@@ -55,7 +57,6 @@ export const metadata = pageMetadata({
 
 export default function WatchPage() {
   const featured = SEED_VIDEOS.slice(0, 3);
-  const recent = SEED_VIDEOS;
 
   return (
     <>
@@ -106,35 +107,9 @@ export default function WatchPage() {
       {/* 3+4 — OWL Discovery Arcade (search + theme browse) */}
       <OwlDiscoveryArcade />
 
-      {/* 5 — Full archive grid */}
+      {/* 5 — Browse Videos (6 preview + More Videos modal) */}
       <SectionReveal>
-        <Section width="wide" pad="lg" bg="white" id="archive">
-          <SectionIntro
-            eyebrow="The library"
-            title="Browse all videos"
-            subtitle="More is added every Monday, Wednesday, and Friday."
-          />
-          <MediaRail
-            ariaLabel="OWL video archive"
-            columns={{ md: 2, lg: 3 }}
-            className="mt-8"
-            stagger={0.05}
-          >
-            {recent.map((v) => (
-              <VideoCard
-                key={v.slug}
-                slug={v.slug}
-                title={v.title}
-                ageRange={v.ageRange}
-                theme={v.theme}
-                duration={v.duration}
-                tone={v.tone}
-                posterSrc={v.posterSrc}
-                youtubeId={v.youtubeId}
-              />
-            ))}
-          </MediaRail>
-        </Section>
+        <BrowseVideosSection videos={SEED_VIDEOS} />
       </SectionReveal>
 
       {/* 6 — Printable download CTA */}
