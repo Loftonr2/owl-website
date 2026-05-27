@@ -142,7 +142,6 @@ export function PrintableCard({
           <a
             href={downloadHref}
             download
-            onClick={(e) => e.stopPropagation()}
             aria-label={`Download ${title} for free`}
             className={cn(
               "mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-full px-4 py-2",
