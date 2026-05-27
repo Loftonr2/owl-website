@@ -1,10 +1,5 @@
 import Link from "next/link";
 import {
-  Mail,
-  Sparkles,
-  ShieldCheck,
-  Lock,
-  EyeOff,
   Heart,
   GraduationCap,
   Baby,
@@ -325,96 +320,6 @@ export default function NewsletterPage() {
         </Section>
       </SectionReveal>
 
-      {/* 5 — Featured printable + playlist previews */}
-      <SectionReveal offset={20}>
-        <Section width="wide" pad="lg" bg="white">
-          <SectionIntro
-            eyebrow="What comes with subscribing"
-            title="Sample assets, free"
-            subtitle="Each Sunday email includes one free printable and a song link. Here's what landed in Issue 12."
-          />
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Featured printable preview */}
-            <div className="relative isolate flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-amber-soft/40 p-6 shadow-owl-1 md:p-8">
-              <div className="relative z-text">
-                <Sparkles className="mb-3 h-5 w-5 text-owl-amber" aria-hidden />
-                <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">
-                  Featured printable
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-extrabold text-owl-ink">
-                  Feelings face wheel
-                </h3>
-                <p className="mt-3 max-w-prose text-sm leading-relaxed text-owl-ink/75">
-                  A spinnable wheel to name and check in on big feelings. One page, ages 2–5,
-                  free with every subscription.
-                </p>
-                <Button intent="primary" size="md" asChild className="mt-5">
-                  <Link href="/printables/feelings-face-wheel">Preview the PDF</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Featured playlist preview */}
-            <div className="relative isolate flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-teal/15 p-6 shadow-owl-1 md:p-8">
-              <div className="relative z-text">
-                <Music2 className="mb-3 h-5 w-5 text-owl-teal" aria-hidden />
-                <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">
-                  Featured playlist
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-extrabold text-owl-ink">
-                  Feelings &amp; friends
-                </h3>
-                <p className="mt-3 max-w-prose text-sm leading-relaxed text-owl-ink/75">
-                  Nine songs about naming big feelings — slow tempos, multicultural cast,
-                  pre-cleared for classroom playback.
-                </p>
-                <Button intent="secondary" size="md" asChild className="mt-5">
-                  <Link href="/music/feelings">Open the playlist</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Section>
-      </SectionReveal>
-
-      {/* 6 — Trust + privacy section (calm white band) */}
-      <SectionReveal offset={24}>
-        <Section width="narrow" pad="lg" bg="white">
-          <SectionIntro
-            eyebrow="No spam, ever"
-            title="What you can expect"
-            align="center"
-          />
-          <ul role="list" className="mx-auto mt-6 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
-            <li className="flex items-start gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-cream p-4">
-              <span
-                aria-hidden
-                className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-owl-success/15 text-owl-success"
-              >
-                <ShieldCheck className="h-4 w-4" />
-              </span>
-              <div>
-                <p className="font-display text-sm font-semibold text-owl-ink">Double opt-in</p>
-                <p className="text-xs text-owl-mist">
-                  In every single email. Beehiiv delivers, Resend handles confirmations.
-                </p>
-              </div>
-            </li>
-          </ul>
-
-          <p className="mx-auto mt-8 max-w-prose text-center text-xs text-owl-mist">
-            Read our{" "}
-            <Link href="/privacy" className="font-semibold text-owl-teal underline-offset-2 hover:underline">
-              privacy policy
-            </Link>{" "}
-            or{" "}
-            <Link href="/contact" className="font-semibold text-owl-teal underline-offset-2 hover:underline">
-              email us
-            </Link>{" "}
-            with any questions. We reply.
-          </p>
-        </Section>
-      </SectionReveal>
     </>
   );
 }
