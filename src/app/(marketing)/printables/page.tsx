@@ -59,7 +59,7 @@ export default function PrintablesPage() {
           <Section width="wide" pad="lg" bg="white" id="bundles">
             <SectionHeader
               eyebrow="Premium"
-              title="Bundles & deeper packs"
+              title="Bundle Packs"
               subtitle="One-time purchase. PDFs delivered instantly via Gumroad. Use any time, any device."
             />
             <ul role="list" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
