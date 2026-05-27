@@ -1,14 +1,7 @@
 import Link from "next/link";
 import {
-  Search,
   Download,
   Music2,
-  HeartHandshake,
-  Sparkles,
-  Moon,
-  Wind,
-  Sun,
-  BookOpen,
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -16,16 +9,15 @@ import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
-import { CategoryChip } from "@/components/ui/category-chip";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { VideoCard } from "@/components/marketing/video-card";
 import { MediaRail } from "@/components/marketing/media-rail";
-import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
+import { OwlDiscoveryArcade } from "@/components/marketing/owl-discovery-arcade";
 
-import { SEED_VIDEOS, VIDEO_AGE_OPTIONS, VIDEO_THEME_OPTIONS } from "@/lib/seed/videos";
+import { SEED_VIDEOS } from "@/lib/seed/videos";
 
 export const metadata = pageMetadata({
   title: "Watch — OWL Video Library",
@@ -60,14 +52,6 @@ export const metadata = pageMetadata({
  * to switch a card to a real thumbnail. No code change needed.
  */
 
-const THEMES = [
-  { value: "abcs", label: "ABCs", icon: BookOpen },
-  { value: "numbers", label: "Numbers", icon: Sun },
-  { value: "feelings", label: "Feelings", icon: HeartHandshake },
-  { value: "holiday", label: "Holidays", icon: Sparkles },
-  { value: "lullaby", label: "Lullabies", icon: Moon },
-  { value: "movement", label: "Movement", icon: Wind },
-];
 
 export default function WatchPage() {
   const featured = SEED_VIDEOS.slice(0, 3);
@@ -119,88 +103,8 @@ export default function WatchPage() {
         </Section>
       </SectionReveal>
 
-      {/* 3 — Search + filter chips */}
-      <SectionReveal>
-        <Section width="wide" pad="md" bg="white">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <label className="relative block max-w-md flex-1">
-              <span className="sr-only">Search videos</span>
-              <Search
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-owl-mist"
-                aria-hidden
-              />
-              <input
-                type="search"
-                placeholder="Search by title, theme, age band"
-                className="h-11 w-full rounded-owl-btn border border-owl-cream-deep bg-owl-white pl-9 pr-4 text-sm text-owl-ink shadow-owl-1 placeholder:text-owl-mist focus:border-owl-teal focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
-              />
-            </label>
-
-            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-              <div className="flex flex-wrap gap-2">
-                <p className="self-center text-[10px] font-bold uppercase tracking-wide text-owl-mist">
-                  Age
-                </p>
-                {VIDEO_AGE_OPTIONS.map((a) => (
-                  <CategoryChip
-                    key={a.value}
-                    href={`/watch?age=${a.value}`}
-                    label={a.label}
-                    intent="teal"
-                  />
-                ))}
-              </div>
-              <div className="flex flex-wrap gap-2 sm:ml-3">
-                <p className="self-center text-[10px] font-bold uppercase tracking-wide text-owl-mist">
-                  Theme
-                </p>
-                {VIDEO_THEME_OPTIONS.slice(0, 4).map((t) => (
-                  <CategoryChip
-                    key={t.value}
-                    href={`/watch?theme=${t.value}`}
-                    label={t.label}
-                    intent="amber"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </Section>
-      </SectionReveal>
-
-      {/* 4 — Browse by theme icons */}
-      <SectionReveal>
-        <Section width="wide" pad="lg" bg="cream">
-          <SectionIntro
-            eyebrow="Browse"
-            title="By theme"
-            subtitle="Pick a feeling, a holiday, or a skill. The archive will filter to match."
-          />
-          <StaggerGrid
-            asList
-            ariaLabel="Video themes"
-            className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6"
-            stagger={0.06}
-            offsetY={12}
-          >
-            {THEMES.map(({ value, label, icon: Icon }) => (
-              <Link
-                key={value}
-                href={`/watch?theme=${value}`}
-                className="group flex h-full flex-col items-center gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-white p-5 text-center shadow-owl-1 transition-all duration-200 ease-owl-quick hover:-translate-y-0.5 hover:shadow-owl-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-owl-cream"
-              >
-                <span
-                  aria-hidden
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal transition-transform duration-200 ease-owl-quick group-hover:scale-110"
-                >
-                  <Icon className="h-5 w-5" />
-                </span>
-                <span className="font-display text-sm font-semibold text-owl-ink">{label}</span>
-              </Link>
-            ))}
-          </StaggerGrid>
-        </Section>
-      </SectionReveal>
+      {/* 3+4 — OWL Discovery Arcade (search + theme browse) */}
+      <OwlDiscoveryArcade />
 
       {/* 5 — Full archive grid */}
       <SectionReveal>
