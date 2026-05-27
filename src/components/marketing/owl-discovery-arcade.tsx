@@ -62,7 +62,13 @@ const AGE_PILLS = [
   { value: "5-8",     label: "5–8",     emoji: "🚀", bg: "bg-[#1d6fb5]", text: "text-white", ring: "ring-[#1d6fb5]/40" },
 ] as const;
 
-const SUGGESTED = ["Counting songs", "Feelings check-in", "Bedtime lullabies", "Halloween", "Dance party"];
+const SUGGESTED = [
+  { label: "Counting songs",    color: "border-owl-teal    text-owl-teal    hover:bg-owl-teal/10"    },
+  { label: "Feelings check-in", color: "border-owl-rose    text-owl-rose    hover:bg-owl-rose/10"    },
+  { label: "Bedtime lullabies", color: "border-[#7c3aed]   text-[#7c3aed]   hover:bg-[#7c3aed]/10"  },
+  { label: "Halloween",         color: "border-owl-amber   text-owl-amber   hover:bg-owl-amber/10"   },
+  { label: "Dance party",       color: "border-[#0ea5c9]   text-[#0ea5c9]   hover:bg-[#0ea5c9]/10"  },
+];
 
 /* ─── Component ──────────────────────────────────────────────────────────── */
 export function OwlDiscoveryArcade() {
@@ -106,24 +112,13 @@ export function OwlDiscoveryArcade() {
           className="mb-10 grid grid-cols-1 gap-5 md:grid-cols-[1fr_260px]"
         >
           {/* Main search card */}
-          <div className="relative overflow-hidden rounded-2xl border border-owl-cream-deep bg-owl-white p-6 shadow-owl-2">
-            {/* Mascot */}
-            <div className="absolute bottom-0 right-6 hidden h-36 w-28 md:block" aria-hidden>
-              <Image
-                src="/images/discovery/mascot-headphones.png"
-                alt=""
-                fill
-                className="object-contain object-bottom"
-                sizes="112px"
-              />
-            </div>
-
-            <h2 className="mb-5 font-display text-2xl font-extrabold text-owl-ink sm:text-3xl">
+          <div className="flex flex-col items-center overflow-hidden rounded-2xl border border-owl-cream-deep bg-owl-white p-8 text-center shadow-owl-2">
+            <h2 className="mb-6 font-display text-2xl font-extrabold text-owl-ink sm:text-3xl">
               What do you want to learn today?
             </h2>
 
-            {/* Search input */}
-            <div className="flex max-w-xl items-center gap-2">
+            {/* Search input row */}
+            <div className="flex w-full max-w-lg items-center gap-2">
               <label className="relative flex-1">
                 <span className="sr-only">Search OWL videos</span>
                 <Search
@@ -135,36 +130,36 @@ export function OwlDiscoveryArcade() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search by title, theme, or age band"
-                  className="h-13 w-full rounded-full border border-owl-cream-deep bg-owl-cream/50 py-3 pl-12 pr-4 text-sm text-owl-ink shadow-owl-1 placeholder:text-owl-mist transition-all duration-200 focus:border-owl-teal/50 focus:bg-owl-white focus:outline-none focus:ring-2 focus:ring-owl-teal/25"
+                  className="w-full rounded-full border border-owl-cream-deep bg-owl-cream/50 py-3 pl-12 pr-4 text-sm text-owl-ink shadow-owl-1 placeholder:text-owl-mist transition-all duration-200 focus:border-owl-teal/50 focus:bg-owl-white focus:outline-none focus:ring-2 focus:ring-owl-teal/25"
                 />
               </label>
               <Link
                 href={query ? `/watch?q=${encodeURIComponent(query)}` : "/watch"}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-owl-teal text-white shadow-owl-1 transition-all duration-200 hover:scale-105 hover:bg-owl-teal/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-owl-teal text-white shadow-owl-1 transition-all duration-200 hover:scale-105 hover:bg-owl-teal/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60"
                 aria-label="Search"
               >
                 <Search className="h-4 w-4" />
               </Link>
               <button
                 type="button"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-owl-cream-deep bg-owl-cream text-owl-mist transition-all duration-200 hover:border-owl-teal/40 hover:text-owl-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/40"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-owl-cream-deep bg-owl-cream text-owl-mist transition-all duration-200 hover:border-owl-teal/40 hover:text-owl-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/40"
                 aria-label="Voice search"
               >
                 <Mic className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Suggested searches */}
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-xs font-medium text-owl-mist">Try searching:</span>
-              {SUGGESTED.map((s) => (
+            {/* Suggested searches — centered + color-coded */}
+            <div className="mt-5 flex flex-wrap justify-center gap-2">
+              <span className="w-full text-xs font-medium text-owl-mist">Try searching:</span>
+              {SUGGESTED.map(({ label, color }) => (
                 <button
-                  key={s}
+                  key={label}
                   type="button"
-                  onClick={() => setQuery(s)}
-                  className="rounded-full border border-owl-cream-deep bg-owl-cream/60 px-3.5 py-1.5 text-xs font-medium text-owl-ink/70 transition-all duration-150 hover:border-owl-teal/40 hover:bg-owl-teal/8 hover:text-owl-teal focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-owl-teal/40"
+                  onClick={() => setQuery(label)}
+                  className={`rounded-full border bg-transparent px-4 py-1.5 text-xs font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 ${color}`}
                 >
-                  {s}
+                  {label}
                 </button>
               ))}
             </div>
