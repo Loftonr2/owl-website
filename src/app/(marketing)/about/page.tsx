@@ -19,38 +19,44 @@ export const metadata = pageMetadata({
   path: "/about",
 });
 
-/**
- * /about — v4 (Wireframe-matched redesign).
- *
- * Sections per wireframe:
- *   1. Hero Banner (Larissa, children, owls, classroom setting)
- *   2. Personal Story + Brand Mission (side-by-side cards)
- *   3. Educational & Creative Inspiration (polaroid-style row)
- *   4. Values Row (Inclusivity, Community, Education)
- *   5. Community Impact (forest band with stats)
- *   6. Newsletter CTA
- */
-
 const VALUES = [
   {
     icon: Heart,
     title: "Inclusivity",
     body: "Every child sees themselves in the cast — no defaults, no afterthoughts. We make every child feel they belong.",
-    color: "bg-owl-rose/10 text-owl-rose",
+    iconColor: "bg-owl-rose/20 text-owl-rose",
+    bg: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
+    border: "border-owl-rose/30",
+    bar: "bg-owl-rose",
+    cta: "text-owl-rose",
+    href: "/watch",
+    ctaLabel: "Watch our videos →",
   },
   {
     icon: Globe2,
     title: "Community",
     body: "We build slow content for fast lives. Songs, printables, and stories that connect families and caregivers.",
-    color: "bg-owl-teal/10 text-owl-teal",
+    iconColor: "bg-owl-teal/15 text-owl-teal",
+    bg: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    border: "border-owl-teal/30",
+    bar: "bg-owl-teal",
+    cta: "text-owl-teal",
+    href: "/newsletter",
+    ctaLabel: "Join the community →",
   },
   {
     icon: GraduationCap,
     title: "Education",
     body: "Multicultural, evidence-based, classroom-ready — real learning that grows with your child from birth to 14.",
-    color: "bg-owl-amber/10 text-owl-amber",
+    iconColor: "bg-owl-amber/20 text-owl-amber",
+    bg: "bg-gradient-to-br from-[#fef3d8] via-[#fdf7eb] to-[#fff8ec]",
+    border: "border-owl-amber/30",
+    bar: "bg-owl-amber",
+    cta: "text-owl-amber",
+    href: "/educators",
+    ctaLabel: "Explore resources →",
   },
-] as const;
+];
 
 const MISSION_POINTS = [
   {
@@ -186,7 +192,7 @@ export default function AboutPage() {
         <Section width="wide" pad="lg" bg="white">
           <SectionIntro
             eyebrow="Inspiration"
-            title="Larissa's Educational and Creative Inspiration"
+            title="Larissa’s Educational and Creative Inspiration"
             subtitle="The people, memories, and moments that shaped everything OWL stands for."
           />
           <div className="mt-8 flex flex-wrap justify-center gap-5 sm:flex-nowrap">
@@ -195,7 +201,6 @@ export default function AboutPage() {
                 key={card.label}
                 className={`group relative flex w-40 shrink-0 flex-col items-center overflow-hidden rounded-[0.75rem] ${card.bg} p-2 shadow-owl-2 ring-1 ring-owl-cream-deep transition-all duration-300 ease-owl hover:-rotate-1 hover:scale-105 hover:shadow-owl-3`}
               >
-                {/* Polaroid image area */}
                 <div className="relative aspect-square w-full overflow-hidden rounded-[0.5rem] bg-owl-cream-deep">
                   <Image
                     src={card.imgSrc}
@@ -205,7 +210,6 @@ export default function AboutPage() {
                     sizes="160px"
                   />
                 </div>
-                {/* Polaroid caption */}
                 <p className="mt-2.5 mb-1 text-center font-display text-xs font-semibold text-owl-ink/80">
                   {card.label}
                 </p>
@@ -220,19 +224,28 @@ export default function AboutPage() {
         <Section width="wide" pad="lg" bg="cream">
           <SectionIntro eyebrow="What we stand for" title="Values Row" />
           <ul role="list" className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {VALUES.map(({ icon: Icon, title, body, color }, idx) => (
+            {VALUES.map(({ icon: Icon, title, body, iconColor, bg, border, bar, cta, href, ctaLabel }, idx) => (
               <SectionReveal key={title} offset={12} delay={idx * 0.12}>
-                <li className="h-full rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-0.5 hover:shadow-owl-2">
-                  <span
-                    aria-hidden
-                    className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full ${color}`}
+                <li className="h-full">
+                  <Link
+                    href={href}
+                    className={`group relative flex h-full flex-col overflow-hidden rounded-owl-card border-2 ${border} ${bg} p-6 shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-1.5 hover:shadow-owl-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal focus-visible:ring-offset-2`}
                   >
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="font-display text-lg font-semibold text-owl-ink">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-owl-mist">{body}</p>
+                    <span aria-hidden className={`pointer-events-none absolute inset-x-0 top-0 h-1.5 ${bar}`} />
+                    <span
+                      aria-hidden
+                      className={`mb-4 mt-2 inline-flex h-12 w-12 items-center justify-center rounded-full transition-transform duration-300 ease-owl group-hover:scale-110 ${iconColor}`}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <h3 className="font-display text-lg font-semibold text-owl-ink">
+                      {title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-owl-mist">{body}</p>
+                    <p className={`mt-auto pt-4 font-display text-sm font-semibold transition-colors duration-200 ${cta}`}>
+                      {ctaLabel}
+                    </p>
+                  </Link>
                 </li>
               </SectionReveal>
             ))}
