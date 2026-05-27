@@ -191,24 +191,173 @@ export const products = {
       alt: "OWL Rhyme Time Card Game — 48 thick cards for ages 4–5 with four play modes for building early literacy through rhyming.",
     },
   },
-  "bilingual-word-cards": {
-    primary: {
-      src: "/images/products/owl-word-cards.png",
-      alt: "OWL Toddler Word Cards — 50 large 4×4 inch bilingual flash cards organized into People, Food, Animals, Actions, and Objects.",
-    },
-  },
   "big-feelings-posters": {
     primary: {
       src: "/images/products/owl-big-feelings-poster-set.png",
       alt: "OWL Big Feelings Poster Set — three large 11×17 laminated SEL posters for ages 3–4 ('How Am I Feeling?', 'What To Do When I Feel...', 'Daily Mood Check-In').",
     },
   },
-  // ── Bundle slug intentionally has NO image entry — the user's prompt
-  //    listed a $129 "OWL Babies Complete Learning Bundle" but no matching
-  //    product photo was uploaded. The card falls back to the tonal panel
-  //    + initials, which is the honest "asset pending" state.
-  //    When commissioned, drop the image into public/images/products/
-  //    and add the entry here.
+  // ── Products wired May 2026 ────────────────────────────────────────────
+  "owl-babies-bundle": {
+    primary: {
+      src: "/images/products/owl-baby-curriculum.png",
+      alt: "OWL Babies Birth-to-1 36-Week Complete Curriculum — integrated play-based learning for whole child development.",
+    },
+  },
+  "abc-flash-cards": {
+    primary: {
+      src: "/images/products/owl-abc-coloring-book.png",
+      alt: "OWL ABCs Around the World — 48-page multicultural coloring and activity book for ages 3+.",
+    },
+  },
+  "feelings-coloring": {
+    primary: {
+      src: "/images/products/owl-feelings-coloring.png",
+      alt: "OWL Feelings & Emotions Coloring Book — 32 scenes children color while talking through their day.",
+    },
+  },
+  "bilingual-word-cards": {
+    primary: {
+      src: "/images/products/owl-toddler-word-cards.png",
+      alt: "OWL Toddler Word Cards — 50 large bilingual EN/ES flash cards across People, Food, Animals, Actions, and Objects.",
+    },
+  },
+  "sticker-reward-chart": {
+    primary: {
+      src: "/images/products/owl-reward-stickers.png",
+      alt: "OWL Reward Star Stickers Roll — OWL character stickers for building routines and celebrating progress.",
+    },
+  },
+  "homeschool-starter": {
+    primary: {
+      src: "/images/products/owl-kindergarten-bundle.png",
+      alt: "OWL Kindergarten Readiness Activity Bundle — comprehensive homeschool starter pack for ages 2–5.",
+    },
+  },
+  "owl-counting-mat": {
+    primary: {
+      src: "/images/products/owl-counting-set.png",
+      alt: "OWL Counting Set — hands-on counting and number recognition tools for ages 2–5.",
+    },
+  },
+  "emotion-tiles": {
+    primary: {
+      src: "/images/products/owl-sensory-cards.png",
+      alt: "OWL Sensory Cards — double-sided tiles with multicultural faces for emotion vocabulary and circle time.",
+    },
+  },
+  "kreadiness-checklist": {
+    primary: {
+      src: "/images/products/owl-kreadiness-checklist.png",
+      alt: "OWL K-Readiness Checklist Parental Guide — 3-page laminated checklist tied to Common Core and ELOF standards.",
+    },
+  },
+  "lullaby-album": {
+    primary: {
+      src: "/images/products/owl-lullaby-album.png",
+      alt: "Larissa's Lullaby Album — a collection of gentle, multicultural lullabies for bedtime.",
+    },
+  },
+  // ── Plush sets — May 2026 ────────────────────────────────────────────────
+  "plush-bedtime-friends": {
+    primary: {
+      src: "/images/products/plush-bedtime-friends.png",
+      alt: "Larissa Plush Set — 6 Bedtime Friends: Dreamy Star, Sleepy Moon, Cloudy, Twinkle, Nighty Night, Baby Owl.",
+    },
+  },
+  "plush-forest-friends": {
+    primary: {
+      src: "/images/products/plush-forest-friends.png",
+      alt: "Larissa Plush Set — 6 Forest Friends: Fox, Bear, Deer, Raccoon, Hedgehog, Forest Owl.",
+    },
+  },
+  "plush-ocean-friends": {
+    primary: {
+      src: "/images/products/plush-ocean-friends.png",
+      alt: "Larissa Plush Set — 6 Ocean Friends: Dolphin, Sea Turtle, Clownfish, Whale, Starfish, Octopus.",
+    },
+  },
+  "plush-safari-friends": {
+    primary: {
+      src: "/images/products/plush-safari-friends.png",
+      alt: "Larissa Plush Set — 6 Safari Friends: Elephant, Giraffe, Lion, Zebra, Monkey, Tiger.",
+    },
+  },
+  "plush-space-friends": {
+    primary: {
+      src: "/images/products/plush-space-friends.png",
+      alt: "Larissa Plush Set — 6 Space Friends: Astronaut Owl, Alien Friend, Rocket Pilot, Planet Explorer, Comet Buddy, Galaxy Girl.",
+    },
+  },
+  // ── Music albums — May 2026 ──────────────────────────────────────────────
+  "counting-math-album": {
+    primary: {
+      src: "/images/products/owl-counting-math-album.png",
+      alt: "Larissa's Counting & Math Party! — fun songs about numbers, shapes, patterns and more.",
+    },
+  },
+  "abc-adventure-album": {
+    primary: {
+      src: "/images/products/owl-abc-adventure-album.png",
+      alt: "Larissa's ABC Adventure Songs — learn, sing & grow with catchy songs for letters, phonics and spelling.",
+    },
+  },
+  "around-world-album": {
+    primary: {
+      src: "/images/products/owl-around-world-album.png",
+      alt: "Larissa's Around the World — songs about cultures we love. Explore. Learn. Sing Together.",
+    },
+  },
+  "calm-down-album": {
+    primary: {
+      src: "/images/products/owl-calm-down-album.png",
+      alt: "Larissa's Calm Down & Mindfulness Songs — gentle songs to help little hearts and minds feel calm and happy.",
+    },
+  },
+  // ── Coloring books — May 2026 ────────────────────────────────────────────
+  "numbers-math-coloring": {
+    primary: {
+      src: "/images/products/owl-numbers-math-coloring.png",
+      alt: "OWL Numbers & Math Magic — Counting Coloring Book for Kids.",
+    },
+  },
+  "abc-coloring-book": {
+    primary: {
+      src: "/images/products/owl-abc-coloring-book-new.png",
+      alt: "OWL ABC Coloring Book — A is for Owl. Letter-by-letter coloring pages.",
+    },
+  },
+  "abcs-world-coloring": {
+    primary: {
+      src: "/images/products/owl-abcs-world-coloring.png",
+      alt: "OWL ABCs Around the World — A Multicultural Alphabet Coloring Book.",
+    },
+  },
+  // ── Sticker sets — May 2026 ──────────────────────────────────────────────
+  "owl-emotions-stickers": {
+    primary: {
+      src: "/images/products/owl-emotions-stickers.png",
+      alt: "OWL Emotions Sticker Set — 12 owl faces showing Happy, Sad, Angry, Calm, Excited, Worried, Scared, Sleepy, Surprised, Silly, Loved, Proud.",
+    },
+  },
+  "owl-cultural-stickers": {
+    primary: {
+      src: "/images/products/owl-cultural-stickers.png",
+      alt: "OWL Cultural Celebrations Sticker Bundle — 12 holiday owls: Diwali, Kwanzaa, Hanukkah, Lunar New Year, Eid, Holi, Juneteenth, Día de Muertos, and more.",
+    },
+  },
+  "owl-baby-girl-stickers": {
+    primary: {
+      src: "/images/products/owl-baby-girl-stickers.png",
+      alt: "Baby Girl OWL Sticker Sheet — 12 pastel owl stickers for ages 0–2.",
+    },
+  },
+  "owl-big-kid-boy-stickers": {
+    primary: {
+      src: "/images/products/owl-big-kid-boy-stickers.png",
+      alt: "Big Kid Boy OWL Sticker Sheet — 12 adventure owl stickers for ages 3–5.",
+    },
+  },
 } as const satisfies Record<string, ProductImages>;
 export type ProductImageKey = keyof typeof products;
 
@@ -465,20 +614,22 @@ export type HeroFrameKey = keyof typeof heroFrames;
  *   import { youtubePosterUrl } from "@/lib/images";
  *   const src = youtubePosterUrl(video.youtubeId);
  */
-export function youtubePosterUrl(youtubeId: string, quality: "max" | "hq" | "mq" = "max"): string {
-  const file =
-    quality === "max" ? "maxresdefault.jpg" : quality === "hq" ? "hqdefault.jpg" : "mqdefault.jpg";
-  return `https://img.youtube.com/vi/${youtubeId}/${file}`;
+export function youtubePosterUrl(
+  videoId: string,
+  quality: "default" | "mqdefault" | "hqdefault" | "sddefault" | "maxresdefault" | "max" = "hqdefault"
+): string {
+  const q = quality === "max" ? "maxresdefault" : quality;
+  return `https://i.ytimg.com/vi/${videoId}/${q}.jpg`;
 }
 
-/**
- * Three-tier poster resolver — used by <VideoPoster>.
+/* ────────────────────────────────────────────────────────────────────────────────
+ * Video-poster resolver — used by `<VideoCard>` + video detail pages.
  *
- *   1. `posterSrc` (local file under /public)        → preferred
- *   2. `youtubeId` (CDN fallback via youtubePosterUrl) → second choice
- *   3. null                                          → caller renders tonal placeholder
+ *   1. `video.posterSrc`  (local commissioned poster, aspect 16:9)  → preferred
+ *   2. `youtubeId`        (YouTube CDN maxresdefault thumbnail)      → fallback
+ *   3. null               → caller renders tonal placeholder
  *
- * The resolver is intentionally a plain function (not a hook) so it can run
+ * This function is intentionally pure and side-effect-free so it works safely
  * in server components. Callers decide what to do with `null`.
  *
  *   const url = resolveVideoPoster(video.posterSrc, video.youtubeId);
@@ -503,7 +654,7 @@ export function resolveVideoPoster(
   return { url: null, source: "none" };
 }
 
-/* ──────────────────────────────────────────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────────────────────────
  * Banner-poster resolver — used by <BannerHero> / <PageHero>.
  *
  *   1. `banners[slug]`  (commissioned wide horizontal poster, 16:9)  → preferred
@@ -513,7 +664,7 @@ export function resolveVideoPoster(
  * The key accepted is intentionally `BannerKey | HeaderKey | string` so callers
  * can use any existing route slug. Both `banners` and `headers` are typed maps
  * — we cast through `string` to avoid forcing every consumer to narrow.
- * ────────────────────────────────────────────────────────────────────────────── */
+ * ──────────────────────────────────────────────────────────────────────────────── */
 export type BannerPosterSource = "banner" | "header" | "none";
 export type ResolvedBanner = {
   src: string | null;
@@ -533,7 +684,7 @@ export function resolveBanner(key: string): ResolvedBanner {
   return { src: null, alt: "", source: "none" };
 }
 
-/* ──────────────────────────────────────────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────────────────────────
  * Product-image resolver — used by <ProductCard> + product detail pages.
  *
  *   1. `products[slug].primary`  (commissioned 1:1 hero photo)  → preferred
@@ -541,7 +692,7 @@ export function resolveBanner(key: string): ResolvedBanner {
  *
  * Phase 3 adds the *primary* tier. Gallery shots are exposed separately via
  * `resolveProductGallery(slug)` for the detail page.
- * ────────────────────────────────────────────────────────────────────────────── */
+ * ──────────────────────────────────────────────────────────────────────────────── */
 export type ProductImageSource = "local" | "none";
 export type ResolvedProductImage = {
   src: string | null;

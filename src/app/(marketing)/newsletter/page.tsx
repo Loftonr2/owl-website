@@ -109,19 +109,22 @@ const SEGMENTS = [
   },
 ];
 
-// Each accent maps to a card style (border + eyebrow tint).
+// Each accent maps to a card style (gradient bg + border + eyebrow tint).
 const accentStyles = {
   teal: {
-    border: "border-owl-teal/30",
+    cardGrad: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    border: "border-owl-teal/40",
     eyebrow: "text-owl-teal",
-    iconBg: "bg-owl-teal/10 text-owl-teal",
+    iconBg: "bg-owl-teal/15 text-owl-teal",
   },
   forest: {
-    border: "border-owl-forest/30",
+    cardGrad: "bg-gradient-to-br from-[#dff0e6] via-[#eef6f1] to-[#fff8ec]",
+    border: "border-owl-forest/35",
     eyebrow: "text-owl-forest",
-    iconBg: "bg-owl-forest/10 text-owl-forest",
+    iconBg: "bg-owl-forest/12 text-owl-forest",
   },
   rose: {
+    cardGrad: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
     border: "border-owl-rose/40",
     eyebrow: "text-owl-rose",
     iconBg: "bg-owl-rose/20 text-owl-rose",
@@ -199,7 +202,7 @@ export default function NewsletterPage() {
               return (
                 <li key={s.key}>
                   <div
-                    className={`flex h-full flex-col rounded-owl-card border-2 ${styles.border} bg-owl-white p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2`}
+                    className={`flex h-full flex-col rounded-owl-card border-2 ${styles.border} ${styles.cardGrad} p-6 shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-1 hover:shadow-owl-2`}
                   >
                     <span
                       aria-hidden
