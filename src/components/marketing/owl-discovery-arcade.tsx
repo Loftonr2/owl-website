@@ -1,113 +1,68 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Search,
-  Mic,
-  Play,
-  BookOpen,
-  Sun,
-  HeartHandshake,
-  Sparkles,
-  Moon,
-  Wind,
-} from "lucide-react";
+import { Search, Mic, Play } from "lucide-react";
 
 /* ─── Theme card definitions ──────────────────────────────────────────────── */
 const THEME_CARDS = [
   {
     value: "abcs",
     label: "ABCs",
-    subtitle: "Letters & phonics",
-    icon: BookOpen,
-    gradient: "from-[#f97316] via-[#fbbf24] to-[#ef4444]",
-    glow: "hover:shadow-[0_8px_40px_rgba(249,115,22,0.55)]",
+    subtitle: "Letters, phonics & speaking fun!",
+    imageSrc: "/images/discovery/theme-abcs.png",
+    shadow: "hover:shadow-[0_8px_32px_rgba(236,72,153,0.28)]",
   },
   {
     value: "numbers",
     label: "Numbers",
-    subtitle: "Count & discover",
-    icon: Sun,
-    gradient: "from-[#0ea5e9] via-[#22d3ee] to-[#10b981]",
-    glow: "hover:shadow-[0_8px_40px_rgba(14,165,233,0.55)]",
+    subtitle: "Counting, patterns & math songs!",
+    imageSrc: "/images/discovery/theme-numbers.png",
+    shadow: "hover:shadow-[0_8px_32px_rgba(14,165,233,0.28)]",
   },
   {
     value: "feelings",
-    label: "Feelings",
-    subtitle: "SEL & emotions",
-    icon: HeartHandshake,
-    gradient: "from-[#ec4899] via-[#a855f7] to-[#7c3aed]",
-    glow: "hover:shadow-[0_8px_40px_rgba(236,72,153,0.55)]",
+    label: "Feelings (SEL)",
+    subtitle: "Emotions, kindness & mindfulness!",
+    imageSrc: "/images/discovery/theme-feelings.png",
+    shadow: "hover:shadow-[0_8px_32px_rgba(236,72,153,0.28)]",
   },
   {
     value: "holiday",
     label: "Holidays",
-    subtitle: "Celebrate the world",
-    icon: Sparkles,
-    gradient: "from-[#f59e0b] via-[#fde047] to-[#f97316]",
-    glow: "hover:shadow-[0_8px_40px_rgba(245,158,11,0.55)]",
+    subtitle: "Celebrate, explore & learn traditions!",
+    imageSrc: "/images/discovery/theme-holidays.png",
+    shadow: "hover:shadow-[0_8px_32px_rgba(245,158,11,0.28)]",
   },
   {
     value: "lullaby",
     label: "Lullabies",
-    subtitle: "Rest & calm",
-    icon: Moon,
-    gradient: "from-[#312e81] via-[#6d28d9] to-[#0e7490]",
-    glow: "hover:shadow-[0_8px_40px_rgba(109,40,217,0.55)]",
+    subtitle: "Calm, cozy songs for sweet dreams!",
+    imageSrc: "/images/discovery/theme-lullabies.png",
+    shadow: "hover:shadow-[0_8px_32px_rgba(109,40,217,0.28)]",
   },
   {
     value: "movement",
     label: "Movement",
-    subtitle: "Dance & play",
-    icon: Wind,
-    gradient: "from-[#059669] via-[#34d399] to-[#06b6d4]",
-    glow: "hover:shadow-[0_8px_40px_rgba(5,150,105,0.55)]",
+    subtitle: "Dance, stretch & move together!",
+    imageSrc: "/images/discovery/theme-movement.png",
+    shadow: "hover:shadow-[0_8px_32px_rgba(5,150,105,0.28)]",
   },
 ] as const;
 
 /* ─── Age pill definitions ────────────────────────────────────────────────── */
 const AGE_PILLS = [
-  {
-    value: "birth-1",
-    label: "Birth–1",
-    gradient: "from-[#f7c948] to-[#f59e0b]",
-    ring: "ring-[#f7c948]/50",
-  },
-  {
-    value: "1-2",
-    label: "1–2",
-    gradient: "from-[#4ade80] to-[#16a34a]",
-    ring: "ring-[#4ade80]/50",
-  },
-  {
-    value: "2-3",
-    label: "2–3",
-    gradient: "from-[#38bdf8] to-[#0284c7]",
-    ring: "ring-[#38bdf8]/50",
-  },
-  {
-    value: "3-4",
-    label: "3–4",
-    gradient: "from-[#c084fc] to-[#7e22ce]",
-    ring: "ring-[#c084fc]/50",
-  },
-  {
-    value: "4-5",
-    label: "4–5",
-    gradient: "from-[#fb923c] to-[#ea580c]",
-    ring: "ring-[#fb923c]/50",
-  },
-  {
-    value: "5-8",
-    label: "5–8",
-    gradient: "from-[#60a5fa] to-[#1d4ed8]",
-    ring: "ring-[#60a5fa]/50",
-  },
+  { value: "birth-1", label: "Birth–1", emoji: "⭐", bg: "bg-[#f7c948]", text: "text-white", ring: "ring-[#f7c948]/40" },
+  { value: "1-2",     label: "1–2",     emoji: "🌱", bg: "bg-[#4caf7d]", text: "text-white", ring: "ring-[#4caf7d]/40" },
+  { value: "2-3",     label: "2–3",     emoji: "😊", bg: "bg-[#0ea5c9]", text: "text-white", ring: "ring-[#0ea5c9]/40" },
+  { value: "3-4",     label: "3–4",     emoji: "⭐", bg: "bg-[#7c3aed]", text: "text-white", ring: "ring-[#7c3aed]/40" },
+  { value: "4-5",     label: "4–5",     emoji: "☀️", bg: "bg-[#f97316]", text: "text-white", ring: "ring-[#f97316]/40" },
+  { value: "5-8",     label: "5–8",     emoji: "🚀", bg: "bg-[#1d6fb5]", text: "text-white", ring: "ring-[#1d6fb5]/40" },
 ] as const;
 
-const SUGGESTED = ["Birthday songs", "ABC song", "Colors", "Feelings"];
+const SUGGESTED = ["Counting songs", "Feelings check-in", "Bedtime lullabies", "Halloween", "Dance party"];
 
 /* ─── Component ──────────────────────────────────────────────────────────── */
 export function OwlDiscoveryArcade() {
@@ -116,164 +71,180 @@ export function OwlDiscoveryArcade() {
 
   return (
     <section
-      aria-label="OWL Discovery Arcade"
-      className="relative overflow-hidden bg-[#071510] py-16 md:py-24"
+      aria-label="What Do You Want To Learn Today"
+      className="relative overflow-hidden bg-[#fdf8f0] py-14 md:py-20"
     >
-      {/* Ambient radial glows */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 select-none">
-        <div className="absolute left-[20%] top-0 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-owl-teal/[0.08] blur-[140px]" />
-        <div className="absolute bottom-0 right-[15%] h-[500px] w-[500px] translate-y-1/2 rounded-full bg-owl-amber/[0.07] blur-[120px]" />
-        <div className="absolute left-[60%] top-[40%] h-[300px] w-[300px] rounded-full bg-purple-500/[0.05] blur-[100px]" />
-      </div>
+      {/* Subtle warm dot pattern */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 select-none opacity-[0.03]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #7c5c2e 1px, transparent 1px)",
+          backgroundSize: "28px 28px",
+        }}
+      />
+
+      {/* Soft amber blob top-right */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 -top-24 h-[360px] w-[360px] rounded-full bg-owl-amber/10 blur-[80px]"
+      />
+      {/* Soft teal blob bottom-left */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-16 -left-16 h-[300px] w-[300px] rounded-full bg-owl-teal/10 blur-[70px]"
+      />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-        {/* ── Section header ── */}
+        {/* ── Search panel + trending ── */}
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
+          viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-12 text-center"
+          className="mb-10 grid grid-cols-1 gap-5 md:grid-cols-[1fr_260px]"
         >
-          <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-owl-teal">
-            Discover
-          </p>
-          <h2 className="mt-2 font-display text-3xl font-extrabold text-white sm:text-4xl">
-            OWL Discovery Arcade
-          </h2>
-          <p className="mt-3 text-sm text-white/50">
-            Find the perfect song for right now
-          </p>
-        </motion.div>
-
-        {/* ── Floating search panel + trending card ── */}
-        <div className="mb-10 grid grid-cols-1 gap-5 md:grid-cols-[1fr_280px]">
-
-          {/* Search glass panel */}
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 shadow-2xl backdrop-blur-xl"
-          >
-            {/* Top shimmer line */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-owl-teal/50 to-transparent"
-            />
-
-            {/* Mascot + prompt */}
-            <div className="mb-5 flex items-center gap-3">
-              <span
-                aria-hidden
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-owl-teal/20 text-xl ring-1 ring-owl-teal/30"
-              >
-                🦉
-              </span>
-              <div>
-                <p className="font-display text-sm font-bold text-white">
-                  What shall we discover today?
-                </p>
-                <p className="text-xs text-white/40">Search 40+ multicultural videos</p>
-              </div>
+          {/* Main search card */}
+          <div className="relative overflow-hidden rounded-2xl border border-owl-cream-deep bg-owl-white p-6 shadow-owl-2">
+            {/* Mascot */}
+            <div className="absolute bottom-0 right-6 hidden h-36 w-28 md:block" aria-hidden>
+              <Image
+                src="/images/discovery/mascot-headphones.png"
+                alt=""
+                fill
+                className="object-contain object-bottom"
+                sizes="112px"
+              />
             </div>
 
-            {/* Input row */}
-            <div className="flex items-center gap-2">
+            <h2 className="mb-5 font-display text-2xl font-extrabold text-owl-ink sm:text-3xl">
+              What do you want to learn today?
+            </h2>
+
+            {/* Search input */}
+            <div className="flex max-w-xl items-center gap-2">
               <label className="relative flex-1">
                 <span className="sr-only">Search OWL videos</span>
                 <Search
-                  className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-owl-teal/60"
+                  className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-owl-mist"
                   aria-hidden
                 />
                 <input
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search by title, theme, age band…"
-                  className="h-12 w-full rounded-xl border border-white/[0.08] bg-white/[0.06] pl-10 pr-4 text-sm text-white placeholder:text-white/25 transition-all duration-200 focus:border-owl-teal/40 focus:bg-white/[0.09] focus:outline-none focus:ring-2 focus:ring-owl-teal/25"
+                  placeholder="Search by title, theme, or age band"
+                  className="h-13 w-full rounded-full border border-owl-cream-deep bg-owl-cream/50 py-3 pl-12 pr-4 text-sm text-owl-ink shadow-owl-1 placeholder:text-owl-mist transition-all duration-200 focus:border-owl-teal/50 focus:bg-owl-white focus:outline-none focus:ring-2 focus:ring-owl-teal/25"
                 />
               </label>
-
-              {/* Search submit */}
               <Link
                 href={query ? `/watch?q=${encodeURIComponent(query)}` : "/watch"}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-owl-teal text-white shadow-lg transition-all duration-200 hover:scale-105 hover:bg-owl-teal/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#071510]"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-owl-teal text-white shadow-owl-1 transition-all duration-200 hover:scale-105 hover:bg-owl-teal/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60"
                 aria-label="Search"
               >
                 <Search className="h-4 w-4" />
               </Link>
-
-              {/* Voice search button (decorative/future) */}
               <button
                 type="button"
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.04] text-white/40 transition-all duration-200 hover:border-owl-rose/40 hover:text-owl-rose focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-rose/40"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-owl-cream-deep bg-owl-cream text-owl-mist transition-all duration-200 hover:border-owl-teal/40 hover:text-owl-teal focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/40"
                 aria-label="Voice search"
               >
                 <Mic className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Suggested pills */}
+            {/* Suggested searches */}
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-bold uppercase tracking-wide text-white/25">
-                Try:
-              </span>
+              <span className="text-xs font-medium text-owl-mist">Try searching:</span>
               {SUGGESTED.map((s) => (
                 <button
                   key={s}
                   type="button"
                   onClick={() => setQuery(s)}
-                  className="rounded-full border border-white/[0.08] bg-white/[0.04] px-3 py-1 text-xs text-white/50 transition-all duration-150 hover:border-owl-teal/40 hover:bg-owl-teal/[0.12] hover:text-owl-teal focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-owl-teal/40"
+                  className="rounded-full border border-owl-cream-deep bg-owl-cream/60 px-3.5 py-1.5 text-xs font-medium text-owl-ink/70 transition-all duration-150 hover:border-owl-teal/40 hover:bg-owl-teal/8 hover:text-owl-teal focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-owl-teal/40"
                 >
                   {s}
                 </button>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Trending mini-card */}
-          <motion.div
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          >
+          <div>
+            <div className="mb-2 flex items-center gap-1.5">
+              <span className="text-base">🔥</span>
+              <p className="font-display text-sm font-bold text-owl-ink">Trending Now</p>
+            </div>
             <Link
               href="/watch/birthday-fun-songs"
-              className="group relative flex min-h-[200px] w-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 hover:scale-[1.025] hover:shadow-[0_16px_48px_rgba(247,201,72,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-amber/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#071510] md:h-full"
-              style={{ minHeight: "200px" }}
+              className="group relative flex h-[180px] w-full overflow-hidden rounded-2xl border border-owl-cream-deep shadow-owl-2 transition-all duration-300 hover:scale-[1.02] hover:shadow-owl-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-amber/60"
             >
-              {/* YouTube thumbnail */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="https://i.ytimg.com/vi/zrtwck76T1I/hqdefault.jpg"
                 alt="Birthday Fun Songs"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-
-              {/* Play button */}
-              <div className="absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-owl-forest shadow-xl transition-transform duration-200 group-hover:scale-110">
-                  <Play className="h-6 w-6 fill-current" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-owl-forest shadow-lg transition-transform duration-200 group-hover:scale-110">
+                  <Play className="h-5 w-5 fill-current" />
                 </span>
               </div>
-
-              {/* Bottom label */}
-              <div className="absolute inset-x-0 bottom-0 p-4">
-                <span className="mb-2 inline-flex items-center gap-1 rounded-full bg-owl-amber px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white shadow">
-                  🔥 Trending
-                </span>
-                <p className="font-display text-sm font-bold leading-snug text-white">
-                  Birthday Fun Songs
-                </p>
+              <div className="absolute inset-x-0 bottom-0 p-3">
+                <p className="font-display text-sm font-bold text-white">Birthday Fun Songs</p>
               </div>
             </Link>
-          </motion.div>
+            {/* Dot indicators (decorative) */}
+            <div className="mt-3 flex justify-center gap-1.5" aria-hidden>
+              {[0,1,2,3,4].map((i) => (
+                <span key={i} className={`h-1.5 rounded-full transition-all ${i === 1 ? "w-4 bg-owl-teal" : "w-1.5 bg-owl-cream-deep"}`} />
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* ── Theme category cards ── */}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          {THEME_CARDS.map(({ value, label, subtitle, imageSrc, shadow }, i) => (
+            <motion.div
+              key={value}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Link
+                href={`/watch?theme=${value}`}
+                className={`group relative flex h-52 flex-col overflow-hidden rounded-2xl border-2 border-white bg-owl-white shadow-owl-2 ${shadow} transition-all duration-300 hover:-translate-y-1.5 hover:scale-[1.025] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fdf8f0]`}
+              >
+                {/* Card illustration — fills top 70% */}
+                <div className="relative flex-1 overflow-hidden">
+                  <Image
+                    src={imageSrc}
+                    alt={label}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(min-width: 1024px) 190px, (min-width: 640px) 33vw, 50vw"
+                  />
+                  {/* Play badge top-right */}
+                  <div
+                    aria-hidden
+                    className="absolute right-2.5 top-2.5 flex h-7 w-7 items-center justify-center rounded-full bg-white/85 shadow transition-transform duration-200 group-hover:scale-110"
+                  >
+                    <Play className="h-3 w-3 fill-owl-teal text-owl-teal" />
+                  </div>
+                </div>
+
+                {/* Label strip */}
+                <div className="shrink-0 bg-owl-white px-3 py-2.5">
+                  <p className="font-display text-sm font-extrabold leading-tight text-owl-ink">{label}</p>
+                  <p className="mt-0.5 text-[10px] leading-tight text-owl-mist">{subtitle}</p>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
 
         {/* ── Age filter capsules ── */}
@@ -281,90 +252,28 @@ export function OwlDiscoveryArcade() {
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.08 }}
-          className="mb-8 flex flex-wrap items-center gap-3"
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="mt-8 flex flex-wrap items-center justify-center gap-3"
         >
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/30">
-            Age
+          <span className="font-display text-sm font-bold uppercase tracking-wide text-owl-ink/60">
+            AGE
           </span>
 
-          {/* All ages */}
-          <button
-            type="button"
-            onClick={() => setActiveAge(null)}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 ${
-              activeAge === null
-                ? "bg-white text-owl-forest shadow-lg"
-                : "border border-white/[0.1] bg-white/[0.05] text-white/45 hover:bg-white/[0.1] hover:text-white"
-            }`}
-          >
-            All ages
-          </button>
-
-          {AGE_PILLS.map(({ value, label, gradient, ring }) => (
+          {AGE_PILLS.map(({ value, label, emoji, bg, text, ring }) => (
             <Link
               key={value}
               href={`/watch?age=${value}`}
               onClick={() => setActiveAge(value)}
-              className={`rounded-full bg-gradient-to-r ${gradient} px-4 py-1.5 text-xs font-bold text-white shadow-md ring-2 ${ring} transition-all duration-200 hover:scale-105 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 ${
-                activeAge === value ? "scale-105 shadow-lg" : "opacity-80 hover:opacity-100"
+              className={`flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-bold shadow-owl-1 ring-2 ${bg} ${text} ${ring} transition-all duration-200 hover:scale-105 hover:shadow-owl-2 focus-visible:outline-none focus-visible:ring-4 ${
+                activeAge === value ? "scale-105 shadow-owl-2" : ""
               }`}
             >
+              <span aria-hidden>{emoji}</span>
               {label}
             </Link>
           ))}
         </motion.div>
 
-        {/* ── Theme category cards ── */}
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {THEME_CARDS.map(({ value, label, subtitle, icon: Icon, gradient, glow }, i) => (
-            <motion.div
-              key={value}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, delay: i * 0.07, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <Link
-                href={`/watch?theme=${value}`}
-                className={`group relative flex h-44 flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} p-4 text-center shadow-lg ${glow} transition-all duration-300 hover:-translate-y-2 hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#071510]`}
-              >
-                {/* Shine */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/[0.15] via-transparent to-transparent"
-                />
-                {/* Bottom vignette */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/30 to-transparent"
-                />
-
-                {/* Hover play badge */}
-                <div
-                  aria-hidden
-                  className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/25 opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100"
-                >
-                  <Play className="h-3.5 w-3.5 fill-white text-white" />
-                </div>
-
-                {/* Icon */}
-                <span
-                  aria-hidden
-                  className="relative flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-110"
-                >
-                  <Icon className="h-6 w-6 text-white" />
-                </span>
-
-                {/* Label */}
-                <div className="relative">
-                  <p className="font-display text-sm font-extrabold text-white">{label}</p>
-                  <p className="mt-0.5 text-[10px] text-white/70">{subtitle}</p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );
