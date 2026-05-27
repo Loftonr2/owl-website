@@ -137,15 +137,15 @@ export default function AboutPage() {
                   </h2>
                 </div>
               </div>
-              <p className="text-sm leading-relaxed text-owl-ink/80">
-                Larissa is a mission-led educator, entertainer, and committed advocate for culturally affirming early childhood experiences.
-              </p>
               <div className="mt-4 space-y-3 text-sm leading-relaxed text-owl-ink/80">
                 <p>
-                  My community-centered coalitions challenged me to deliver stories and engage classroom opportunities to empower underserved children.
+                  Most children&apos;s media is built for the algorithm — fast, loud, and one-size-fits-all. OWL is built for families. We move slowly on purpose. We name feelings. We honor confusion. We never shame a child.
                 </p>
-                <p className="italic text-owl-mist">
-                  &ldquo;Education is not a tool for controlling children — it&apos;s a space for growing them into who they are meant to be.&rdquo;
+                <p>
+                  In school race is front and center. When I was growing up we were color-blind. I don&apos;t want to bring up race. I just want to include.
+                </p>
+                <p>
+                  At the end of the day I&apos;d love to go back to colorblindness. That is my hope.
                 </p>
               </div>
               <div className="mt-5">

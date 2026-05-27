@@ -1,10 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   GraduationCap,
   ShieldCheck,
   Globe2,
   BookOpen,
-  Sparkles,
   ClipboardCheck,
   FileText,
   Music2,
@@ -77,6 +77,8 @@ const FEATURED_TOOLS = [
     title: "Core Lesson Plans",
     badge: "Download",
     href: "/printables",
+    imgSrc: "/images/educators/core-lesson-plans.png",
+    bar: "bg-owl-teal",
     color: "bg-owl-teal/10 text-owl-teal",
   },
   {
@@ -84,6 +86,8 @@ const FEATURED_TOOLS = [
     title: "Activity Bundles Calendar",
     badge: "Download",
     href: "/printables",
+    imgSrc: "/images/educators/activity-bundles-calendar.png",
+    bar: "bg-owl-amber",
     color: "bg-owl-amber/10 text-owl-amber",
   },
   {
@@ -91,6 +95,8 @@ const FEATURED_TOOLS = [
     title: "Cultural Celebration Copies",
     badge: "Download",
     href: "/holidays",
+    imgSrc: "/images/educators/cultural-celebration-copies.png",
+    bar: "bg-owl-rose",
     color: "bg-owl-rose/10 text-owl-rose",
   },
   {
@@ -98,9 +104,11 @@ const FEATURED_TOOLS = [
     title: "Curated Audio Playlists",
     badge: "Download",
     href: "/music",
+    imgSrc: "/images/educators/curated-audio-playlists.png",
+    bar: "bg-owl-forest",
     color: "bg-owl-forest/10 text-owl-forest",
   },
-] as const;
+];
 
 
 const LICENSE_TIERS = [
@@ -110,9 +118,8 @@ const LICENSE_TIERS = [
 ] as const;
 
 export default function EducatorsPage() {
-  const educatorPrintables = SEED_PRINTABLES.filter((p) =>
-    ["K-readiness", "Homeschool", "Cultural", "Alphabet", "SEL"].includes(p.skill)
-  ).slice(0, 4);
+  // The first 4 entries are the real downloadable workbooks — show those on educators page
+  const educatorPrintables = SEED_PRINTABLES.slice(0, 4);
 
   const educatorPlaylists = SEED_PLAYLISTS.slice(0, 4);
 
@@ -181,25 +188,39 @@ export default function EducatorsPage() {
             stagger={0.07}
             offsetY={14}
           >
-            {FEATURED_TOOLS.map(({ icon: Icon, title, badge, href, color }) => (
+            {FEATURED_TOOLS.map(({ icon: Icon, title, badge, href, imgSrc, bar, color }) => (
               <div
                 key={title}
-                className="relative h-full flex flex-col rounded-owl-card border border-owl-cream-deep bg-owl-cream p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
+                className="group relative h-full flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-white shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-1 hover:shadow-owl-2"
               >
-                <span
-                  aria-hidden
-                  className={`mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full ${color}`}
-                >
-                  <Icon className="h-5 w-5" />
-                </span>
-                <h3 className="font-display text-base font-semibold text-owl-ink flex-1">{title}</h3>
-                <div className="mt-4">
-                  <Button intent="primary" size="sm" asChild>
-                    <Link href={href}>
-                      <GraduationCap className="h-3.5 w-3.5 mr-1" aria-hidden />
-                      {badge}
-                    </Link>
-                  </Button>
+                {/* Tool image banner */}
+                <div className="relative aspect-video w-full overflow-hidden">
+                  <span aria-hidden className={`pointer-events-none absolute inset-x-0 top-0 z-10 h-1.5 ${bar}`} />
+                  <Image
+                    src={imgSrc}
+                    alt={title}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-300 ease-owl group-hover:scale-[1.03]"
+                  />
+                </div>
+                {/* Card body */}
+                <div className="flex flex-1 flex-col p-5">
+                  <span
+                    aria-hidden
+                    className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full ${color}`}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="font-display text-base font-semibold text-owl-ink flex-1">{title}</h3>
+                  <div className="mt-4">
+                    <Button intent="primary" size="sm" asChild>
+                      <Link href={href}>
+                        <GraduationCap className="h-3.5 w-3.5 mr-1" aria-hidden />
+                        {badge}
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
