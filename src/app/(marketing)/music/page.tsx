@@ -56,12 +56,66 @@ export const metadata = pageMetadata({
  */
 
 const BROWSE_CATEGORIES = [
-  { value: "animals", label: "Animals", icon: Bird },
-  { value: "alphabet", label: "Alphabet", icon: BookOpen },
-  { value: "seasons", label: "Seasons", icon: Leaf },
-  { value: "theme", label: "Theme", icon: Palette },
-  { value: "feelings", label: "Feelings", icon: HeartHandshake },
-  { value: "others", label: "Others", icon: MoreHorizontal },
+  {
+    value: "animals",
+    label: "Animals",
+    icon: Bird,
+    bg: "bg-gradient-to-br from-[#fef3d8] via-[#fdf7eb] to-[#fff8ec]",
+    border: "border-owl-amber/30 hover:border-owl-amber/60",
+    iconBg: "bg-owl-amber/20 text-owl-amber",
+    shadow: "hover:shadow-[0_8px_28px_rgba(245,158,11,0.30)]",
+    label_color: "text-owl-amber",
+  },
+  {
+    value: "alphabet",
+    label: "Alphabet",
+    icon: BookOpen,
+    bg: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    border: "border-owl-teal/30 hover:border-owl-teal/60",
+    iconBg: "bg-owl-teal/15 text-owl-teal",
+    shadow: "hover:shadow-[0_8px_28px_rgba(13,168,159,0.28)]",
+    label_color: "text-owl-teal",
+  },
+  {
+    value: "seasons",
+    label: "Seasons",
+    icon: Leaf,
+    bg: "bg-gradient-to-br from-[#dff0e6] via-[#eef6f1] to-[#fff8ec]",
+    border: "border-owl-forest/25 hover:border-owl-forest/50",
+    iconBg: "bg-owl-forest/15 text-owl-forest",
+    shadow: "hover:shadow-[0_8px_28px_rgba(20,107,68,0.25)]",
+    label_color: "text-owl-forest",
+  },
+  {
+    value: "theme",
+    label: "Theme",
+    icon: Palette,
+    bg: "bg-gradient-to-br from-[#ede9fe] via-[#f3f0ff] to-[#fff8ec]",
+    border: "border-[#7c3aed]/25 hover:border-[#7c3aed]/50",
+    iconBg: "bg-[#7c3aed]/15 text-[#7c3aed]",
+    shadow: "hover:shadow-[0_8px_28px_rgba(124,58,237,0.25)]",
+    label_color: "text-[#7c3aed]",
+  },
+  {
+    value: "feelings",
+    label: "Feelings",
+    icon: HeartHandshake,
+    bg: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
+    border: "border-owl-rose/30 hover:border-owl-rose/60",
+    iconBg: "bg-owl-rose/20 text-owl-rose",
+    shadow: "hover:shadow-[0_8px_28px_rgba(229,91,77,0.28)]",
+    label_color: "text-owl-rose",
+  },
+  {
+    value: "others",
+    label: "Others",
+    icon: MoreHorizontal,
+    bg: "bg-gradient-to-br from-[#dbeafe] via-[#eff6ff] to-[#fff8ec]",
+    border: "border-[#1d6fb5]/25 hover:border-[#1d6fb5]/50",
+    iconBg: "bg-[#1d6fb5]/15 text-[#1d6fb5]",
+    shadow: "hover:shadow-[0_8px_28px_rgba(29,111,181,0.25)]",
+    label_color: "text-[#1d6fb5]",
+  },
 ];
 
 const AGE_CHIPS = [
@@ -182,19 +236,19 @@ export default function MusicPage() {
             stagger={0.06}
             offsetY={12}
           >
-            {BROWSE_CATEGORIES.map(({ value, label, icon: Icon }) => (
+            {BROWSE_CATEGORIES.map(({ value, label, icon: Icon, bg, border, iconBg, shadow, label_color }) => (
               <Link
                 key={value}
                 href={`/music?category=${value}`}
-                className="group flex h-full flex-col items-center gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-cream p-5 text-center shadow-owl-1 transition-all duration-200 ease-owl-quick hover:-translate-y-0.5 hover:bg-owl-white hover:shadow-owl-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-owl-cream"
+                className={`group flex h-full flex-col items-center gap-3 rounded-owl-card border-2 ${border} ${bg} p-5 text-center shadow-owl-1 ${shadow} transition-all duration-300 ease-owl hover:-translate-y-2 hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2`}
               >
                 <span
                   aria-hidden
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal transition-transform duration-200 ease-owl-quick group-hover:scale-110"
+                  className={`inline-flex h-14 w-14 items-center justify-center rounded-full ${iconBg} transition-all duration-300 ease-owl group-hover:scale-115 group-hover:rotate-6`}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-6 w-6" />
                 </span>
-                <span className="font-display text-sm font-semibold text-owl-ink">
+                <span className={`font-display text-sm font-bold ${label_color} transition-colors duration-200`}>
                   {label}
                 </span>
               </Link>
