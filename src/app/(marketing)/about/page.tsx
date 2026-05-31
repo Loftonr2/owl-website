@@ -139,19 +139,31 @@ export default function AboutPage() {
                     Personal Story
                   </p>
                   <h2 className="mt-1 font-display text-2xl font-extrabold text-owl-ink">
-                    Larissa
+                    My Mission
                   </h2>
                 </div>
               </div>
               <div className="mt-4 space-y-3 text-sm leading-relaxed text-owl-ink/80">
                 <p>
-                  Most children&apos;s media is built for the algorithm — fast, loud, and one-size-fits-all. OWL is built for families. We move slowly on purpose. We name feelings. We honor confusion. We never shame a child.
+                  I started my YouTube channel because I noticed that much of today&apos;s children&apos;s music can be static and repetitive, often lacking rich instrumentation, musical depth, and intellectual engagement. I wanted to create something different—music that stimulates language acquisition, nurtures curiosity, and reflects genuine musical artistry.
                 </p>
                 <p>
-                  In school race is front and center. When I was growing up we were color-blind. I don&apos;t want to bring up race. I just want to include.
+                  From the beginning, my goal was to use real instrumentation whenever possible rather than relying solely on artificial sounds. I wanted to create music with the quality and sophistication of a theatrical production, featuring thoughtful compositions, dynamic arrangements, and meaningful musical storytelling. To achieve this vision, I have collaborated with composers and artists from around the world who share a passion for both music and childhood education. Many of these talented musicians have studied musicology, composition, and performance at respected universities, with some holding advanced degrees in their fields.
                 </p>
                 <p>
-                  At the end of the day I&apos;d love to go back to colorblindness. That is my hope.
+                  I believe children deserve high-quality music. The music they experience today will influence the music they create tomorrow. Through this project, I have combined my lifelong passion for music with a commitment to preserving and celebrating America&apos;s rich musical heritage while making it accessible and relevant to modern audiences. My hope is to inspire young minds and contribute to a healthier, more vibrant musical future.
+                </p>
+                <p>
+                  As an educator with more than twenty years of classroom experience, I have witnessed the power of music to calm, teach, connect, and heal. I use music to help children develop healthy self-regulation strategies, strengthen social interactions, and build appreciation for diverse musical traditions. I want children to understand that the music of the past is not separate from the music of today—it is woven throughout it. Great music is timeless.
+                </p>
+                <p>
+                  I am deeply passionate about helping children recognize how music from previous generations continues to shape our present and future. Through my content, I hope to cultivate an appreciation for historical continuity in music while also introducing sounds and traditions from cultures around the world. I believe that exposure to diverse musical experiences fosters curiosity, creativity, and cultural understanding.
+                </p>
+                <p>
+                  My academic background in Religious Studies has also influenced this work. It has deepened my appreciation for the traditions, stories, and cultural practices that connect people across generations and around the globe. I am committed to helping children become culturally fluent learners who understand and respect the rich diversity of human experience.
+                </p>
+                <p>
+                  Ultimately, my goal is to inspire a lifelong love of learning, music, and cultural exploration. Together with the talented members of my team, I hope to contribute to a musical renaissance that values artistry, creativity, historical awareness, and human connection. Above all, I hope our work brings joy, healing, and meaningful heart connections through the universal language of music.
                 </p>
               </div>
               <div className="mt-5">
@@ -295,7 +307,7 @@ export default function AboutPage() {
                 </div>
               </dl>
               <p className="text-xs italic text-owl-cream/70">
-                Targets for May 2026 launch — updated quarterly.
+                Targets for May 2026 launch \u2014 updated quarterly.
               </p>
             </GlassPanel>
           </div>
@@ -314,7 +326,7 @@ export default function AboutPage() {
         </Section>
       </SectionReveal>
 
-      {/* 6 — Newsletter band */}
+      {/* 6 \u2014 Newsletter band */}
       <SectionReveal offset={16}>
         <NewsletterSection />
       </SectionReveal>
