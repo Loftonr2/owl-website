@@ -116,6 +116,13 @@ const SEASONAL_BUNDLES = [
     skuCount: 3,
     priceFrom: "$54",
     tone: "amber" as const,
+    bg: "bg-gradient-to-br from-[#fef3d8] via-[#fdf7eb] to-[#fff8ec]",
+    border: "border-owl-amber/35 hover:border-owl-amber/70",
+    bar: "bg-owl-amber",
+    priceColor: "text-owl-amber",
+    btnGrad: "from-[#f59e0b] to-[#d97706]",
+    btnShadow: "hover:shadow-[0_6px_24px_rgba(245,158,11,0.45)]",
+    hoverShadow: "hover:shadow-[0_8px_28px_rgba(245,158,11,0.20)]",
   },
   {
     name: "Diwali home bundle",
@@ -124,6 +131,13 @@ const SEASONAL_BUNDLES = [
     skuCount: 4,
     priceFrom: "$24",
     tone: "rose" as const,
+    bg: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
+    border: "border-owl-rose/35 hover:border-owl-rose/70",
+    bar: "bg-owl-rose",
+    priceColor: "text-owl-rose",
+    btnGrad: "from-[#e55b4e] to-[#c94437]",
+    btnShadow: "hover:shadow-[0_6px_24px_rgba(229,91,78,0.45)]",
+    hoverShadow: "hover:shadow-[0_8px_28px_rgba(229,91,78,0.20)]",
   },
   {
     name: "Winter wind-down",
@@ -132,6 +146,13 @@ const SEASONAL_BUNDLES = [
     skuCount: 3,
     priceFrom: "$62",
     tone: "forest" as const,
+    bg: "bg-gradient-to-br from-[#dff0e6] via-[#eef6f1] to-[#fff8ec]",
+    border: "border-owl-forest/30 hover:border-owl-forest/60",
+    bar: "bg-owl-forest",
+    priceColor: "text-owl-forest",
+    btnGrad: "from-[#146b44] to-[#0f5536]",
+    btnShadow: "hover:shadow-[0_6px_24px_rgba(20,107,68,0.45)]",
+    hoverShadow: "hover:shadow-[0_8px_28px_rgba(20,107,68,0.20)]",
   },
 ];
 
@@ -319,23 +340,33 @@ export default function ShopPage() {
             {SEASONAL_BUNDLES.map((b) => (
               <div
                 key={b.name}
-                className="relative isolate flex h-full flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-cream p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
+                className={`relative isolate flex h-full flex-col overflow-hidden rounded-owl-card border-2 ${b.border} ${b.bg} p-6 shadow-owl-1 ${b.hoverShadow} transition-all duration-300 ease-owl hover:-translate-y-1`}
               >
-                <div className="relative z-text">
+                {/* Coloured top bar */}
+                <span aria-hidden className={`pointer-events-none absolute inset-x-0 top-0 h-1.5 ${b.bar}`} />
+                <div className="relative z-text mt-1">
                   <Chip intent={b.tone} className="mb-3 self-start">
                     {b.eyebrow}
                   </Chip>
                   <h3 className="font-display text-xl font-bold text-owl-ink">{b.name}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-owl-mist">{b.summary}</p>
                   <div className="mt-4 flex items-baseline gap-3">
-                    <p className="font-display text-2xl font-extrabold text-owl-teal">
+                    <p className={`font-display text-2xl font-extrabold ${b.priceColor}`}>
                       {b.priceFrom}
                     </p>
                     <p className="text-xs text-owl-mist">/ bundle · {b.skuCount} items</p>
                   </div>
-                  <Button intent="secondary" size="md" asChild className="mt-5 self-start">
-                    <Link href="/newsletter">Notify when bundle drops</Link>
-                  </Button>
+                  {/* Shimmer button */}
+                  <Link
+                    href="/newsletter"
+                    className={`group relative mt-5 inline-flex items-center overflow-hidden rounded-full bg-gradient-to-r ${b.btnGrad} px-6 py-2.5 font-display text-sm font-bold text-white shadow-owl-1 ${b.btnShadow} transition-all duration-300 hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/60`}
+                  >
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-500 group-hover:translate-x-full"
+                    />
+                    <span className="relative">Notify when bundle drops</span>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -374,19 +405,6 @@ export default function ShopPage() {
       <SectionReveal>
         <NewsletterSection />
       </SectionReveal>
-
-      {/*
-        Previously this page mounted a dev-only demo cart for visual QA. That
-        demo was the lone primitive unique to /shop that the other 4 working
-        pages don't render, and isolating it lets us confirm it was the
-        cause of /shop not loading. The component itself is still in the
-        codebase at `src/components/marketing/sticky-mini-cart.tsx` --- wire
-        it back in when Stripe + Shopify go live (OWL build plan Phase 3),
-        feeding `itemCount` and `total` from a real cart store.
-
-        To re-enable demo visually in dev, restore the import + the
-        `process.env.NODE_ENV !== "production" && <StickyMiniCart ... />` block.
-      */}
     </>
   );
 }
