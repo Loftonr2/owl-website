@@ -20,7 +20,6 @@ import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
-import { Chip } from "@/components/ui/chip";
 import { ProductCard } from "@/components/marketing/product-card";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";

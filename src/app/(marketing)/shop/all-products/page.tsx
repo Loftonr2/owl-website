@@ -1,6 +1,4 @@
-import { Suspense } from "react";
 import Link from "next/link";
-import { Filter, Search, Package } from "lucide-react";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { ProductCard } from "@/components/marketing/product-card";
