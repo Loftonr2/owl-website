@@ -9,7 +9,7 @@ export type SeedProduct = ProductCardProps & {
   supportsLearningIn: string[];
   featured?: boolean;
   /**
-   * **STORE STATE FLAG.** Every product in this seed is currently `isComingSoon: true`
+   * **STORE STATE FLAG.** Every product in this seed is currently `isComingSoon: false`
    * because the Stripe/Shopify/Printify/Gumroad pipelines exist in scaffold form
    * only (see handoff.MD § "What's stubbed" — Phase 3 wakes them up).
    *
@@ -39,6 +39,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Digital",
     tone: "amber",
     channel: "gumroad",
+    productSource: "digital_product",
     story:
       "A starter bundle for a baby's first OWL year — plush companion, bilingual flash cards, movement activity pack, and Larissa's lullaby album. Built for sensory exploration, attachment routines, and slow-paced bedtime learning.",
     supportsLearningIn: [
@@ -50,7 +51,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Educational bundle",
     ],
     featured: true,
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "larissa-plush",
@@ -61,6 +62,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Plush",
     tone: "amber",
     channel: "printify",
+    productSource: "printify",
     story:
       "Six 10-inch Larissa plush companions — Black/African American, Latina, Asian, White, Middle Eastern, and Native American — each soft, huggable, and dressed in OWL's signature jacket. Removable outfits for pretend-play.",
     supportsLearningIn: [
@@ -70,7 +72,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Safe for all ages",
     ],
     featured: true,
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "rhyme-time-game",
@@ -81,6 +83,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Flashcards",
     tone: "rose",
     channel: "printify",
+    productSource: "printify",
     story:
       "48 thick rhyming cards with four ways to play (Go Fish · Rhyme Match · Memory Match · Rhyme Snap). Builds early literacy through rhyming patterns kids love.",
     supportsLearningIn: [
@@ -90,7 +93,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Ages 4–5",
     ],
     featured: true,
-    isComingSoon: true,
+    isComingSoon: false,
   },
   // ── EXTRA: actual uploaded image was "Big Feelings Poster Set" ($18.99),
   //    not the bundle from the prompt. Adding both — bundle gets the slot,
@@ -104,6 +107,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Flashcards",
     tone: "teal",
     channel: "printify",
+    productSource: "printify",
     story:
       "Three large 11×17 laminated SEL posters designed for PreK classrooms — How Am I Feeling, What To Do When I Feel, and Daily Mood Check-In. Multicultural face photography. Reinforces emotion vocabulary and self-regulation routines.",
     supportsLearningIn: [
@@ -113,7 +117,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Classroom-ready",
     ],
     featured: true,
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "bilingual-word-cards",
@@ -124,6 +128,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Flashcards",
     tone: "amber",
     channel: "printify",
+    productSource: "printify",
     story:
       "50 large 4×4 inch bilingual EN/ES flash cards organized into five categories (People · Food · Animals · Actions · Objects). Toddler-safe construction, easy to wipe.",
     supportsLearningIn: [
@@ -133,7 +138,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Toddler safe",
     ],
     featured: true,
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "abc-flash-cards",
@@ -144,10 +149,11 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Flashcards",
     tone: "teal",
     channel: "printify",
+    productSource: "printify",
     story: "26 illustrated multicultural character cards. One letter, one face, one story.",
     supportsLearningIn: ["Letter recognition", "Letter-sound", "Vocabulary"],
     featured: true,
-  isComingSoon: true,
+  isComingSoon: false,
   },
   {
     slug: "feelings-coloring",
@@ -158,10 +164,11 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Coloring",
     tone: "rose",
     channel: "kdp",
+    productSource: "digital_product",
     story: "32 pages of feelings-named scenes children can color while talking through their day.",
     supportsLearningIn: ["Emotion vocabulary", "Fine motor", "SEL"],
     featured: true,
-  isComingSoon: true,
+  isComingSoon: false,
   },
   {
     slug: "sticker-reward-chart",
@@ -172,10 +179,11 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Stickers",
     tone: "forest",
     channel: "printify",
+    productSource: "printify",
     story: "OWL character stickers on a six-week chart. Build routines without shame-based rewards.",
     supportsLearningIn: ["Routine building", "Goal tracking", "Self-efficacy"],
     featured: true,
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "homeschool-starter",
@@ -186,9 +194,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Digital",
     tone: "cream",
     channel: "gumroad",
+    productSource: "digital_product",
     story: "A digital starter pack with twelve printable activities, a parent guide, and access to four OWL videos.",
     supportsLearningIn: ["Early literacy", "Counting", "SEL", "Cultural awareness"],
-  isComingSoon: true,
+  isComingSoon: false,
   },
   {
     slug: "lullaby-album",
@@ -199,10 +208,11 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Music",
     tone: "mist",
     channel: "gumroad",
+    productSource: "digital_product",
     story: "Eleven original lullabies — recorded at 432 Hz for a calmer bedtime.",
     supportsLearningIn: ["Sleep routines", "Emotional regulation"],
     featured: true,
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-counting-mat",
@@ -213,9 +223,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Flashcards",
     tone: "amber",
     channel: "printify",
+    productSource: "printify",
     story: "A laminated, wipe-clean mat with number 1–20 and one-to-one counting practice spaces.",
     supportsLearningIn: ["Counting", "Numeral recognition", "1:1 correspondence"],
-  isComingSoon: true,
+  isComingSoon: false,
   },
   {
     slug: "emotion-tiles",
@@ -226,9 +237,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Flashcards",
     tone: "rose",
     channel: "printify",
+    productSource: "printify",
     story: "Twelve double-sided tiles with multicultural faces showing big feelings — perfect for circle time.",
     supportsLearningIn: ["Emotion vocabulary", "Empathy", "Storytelling"],
-  isComingSoon: true,
+  isComingSoon: false,
   },
   {
     slug: "kreadiness-checklist",
@@ -239,9 +251,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Flashcards",
     tone: "teal",
     channel: "printify",
+    productSource: "printify",
     story: "A 3-page laminated checklist tied to Common Core kindergarten standards and ELOF 60-month indicators.",
     supportsLearningIn: ["K-readiness", "Parent communication", "Standards alignment"],
-  isComingSoon: true,
+  isComingSoon: false,
   },
   // ── Plush sets — May 2026 ────────────────────────────────────────────────
   {
@@ -253,9 +266,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Plush",
     tone: "mist",
     channel: "printify",
+    productSource: "printify",
     story: "Six 10-inch bedtime owl companions — Dreamy Star, Sleepy Moon, Cloudy, Twinkle, Nighty Night, and Baby Owl. Perfect for calming bedtime routines and lullaby sing-alongs.",
     supportsLearningIn: ["Sleep routines", "Comfort objects", "Imaginative play", "Safe for all ages"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "plush-forest-friends",
@@ -266,9 +280,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Plush",
     tone: "forest",
     channel: "printify",
+    productSource: "printify",
     story: "Six nature-inspired owl plush companions — Fox, Bear, Deer, Raccoon, Hedgehog, and Forest Owl — each dressed in OWL's signature jacket. Inspired by the natural world.",
     supportsLearningIn: ["Nature vocabulary", "Animal recognition", "Imaginative play", "Educational"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "plush-ocean-friends",
@@ -279,9 +294,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Plush",
     tone: "teal",
     channel: "printify",
+    productSource: "printify",
     story: "Six ocean-themed owl companions — Dolphin, Sea Turtle, Clownfish, Whale, Starfish, and Octopus. Bright colors and ocean-inspired fun for little explorers.",
     supportsLearningIn: ["Ocean vocabulary", "Marine life", "Imaginative play", "Educational"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "plush-safari-friends",
@@ -292,9 +308,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Plush",
     tone: "amber",
     channel: "printify",
+    productSource: "printify",
     story: "Six safari animal owl companions — Elephant, Giraffe, Lion, Zebra, Monkey, and Tiger. Wild about animals and educational fun.",
     supportsLearningIn: ["Animal vocabulary", "Safari animals", "Imaginative play", "Educational"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "plush-space-friends",
@@ -305,9 +322,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Plush",
     tone: "rose",
     channel: "printify",
+    productSource: "printify",
     story: "Six out-of-this-world owl companions — Astronaut Owl, Alien Friend, Rocket Pilot, Planet Explorer, Comet Buddy, and Galaxy Girl. For little dreamers who reach for the stars.",
     supportsLearningIn: ["Space vocabulary", "STEM curiosity", "Imaginative play", "Educational"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   // ── Music albums — May 2026 ──────────────────────────────────────────────
   {
@@ -319,9 +337,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Music",
     tone: "amber",
     channel: "gumroad",
+    productSource: "digital_product",
     story: "Fun songs about numbers, shapes, patterns, and more — recorded at a toddler-friendly tempo with call-and-response phrasing.",
     supportsLearningIn: ["Counting", "Number recognition", "Shapes", "Patterns"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "abc-adventure-album",
@@ -332,9 +351,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Music",
     tone: "teal",
     channel: "gumroad",
+    productSource: "digital_product",
     story: "Catchy songs to learn letters, phonics, and spelling — each track focuses on a letter cluster with memorable melodies.",
     supportsLearningIn: ["Letter recognition", "Phonics", "Spelling", "Early literacy"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "around-world-album",
@@ -345,9 +365,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Music",
     tone: "rose",
     channel: "gumroad",
+    productSource: "digital_product",
     story: "Songs about cultures we love — explore, learn, and sing together. Multicultural musical celebration for the whole family.",
     supportsLearningIn: ["Cultural awareness", "World music", "Multicultural vocabulary", "Global citizenship"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "calm-down-album",
@@ -358,9 +379,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Music",
     tone: "mist",
     channel: "gumroad",
+    productSource: "digital_product",
     story: "Gentle songs to help little hearts and minds feel calm and happy. Breathe. Relax. Be Kind.",
     supportsLearningIn: ["Mindfulness", "Emotional regulation", "Breathing exercises", "SEL"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   // ── Coloring books — May 2026 ────────────────────────────────────────────
   {
@@ -372,9 +394,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Coloring",
     tone: "amber",
     channel: "kdp",
+    productSource: "digital_product",
     story: "Count and color your way through numbers 1–20 with OWL. Each page pairs a numeral with matching objects to count and color.",
     supportsLearningIn: ["Counting", "Number recognition", "Fine motor", "Math concepts"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "abc-coloring-book",
@@ -385,9 +408,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Coloring",
     tone: "teal",
     channel: "kdp",
+    productSource: "digital_product",
     story: "A is for Owl — 26 letter pages with OWL characters to color while learning the alphabet.",
     supportsLearningIn: ["Letter recognition", "Fine motor", "Early literacy", "Creative expression"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "abcs-world-coloring",
@@ -398,9 +422,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Coloring",
     tone: "rose",
     channel: "kdp",
+    productSource: "digital_product",
     story: "A Multicultural Alphabet Coloring Book — each letter features a child from a different culture with their traditional dress and a meaningful word.",
     supportsLearningIn: ["Letter recognition", "Multicultural awareness", "Fine motor", "Global vocabulary"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   // ── Sticker sets — May 2026 ──────────────────────────────────────────────
   {
@@ -412,9 +437,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Stickers",
     tone: "rose",
     channel: "printify",
+    productSource: "printify",
     story: "12 owl emotion face stickers — Happy, Sad, Angry, Calm, Excited, Worried, Scared, Sleepy, Surprised, Silly, Loved, and Proud. Perfect for feelings check-ins.",
     supportsLearningIn: ["Emotion vocabulary", "SEL", "Feelings identification", "Self-awareness"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-cultural-stickers",
@@ -425,9 +451,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Stickers",
     tone: "amber",
     channel: "printify",
+    productSource: "printify",
     story: "12 multicultural holiday owl stickers — Diwali, Kwanzaa, Hanukkah, Lunar New Year, Eid, Holi, Juneteenth, Día de Muertos, Carnival, Nowruz, Christmas, and Thanksgiving.",
     supportsLearningIn: ["Cultural awareness", "Holiday vocabulary", "Multicultural education", "Global citizenship"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-baby-girl-stickers",
@@ -438,9 +465,10 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Stickers",
     tone: "rose",
     channel: "printify",
+    productSource: "printify",
     story: "12 pastel baby owl stickers — Bow, Heart, Daisy, Cozy, Rattle, Binky, Bottle, Dream, Star, Flutter, Princess, and Sweet Hoot. A sweet gift for little ones.",
     supportsLearningIn: ["Reward system", "Fine motor", "Imaginative play", "Gift giving"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-big-kid-boy-stickers",
@@ -451,15 +479,16 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     category: "Stickers",
     tone: "teal",
     channel: "printify",
+    productSource: "printify",
     story: "12 adventure owl stickers for big kids — School, Soccer, Read, Write, Star, Strong, Dream Big, Cool, Create, High Five, Champ, and I Am Brave.",
     supportsLearningIn: ["Growth mindset", "Reward system", "Self-confidence", "Achievement recognition"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // PRINTIFY / PRINTFUL PRODUCTS — imported June 2026
   // Source: OWL_Product_Pricing.xlsx (Printful Dashboard)
-  // All assigned productSource: "printify", isComingSoon: true at launch.
+  // All assigned productSource: "printify", isComingSoon: false at launch.
   // Flip isComingSoon: false when a product goes live in Printify.
   // ═══════════════════════════════════════════════════════════════════════════
 
@@ -477,7 +506,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$18.50",
     story: "The official OWL Sing Together tee — soft, vibrant, and built for everyday wear. Features Larissa's signature OWL branding in full color.",
     supportsLearningIn: ["Brand pride", "Multicultural identity", "Community"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-cotton-kids-t-shirt",
@@ -492,7 +521,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$15.25",
     story: "A soft 100% cotton tee made for little OWL fans. Durable, washable, and perfect for school, play, or sing-along sessions.",
     supportsLearningIn: ["Brand expression", "Multicultural identity"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-infant-bodysuit",
@@ -507,7 +536,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$11.75",
     story: "An adorable OWL-branded bodysuit for the littlest learners. Soft, snug, and made for OWL babies everywhere.",
     supportsLearningIn: ["Brand pride", "Gift giving", "Infant comfort"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-sweatshirt",
@@ -522,7 +551,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$36.75",
     story: "A premium OWL Sing Together crewneck sweatshirt — cozy, warm, and perfect for parents, educators, and OWL supporters.",
     supportsLearningIn: ["Brand pride", "Community", "Educator identity"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
 
   // ── Headwear ──────────────────────────────────────────────────────────────
@@ -539,7 +568,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$14.50",
     story: "The OWL Flat Bill Cap — a clean, structured cap with the OWL logo embroidered front and center. Snap-back fit for all sizes.",
     supportsLearningIn: ["Brand pride", "Educator identity"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-embroidered-beanie",
@@ -554,7 +583,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$17.90",
     story: "A cozy OWL Sing Together embroidered beanie — perfect for cold mornings, school runs, or singing outdoors.",
     supportsLearningIn: ["Brand pride", "Community", "Gift giving"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
 
   // ── Drinkware ─────────────────────────────────────────────────────────────
@@ -571,7 +600,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$20.35",
     story: "Stay hydrated while you sing along! The OWL insulated tumbler keeps drinks cold for 24 hours and hot for 12 — with a reusable straw included.",
     supportsLearningIn: ["Healthy habits", "Brand pride"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-wine-tumbler",
@@ -586,7 +615,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$17.52",
     story: "The OWL teal wine tumbler — a thoughtful gift for the OWL-loving parent or educator in your life. Double-walled and BPA-free.",
     supportsLearningIn: ["Brand pride", "Gift giving", "Educator appreciation"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-enamel-mug",
@@ -601,7 +630,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$12.50",
     story: "The OWL enamel mug — a classroom and coffee table staple. Durable, dishwasher-safe, and full of OWL warmth.",
     supportsLearningIn: ["Brand pride", "Educator appreciation", "Gift giving"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-glossy-mug",
@@ -616,7 +645,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$6.50",
     story: "A classic white 11oz ceramic mug with the full OWL Sing Together design. Perfect for morning tea, coffee, or hot cocoa while reading.",
     supportsLearningIn: ["Brand pride", "Gift giving"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
 
   // ── Home & Accessories ────────────────────────────────────────────────────
@@ -633,7 +662,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$32.12",
     story: "Cozy up with the OWL Throw Blanket — soft, warm, and printed with Larissa's signature OWL design. Perfect for storytime, naptime, and family movie nights.",
     supportsLearningIn: ["Comfort object", "Sensory experience", "Bedtime routines"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-spiral-notebook",
@@ -648,7 +677,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$13.25",
     story: "The OWL Spiral Notebook — ideal for lesson planning, journaling, or classroom notes. 120 lined pages with the full OWL Sing Together cover design.",
     supportsLearningIn: ["Writing skills", "Educator tools", "Organization"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-mouse-pad",
@@ -663,7 +692,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$9.50",
     story: "An OWL-branded mouse pad for your home office or classroom desk. Non-slip base, vibrant print, and the perfect everyday reminder of why you do this work.",
     supportsLearningIn: ["Educator workspace", "Brand pride"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-water-bottle",
@@ -678,7 +707,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$21.93",
     story: "A premium 20oz stainless steel water bottle — double-walled, leak-proof, and printed with OWL's signature design. Built for busy parents and on-the-go educators.",
     supportsLearningIn: ["Healthy habits", "Eco-friendly living", "Brand pride"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-duffle-bag",
@@ -693,7 +722,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$69.50",
     story: "The OWL Space Planets Duffle Bag — a spacious, durable bag for classroom materials, weekend adventures, or school trips. Fully printed with OWL's space-themed design.",
     supportsLearningIn: ["Organization", "STEM curiosity", "Travel"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-backpack",
@@ -708,7 +737,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$38.50",
     story: "The OWL Space Planet Backpack — roomy, padded, and covered in OWL's signature space design. Perfect for school, day trips, and classroom adventures.",
     supportsLearningIn: ["Organization", "STEM curiosity", "School readiness"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-tote-bag",
@@ -723,7 +752,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$21.45",
     story: "The OWL Eco-Friendly Tote Bag — reusable, sturdy, and sustainably made. Perfect for groceries, library runs, or classroom materials.",
     supportsLearningIn: ["Eco-friendly habits", "Organization", "Brand pride"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
 
   // ── Sticker Sets ──────────────────────────────────────────────────────────
@@ -740,7 +769,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$5.13",
     story: "Shiny, eye-catching holographic OWL stickers that shimmer and shine. Perfect for reward charts, water bottles, notebooks, and more.",
     supportsLearningIn: ["Reward systems", "Motivation", "Creative expression"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-insect-sticker-set",
@@ -755,7 +784,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Explore the world of insects with OWL! This sticker set features colorful, illustrated bugs for science learning and creative play.",
     supportsLearningIn: ["Nature science", "Insect vocabulary", "STEM curiosity"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-insect-sticker-set-ii",
@@ -770,7 +799,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "More insects to discover! OWL Insect Set II adds a fresh collection of illustrated bugs and critters for curious little scientists.",
     supportsLearningIn: ["Nature science", "Insect vocabulary", "STEM curiosity"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-animal-sticker-set",
@@ -785,7 +814,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Meet OWL's animal friends! This sticker set features illustrated animals from around the world for vocabulary building and imaginative play.",
     supportsLearningIn: ["Animal vocabulary", "Nature science", "Creative play"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-animal-sticker-set-ii",
@@ -800,7 +829,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "More animal adventures! OWL Animal Set II brings a second wave of illustrated creatures for learning and play.",
     supportsLearningIn: ["Animal vocabulary", "Nature science", "Creative play"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-animal-sticker-set-iii",
@@ -815,7 +844,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "The animal collection continues! OWL Animal Set III features even more diverse illustrated animals for storytelling and science.",
     supportsLearningIn: ["Animal vocabulary", "Biodiversity", "Creative play"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-animal-sticker-set-iv",
@@ -830,7 +859,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Four sets in — OWL Animal Set IV completes the ultimate animal sticker collection for little nature lovers.",
     supportsLearningIn: ["Animal vocabulary", "Biodiversity", "Collector's series"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-counting-sticker-set",
@@ -845,7 +874,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Count along with OWL! Illustrated number stickers for 1–10 that make math practice fun and visual.",
     supportsLearningIn: ["Counting", "Number recognition", "Math readiness"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-aplus-sticker-set",
@@ -860,7 +889,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Celebrate achievement with the OWL A+ Sticker Set. Perfect for teachers rewarding great work and parents tracking milestones.",
     supportsLearningIn: ["Achievement recognition", "Growth mindset", "Reward systems"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-colors-sticker-set",
@@ -875,7 +904,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Learn colors with OWL! Vibrant illustrated stickers in every color of the rainbow, ideal for early color recognition activities.",
     supportsLearningIn: ["Color recognition", "Early vocabulary", "Creative play"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-music-sticker-set",
@@ -890,7 +919,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Music-themed OWL stickers featuring instruments, notes, and musical characters. Perfect for music class rewards or instrument notebooks.",
     supportsLearningIn: ["Music vocabulary", "Instrument recognition", "Arts appreciation"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-preschool-sticker-set",
@@ -905,7 +934,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Everything preschool in one sticker set! Letters, numbers, shapes, colors, and classroom scenes for PreK learners.",
     supportsLearningIn: ["Preschool readiness", "Early literacy", "Math concepts"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-seasons-sticker-set",
@@ -920,7 +949,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Explore all four seasons with OWL! Illustrated stickers for spring, summer, fall, and winter — perfect for seasonal learning units.",
     supportsLearningIn: ["Seasonal vocabulary", "Nature science", "Calendar awareness"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-holiday-sticker-set",
@@ -935,7 +964,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Celebrate multicultural holidays with OWL! Illustrated stickers for holidays from around the world — Diwali, Kwanzaa, Hanukkah, Lunar New Year, and more.",
     supportsLearningIn: ["Cultural awareness", "Holiday vocabulary", "Multicultural education"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-abcs-sticker-set",
@@ -950,7 +979,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Alphabet stickers for little learners! OWL's ABC sticker set features illustrated letters A–Z with kid-friendly images for each letter.",
     supportsLearningIn: ["Letter recognition", "Phonics", "Early literacy"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-numbers-sticker-set",
@@ -965,7 +994,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Number stickers for math readiness! OWL Numbers Set covers 0–20 with illustrated numerals and counting objects.",
     supportsLearningIn: ["Number recognition", "Counting", "Math readiness"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-baby-boy-sticker-set",
@@ -980,7 +1009,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Sweet baby boy OWL stickers — perfect for milestone cards, scrapbooks, and celebrating a new little learner.",
     supportsLearningIn: ["Milestone tracking", "Gift giving", "Creative expression"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-baby-girl-sticker-set",
@@ -995,7 +1024,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Sweet baby girl OWL stickers — perfect for milestone cards, scrapbooks, and celebrating a new little learner.",
     supportsLearningIn: ["Milestone tracking", "Gift giving", "Creative expression"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
 
   // ── Extra sticker sets (images found in Printify folder, not in spreadsheet) ──
@@ -1012,7 +1041,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Adventure awaits! The OWL Explorer sticker set features illustrated adventurers, maps, compasses, and discovery tools for curious young explorers.",
     supportsLearningIn: ["Geography", "Curiosity", "STEM exploration", "Adventure mindset"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-science-sticker-set",
@@ -1027,7 +1056,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Science is for everyone! OWL Science stickers feature lab equipment, atoms, plants, and STEM characters to spark scientific thinking.",
     supportsLearningIn: ["STEM curiosity", "Science vocabulary", "Scientific method", "Inquiry learning"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-swimming-sticker-set",
@@ -1042,7 +1071,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Splash into learning! The OWL Swimming sticker set features aquatic animals, swim gear, and water-themed designs for little swimmers.",
     supportsLearningIn: ["Water safety awareness", "Marine vocabulary", "Physical activity", "Ocean science"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     slug: "owl-math-sticker-set",
@@ -1057,7 +1086,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     cost: "$2.63",
     story: "Make math exciting! OWL Math stickers feature numbers, equations, shapes, and math symbols that make learning feel like play.",
     supportsLearningIn: ["Math vocabulary", "Number concepts", "Shapes and patterns", "K-readiness"],
-    isComingSoon: true,
+    isComingSoon: false,
   },
 ];
 

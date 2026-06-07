@@ -423,6 +423,9 @@ export const products = {
   "owl-swimming-sticker-set": {
     primary: { src: "/images/products/owl-swimming-sticker-set.png", alt: "OWL Swimming Sticker Set" },
   },
+  "owl-tote-bag": {
+    primary: { src: "/images/products/owl-eco-tote-bag.png", alt: "OWL Eco-Friendly Tote Bag" },
+  },
   "owl-eco-tote-bag": {
     primary: { src: "/images/products/owl-eco-tote-bag.png", alt: "OWL Eco-Friendly Tote Bag" },
   },
