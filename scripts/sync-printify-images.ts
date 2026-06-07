@@ -175,6 +175,7 @@ async function main() {
   if (results.synced > 0) {
     console.log("\n📁 images.ts updated.");
     console.log("Next steps:");
+    console.log("Next steps:");
     console.log("  git add src/lib/images.ts");
     console.log('  git commit -m "chore: sync Printify product images"');
     console.log("  git push");
