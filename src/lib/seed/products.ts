@@ -3,6 +3,14 @@ import type { ProductCardProps } from "@/components/marketing/product-card";
 export type SeedProduct = ProductCardProps & {
   channel: "shopify" | "printify" | "printful" | "gumroad" | "etsy" | "kdp" | "tpt" | "website";
   productSource?: "printify" | "website_exclusive" | "digital_product";
+  /** Printify numeric product ID — find in Printify Dashboard → Products → click product → URL contains the ID */
+  printifyProductId?: string | null;
+  /** Printify variant ID — find in Printify Dashboard → Products → click product → Variants */
+  printifyVariantId?: number | null;
+  /** Who fulfills this product */
+  fulfillmentProvider?: "printify" | "manual" | "digital" | "self";
+  /** Auto-fulfillment enabled only when printifyProductId + printifyVariantId are both set */
+  autoFulfillmentEnabled?: boolean;
   cost?: string;
   ageBand: "0-1" | "1-2" | "2-3" | "3-4" | "4-5" | "5-8";
   story: string;
