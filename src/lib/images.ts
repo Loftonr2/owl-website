@@ -358,6 +358,77 @@ export const products = {
       alt: "Big Kid Boy OWL Sticker Sheet — 12 adventure owl stickers for ages 3–5.",
     },
   },
+
+  // ── Printify sticker sets (June 2026) ────────────────────────────────────
+  "owl-aplus-sticker-set": {
+    primary: { src: "/images/products/owl-aplus-sticker-set.png", alt: "OWL A+ Sticker Set" },
+  },
+  "owl-abcs-sticker-set": {
+    primary: { src: "/images/products/owl-abcs-sticker-set.png", alt: "OWL ABC's Sticker Set" },
+  },
+  "owl-animal-sticker-set": {
+    primary: { src: "/images/products/owl-animal-sticker-set.png", alt: "OWL Animal Sticker Set" },
+  },
+  "owl-animal-sticker-set-ii": {
+    primary: { src: "/images/products/owl-animal-sticker-set-ii.png", alt: "OWL Animal Sticker Set II" },
+  },
+  "owl-animal-sticker-set-iii": {
+    primary: { src: "/images/products/owl-animal-sticker-set-iii.png", alt: "OWL Animal Sticker Set III" },
+  },
+  "owl-animal-sticker-set-iv": {
+    primary: { src: "/images/products/owl-animal-sticker-set-iv.png", alt: "OWL Animal Sticker Set IV" },
+  },
+  "owl-baby-boy-sticker-set": {
+    primary: { src: "/images/products/owl-baby-boy-sticker-set.png", alt: "OWL Baby Boy Sticker Set" },
+  },
+  "owl-baby-girl-sticker-set": {
+    primary: { src: "/images/products/owl-baby-girl-sticker-set.png", alt: "OWL Baby Girl Sticker Set" },
+  },
+  "owl-colors-sticker-set": {
+    primary: { src: "/images/products/owl-colors-sticker-set.png", alt: "OWL Colors Sticker Set" },
+  },
+  "owl-counting-sticker-set": {
+    primary: { src: "/images/products/owl-counting-sticker-set.png", alt: "OWL Counting Sticker Set" },
+  },
+  "owl-explorer-sticker-set": {
+    primary: { src: "/images/products/owl-explorer-sticker-set.png", alt: "OWL Explorer Sticker Set" },
+  },
+  "owl-holiday-sticker-set": {
+    primary: { src: "/images/products/owl-holiday-sticker-set.png", alt: "OWL Holiday Sticker Set" },
+  },
+  "owl-insect-sticker-set": {
+    primary: { src: "/images/products/owl-insect-sticker-set.png", alt: "OWL Insect Sticker Set" },
+  },
+  "owl-insect-sticker-set-ii": {
+    primary: { src: "/images/products/owl-insect-sticker-set-ii.png", alt: "OWL Insect Sticker Set II" },
+  },
+  "owl-math-sticker-set": {
+    primary: { src: "/images/products/owl-math-sticker-set.png", alt: "OWL Math Sticker Set" },
+  },
+  "owl-music-sticker-set": {
+    primary: { src: "/images/products/owl-music-sticker-set.png", alt: "OWL Music Sticker Set" },
+  },
+  "owl-numbers-sticker-set": {
+    primary: { src: "/images/products/owl-numbers-sticker-set.png", alt: "OWL Numbers Sticker Set" },
+  },
+  "owl-preschool-sticker-set": {
+    primary: { src: "/images/products/owl-preschool-sticker-set.png", alt: "OWL Pre-School Sticker Set" },
+  },
+  "owl-science-sticker-set": {
+    primary: { src: "/images/products/owl-science-sticker-set.png", alt: "OWL Science Sticker Set" },
+  },
+  "owl-seasons-sticker-set": {
+    primary: { src: "/images/products/owl-seasons-sticker-set.png", alt: "OWL Seasons Sticker Set" },
+  },
+  "owl-swimming-sticker-set": {
+    primary: { src: "/images/products/owl-swimming-sticker-set.png", alt: "OWL Swimming Sticker Set" },
+  },
+  "owl-eco-tote-bag": {
+    primary: { src: "/images/products/owl-eco-tote-bag.png", alt: "OWL Eco-Friendly Tote Bag" },
+  },
+  "owl-holographic-stickers": {
+    primary: { src: "/images/products/owl-holographic-stickers.png", alt: "OWL Holographic Stickers" },
+  },
 } as const satisfies Record<string, ProductImages>;
 export type ProductImageKey = keyof typeof products;
 

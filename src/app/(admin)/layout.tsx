@@ -27,8 +27,20 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         aria-label="Admin navigation"
       >
         <p className="font-display text-lg font-bold text-owl-ink">OWL Admin</p>
-        <p className="mt-1 text-xs text-owl-mist">Phase 1 — shell only</p>
-        {/* Phase 2: real sidebar (Dashboard · Blog · Products · Newsletter · Curriculum · Media · Customers · Educators · Orders · Analytics · Settings) */}
+        <nav className="mt-6 space-y-1" aria-label="Admin navigation">
+          {[
+            { href: "/admin",          label: "Dashboard" },
+            { href: "/admin/products", label: "Products" },
+          ].map(({ href, label }) => (
+            <a
+              key={href}
+              href={href}
+              className="flex items-center rounded-lg px-3 py-2 text-sm font-medium text-owl-ink/70 transition-colors hover:bg-owl-cream-deep hover:text-owl-ink"
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
       </aside>
       <div className="md:ml-64">
         <header className="flex h-16 items-center border-b border-owl-cream-deep bg-white px-6">

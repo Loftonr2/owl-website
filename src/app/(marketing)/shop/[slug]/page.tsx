@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Bell, ShoppingBag } from "lucide-react";
+import { PayPalCheckout } from "@/components/store/paypal-checkout";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Chip } from "@/components/ui/chip";
 import { Button } from "@/components/ui/button";
@@ -187,43 +188,53 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
               </ul>
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8">
               {isComingSoon ? (
-                <>
-                  <Button intent="primary" size="lg" asChild>
-                    <Link href="/newsletter">
-                      <Bell className="h-4 w-4" aria-hidden />
-                      Notify me when it drops
-                    </Link>
-                  </Button>
-                  <Button intent="tertiary" size="lg" asChild>
-                    <Link href="/shop">Keep browsing</Link>
-                  </Button>
-                </>
+                <div className="space-y-3">
+                  <div className="rounded-2xl border border-owl-amber/30 bg-owl-amber/10 p-5 text-sm">
+                    <p className="font-semibold text-owl-amber">Coming Soon</p>
+                    <p className="mt-1 text-owl-ink/70">
+                      Join the OWL Newsletter to be notified when this product becomes available.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <Button intent="primary" size="lg" asChild>
+                      <Link href="/newsletter">
+                        <Bell className="h-4 w-4" aria-hidden />
+                        Notify me when it drops
+                      </Link>
+                    </Button>
+                    <Button intent="tertiary" size="lg" asChild>
+                      <Link href="/shop">Keep browsing</Link>
+                    </Button>
+                  </div>
+                </div>
               ) : (
-                <>
-                  <Button intent="primary" size="lg">
-                    <ShoppingBag className="h-4 w-4" aria-hidden />
-                    Add to cart — {p.price}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-sm text-owl-mist">
+                    <ShoppingBag className="h-4 w-4" />
+                    <span>Secure checkout via PayPal</span>
+                  </div>
+                  <PayPalCheckout
+                    productTitle={p.title}
+                    price={p.price}
+                    onSuccess={(orderId) => {
+                      console.log("PayPal order complete:", orderId);
+                    }}
+                  />
+                  <Button intent="tertiary" size="md" asChild>
+                    <Link href="/shop">← Keep shopping</Link>
                   </Button>
-                  <Button intent="secondary" size="lg" asChild>
-                    <Link href="/shop">Keep shopping</Link>
-                  </Button>
-                </>
+                </div>
               )}
             </div>
-            {isComingSoon && (
-              <p className="mt-3 text-xs italic text-owl-mist">
-                Cart wakes up alongside Stripe + Shopify in Phase 3 of the build plan.
-              </p>
-            )}
           </div>
         </div>
       </Section>
 
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream">
-          <SectionHeader eyebrow="Pairs with" title="Bundle suggestions" />
+               <SectionHeader eyebrow="Pairs with" title="Bundle suggestions" />
           <MediaRail
             ariaLabel="Related OWL products"
             columns={{ md: 3, lg: 4 }}
