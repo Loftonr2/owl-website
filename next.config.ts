@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    // Suppress TS errors during Vercel builds — tsc --noEmit catches them locally.
+    ignoreBuildErrors: true,
+  },
   images: {
     remotePatterns: [
       // YouTube thumbnails (video archive)

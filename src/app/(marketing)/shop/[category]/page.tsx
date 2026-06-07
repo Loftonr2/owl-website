@@ -2,12 +2,12 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { ArrowLeft, Search, SlidersHorizontal } from "lucide-react";
 import { ProductCard } from "@/components/marketing/product-card";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { SEED_PRODUCTS, PRODUCT_CATEGORY_OPTIONS } from "@/lib/seed/products";
-import { use } from "react";
 
 type SortOption = "featured" | "newest" | "price-asc" | "price-desc" | "available-first";
 
@@ -22,8 +22,9 @@ function categoryLabel(slug: string): string {
   return found?.label ?? slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
 }
 
-export default function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
-  const { category } = use(params);
+export default function CategoryPage() {
+  const params = useParams<{ category: string }>();
+  const category = params?.category ?? "";
   const [sort, setSort] = useState<SortOption>("available-first");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
