@@ -33,12 +33,10 @@ export const metadata = pageMetadata({
   path: "/shop",
 });
 
-/** Convert category name to URL slug */
 function categorySlug(cat: string): string {
   return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-/** All shop categories with branding */
 const SHOP_CATEGORIES = [
   {
     value: "Apparel",
@@ -174,8 +172,10 @@ const SHOP_CATEGORIES = [
   },
 ] as const;
 
-/** Categories shown as preview sections on the landing page, in display order. */
-const SECTION_ORDER = ["Stickers", "Other", "Coloring", "Flashcards", "Digital", "Music", "Plush"];
+const SECTION_ORDER = [
+  "Apparel", "Headwear", "Drinkware", "Home & Accessories",
+  "Stickers", "Plush", "Flashcards", "Coloring", "Digital", "Music", "Other",
+];
 
 export default function ShopPage() {
   return (
@@ -247,7 +247,6 @@ export default function ShopPage() {
               );
             })}
           </ul>
-          {/* View All link */}
           <div className="mt-6 flex justify-center">
             <Link
               href="/shop/all-products"
@@ -260,13 +259,12 @@ export default function ShopPage() {
         </Section>
       </SectionReveal>
 
-      {/* 3 — Category product sections (7 selected, in SECTION_ORDER, 4 each + More button) */}
+      {/* 3 — Category product sections */}
       {SECTION_ORDER.flatMap((sectionValue, catIdx) => {
         const cat = SHOP_CATEGORIES.find(c => c.value === sectionValue);
         if (!cat) return [];
         return [{ cat, catIdx }];
       }).map(({ cat, catIdx }) => {
-        // Get featured products for this category, fallback to category filter
         const featured = cat.featuredSlugs.length > 0
           ? cat.featuredSlugs
               .map(slug => SEED_PRODUCTS.find(p => p.slug === slug))
@@ -281,7 +279,6 @@ export default function ShopPage() {
         return (
           <SectionReveal key={cat.value}>
             <Section width="wide" pad="lg" bg={bg} id={`shop-${categorySlug(cat.value)}`}>
-              {/* Section header */}
               <div className="mb-8 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <span
@@ -303,21 +300,20 @@ export default function ShopPage() {
                   </div>
                 </div>
                 <Link
-                    href={`/shop/${categorySlug(cat.value)}`}
-                    className={[
-                      "hidden sm:flex items-center gap-2 rounded-full px-5 py-2 font-display text-sm font-bold transition-all",
-                      "border-2 shadow-sm hover:scale-[1.02]",
-                      cat.iconColor,
-                      cat.hoverBorder.replace("hover:", ""),
-                      "bg-transparent hover:bg-white/50",
-                    ].join(" ")}
-                  >
-                    More
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
+                  href={`/shop/${categorySlug(cat.value)}`}
+                  className={[
+                    "hidden sm:flex items-center gap-2 rounded-full px-5 py-2 font-display text-sm font-bold transition-all",
+                    "border-2 shadow-sm hover:scale-[1.02]",
+                    cat.iconColor,
+                    cat.hoverBorder.replace("hover:", ""),
+                    "bg-transparent hover:bg-white/50",
+                  ].join(" ")}
+                >
+                  More
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
 
-              {/* 4-product grid */}
               <ul
                 role="list"
                 aria-label={cat.label + " products"}
@@ -338,7 +334,6 @@ export default function ShopPage() {
                 ))}
               </ul>
 
-              {/* More button — always visible, bottom-right */}
               <div className="mt-8 flex justify-end">
                 <Link
                   href={`/shop/${categorySlug(cat.value)}`}
@@ -382,7 +377,6 @@ export default function ShopPage() {
           <div className="mt-5 flex justify-center">
             <Button intent="tertiary" size="lg" asChild>
               <Link href="/printables">
-                <Download className="h-4 w-4" aria-hidden />
                 <Download className="h-4 w-4" aria-hidden />
                 Download free activity sheets
               </Link>
