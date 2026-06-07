@@ -212,15 +212,39 @@ async function saveOrderToSupabase(order: OrderRecord): Promise<void> {
   }
 }
 
-// ── Lookup product by SKU or name ─────────────────────────────────────────────
+// ── Lookup product by SKU or name (seed fallback) ────────────────────────────
 function findProductBySku(sku: string, name: string) {
-  // Try slug match first (SKU should be the product slug)
   const bySlug = SEED_PRODUCTS.find(p => p.slug === sku);
   if (bySlug) return bySlug;
-
-  // Fallback: title fuzzy match
   const nameLower = name.toLowerCase();
   return SEED_PRODUCTS.find(p => p.title.toLowerCase().includes(nameLower.slice(0, 10)));
+}
+
+// ── Lookup Printify IDs from Supabase (admin-entered IDs take priority over seed) ──
+// This allows admins to enter IDs via /admin/products without a code deploy.
+async function lookupPrintifyIdsFromSupabase(slug: string): Promise<{ printifyProductId: string | null; printifyVariantId: number | null }> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return { printifyProductId: null, printifyVariantId: null };
+  }
+
+  try {
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/products?slug=eq.${encodeURIComponent(slug)}&select=printify_product_id,printify_variant_id`,
+      { headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` } }
+    );
+    if (!res.ok) return { printifyProductId: null, printifyVariantId: null };
+    const rows = await res.json() as Array<{ printify_product_id?: string | null; printify_variant_id?: number | null }>;
+    if (!rows.length) return { printifyProductId: null, printifyVariantId: null };
+    return {
+      printifyProductId: rows[0].printify_product_id ?? null,
+      printifyVariantId: rows[0].printify_variant_id ?? null,
+    };
+  } catch {
+    return { printifyProductId: null, printifyVariantId: null };
+  }
 }
 
 // ── Main webhook handler ──────────────────────────────────────────────────────
@@ -311,11 +335,20 @@ export async function POST(req: Request) {
   const totalAmount = unit?.amount?.value ?? "0";
   const currency = unit?.amount?.currency_code ?? "USD";
 
-  // ── Build line items with Printify ID lookup ──
-  const lineItems = (unit?.items ?? []).map(item => {
+  // ── Build line items — check Supabase first (admin-entered IDs), then seed ──
+  const lineItems = await Promise.all((unit?.items ?? []).map(async item => {
     const product = findProductBySku(item.sku ?? "", item.name);
-    const printifyProductId = (product as { printifyProductId?: string | null })?.printifyProductId ?? null;
-    const printifyVariantId = (product as { printifyVariantId?: number | null })?.printifyVariantId ?? null;
+    const slug = item.sku ?? product?.slug ?? "";
+
+    // 1. Try Supabase (IDs entered via /admin/products)
+    const { printifyProductId: dbPid, printifyVariantId: dbVid } = await lookupPrintifyIdsFromSupabase(slug);
+
+    // 2. Fall back to seed data
+    const seedPid = (product as { printifyProductId?: string | null })?.printifyProductId ?? null;
+    const seedVid = (product as { printifyVariantId?: number | null })?.printifyVariantId ?? null;
+
+    const printifyProductId = dbPid ?? seedPid;
+    const printifyVariantId = dbVid ?? seedVid;
     const fulfillmentReady = !!(printifyProductId && printifyVariantId);
 
     return {
@@ -327,7 +360,7 @@ export async function POST(req: Request) {
       printify_variant_id: printifyVariantId,
       fulfillment_ready: fulfillmentReady,
     };
-  });
+  }));
 
   const allReady = lineItems.length > 0 && lineItems.every(i => i.fulfillment_ready);
   const missingIds = lineItems.filter(i => !i.fulfillment_ready);
@@ -463,33 +496,35 @@ export async function POST(req: Request) {
   }
 }
 
-// ── GET — credential + readiness check ───────────────────────────────────────
+// GET - credential + readiness check
 export async function GET() {
   const productsMissingIds = SEED_PRODUCTS.filter(p => {
     const src = (p as { productSource?: string }).productSource;
     const pid = (p as { printifyProductId?: string | null }).printifyProductId;
-    return src === "printify" && !pid;
+    return src === 'printify' && !pid;
   }).length;
 
   return NextResponse.json({
-    status: "PayPal webhook endpoint active",
-    url: "https://owlsingtogether.com/api/webhooks/paypal",
+    status: 'PayPal webhook endpoint active',
+    url: 'https://owlsingtogether.com/api/webhooks/paypal',
     setup_instructions: {
-      step_1: "Go to developer.paypal.com → My Apps → [Your App] → Webhooks",
-      step_2: "Click 'Add Webhook'",
-      step_3: "URL: https://owlsingtogether.com/api/webhooks/paypal",
-      step_4: "Enable events: CHECKOUT.ORDER.APPROVED, PAYMENT.CAPTURE.COMPLETED, PAYMENT.CAPTURE.DENIED, PAYMENT.CAPTURE.REFUNDED",
-      step_5: "Copy the Webhook ID and add to Vercel as PAYPAL_WEBHOOK_ID",
+      step_1: 'developer.paypal.com -> My Apps -> [App] -> Webhooks -> Add Webhook',
+      step_2: 'URL: https://owlsingtogether.com/api/webhooks/paypal',
+      step_3: 'Events: CHECKOUT.ORDER.APPROVED, PAYMENT.CAPTURE.COMPLETED, PAYMENT.CAPTURE.DENIED, PAYMENT.CAPTURE.REFUNDED',
+      step_4: 'Copy Webhook ID -> add to Vercel as PAYPAL_WEBHOOK_ID',
     },
     credentials: {
-      PAYPAL_WEBHOOK_ID: process.env.PAYPAL_WEBHOOK_ID ? "✅ set" : "❌ missing — webhook not verified",
-      NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? "✅ set" : "❌ missing",
-      PRINTIFY_API_KEY: process.env.PRINTIFY_API_KEY ? "✅ set" : "❌ missing",
-      PRINTIFY_SHOP_ID: process.env.PRINTIFY_SHOP_ID ? "✅ set" : "❌ missing",
+      PAYPAL_WEBHOOK_ID: process.env.PAYPAL_WEBHOOK_ID ? 'set' : 'missing',
+      NEXT_PUBLIC_PAYPAL_CLIENT_ID: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ? 'set' : 'missing',
+      PRINTIFY_API_KEY: process.env.PRINTIFY_API_KEY ? 'set' : 'missing',
+      PRINTIFY_SHOP_ID: process.env.PRINTIFY_SHOP_ID ? 'set' : 'missing',
+      SUPABASE: (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) ? 'set' : 'missing',
     },
+    supabase_id_lookup: 'Enabled - IDs entered via /admin/products take priority over seed',
     fulfillment_readiness: {
       products_missing_printify_id: productsMissingIds,
       auto_fulfillment_possible: productsMissingIds === 0,
+      tip: 'Enter Printify IDs at /admin/products - activates auto-fulfillment with no code deploy',
     },
   });
 }
