@@ -31,6 +31,9 @@ const nextConfig: NextConfig = {
       // Cloudflare R2 (printable previews + gated PDF thumbnails)
       { protocol: "https", hostname: "*.r2.cloudflarestorage.com" },
       { protocol: "https", hostname: "*.r2.dev" },
+      // Printify/Printful mockup images
+      { protocol: "https", hostname: "images.printify.com" },
+      { protocol: "https", hostname: "*.printify.com" },
       // Shopify product images (when commerce is wired)
       { protocol: "https", hostname: "cdn.shopify.com" },
     ],
