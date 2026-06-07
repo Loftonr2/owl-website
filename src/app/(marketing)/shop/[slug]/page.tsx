@@ -218,9 +218,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
                   <PayPalCheckout
                     productTitle={p.title}
                     price={p.price}
-                    onSuccess={(orderId) => {
-                      console.log("PayPal order complete:", orderId);
-                    }}
                   />
                   <Button intent="tertiary" size="md" asChild>
                     <Link href="/shop">← Keep shopping</Link>
