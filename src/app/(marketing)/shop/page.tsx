@@ -174,6 +174,9 @@ const SHOP_CATEGORIES = [
   },
 ] as const;
 
+/** Categories shown as preview sections on the landing page, in display order. */
+const SECTION_ORDER = ["Stickers", "Other", "Coloring", "Flashcards", "Digital", "Music", "Plush"];
+
 export default function ShopPage() {
   return (
     <>
@@ -257,8 +260,12 @@ export default function ShopPage() {
         </Section>
       </SectionReveal>
 
-      {/* 3 — Category product sections (4 each + See More) */}
-      {SHOP_CATEGORIES.map((cat, catIdx) => {
+      {/* 3 — Category product sections (7 selected, in SECTION_ORDER, 4 each + More button) */}
+      {SECTION_ORDER.flatMap((sectionValue, catIdx) => {
+        const cat = SHOP_CATEGORIES.find(c => c.value === sectionValue);
+        if (!cat) return [];
+        return [{ cat, catIdx }];
+      }).map(({ cat, catIdx }) => {
         // Get featured products for this category, fallback to category filter
         const featured = cat.featuredSlugs.length > 0
           ? cat.featuredSlugs
@@ -295,8 +302,7 @@ export default function ShopPage() {
                     </h2>
                   </div>
                 </div>
-                {totalInCat > 4 && (
-                  <Link
+                <Link
                     href={`/shop/${categorySlug(cat.value)}`}
                     className={[
                       "hidden sm:flex items-center gap-2 rounded-full px-5 py-2 font-display text-sm font-bold transition-all",
@@ -306,10 +312,9 @@ export default function ShopPage() {
                       "bg-transparent hover:bg-white/50",
                     ].join(" ")}
                   >
-                    See all {totalInCat}
+                    More
                     <ArrowRight className="h-4 w-4" />
                   </Link>
-                )}
               </div>
 
               {/* 4-product grid */}
@@ -333,27 +338,25 @@ export default function ShopPage() {
                 ))}
               </ul>
 
-              {/* See More button — mobile + when more than 4 */}
-              {totalInCat > 4 && (
-                <div className="mt-8 flex justify-center sm:justify-end">
-                  <Link
-                    href={`/shop/${categorySlug(cat.value)}`}
-                    className={[
-                      "group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-7 py-3",
-                      "font-display text-sm font-bold text-white shadow-owl-1",
-                      "transition-all duration-300 hover:scale-[1.03] hover:shadow-owl-2",
-                      cat.bar,
-                    ].join(" ")}
-                  >
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full"
-                    />
-                    <span className="relative">See More {cat.label}</span>
-                    <ArrowRight className="relative h-4 w-4" />
-                  </Link>
-                </div>
-              )}
+              {/* More button — always visible, bottom-right */}
+              <div className="mt-8 flex justify-end">
+                <Link
+                  href={`/shop/${categorySlug(cat.value)}`}
+                  className={[
+                    "group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-7 py-3",
+                    "font-display text-sm font-bold text-white shadow-owl-1",
+                    "transition-all duration-300 hover:scale-[1.03] hover:shadow-owl-2",
+                    cat.bar,
+                  ].join(" ")}
+                >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full"
+                  />
+                  <span className="relative">More</span>
+                  <ArrowRight className="relative h-4 w-4" />
+                </Link>
+              </div>
             </Section>
           </SectionReveal>
         );
@@ -379,6 +382,7 @@ export default function ShopPage() {
           <div className="mt-5 flex justify-center">
             <Button intent="tertiary" size="lg" asChild>
               <Link href="/printables">
+                <Download className="h-4 w-4" aria-hidden />
                 <Download className="h-4 w-4" aria-hidden />
                 Download free activity sheets
               </Link>
