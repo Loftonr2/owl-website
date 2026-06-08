@@ -14,10 +14,10 @@ export interface PrintfulVariant {
   variantId:   number;   // sync_variant_id — required for POST /orders
   name:        string;
   sku:         string;
-  color:       string;
-  size:        string;
-  retailPrice: string;
-  isEnabled:   boolean;
+  color:       string | null;
+  size:        string | null;
+  retailPrice: string | null;
+  isEnabled?:  boolean;
 }
 
 /** Map of product slug → available sync variants (ordered by Printful default) */

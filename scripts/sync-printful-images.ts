@@ -184,9 +184,9 @@ async function main() {
   if (updated > 0) {
     console.log("\n📁 images.ts updated. Next:");
     console.log('   git add src/lib/images.ts');
-    console.log('   git commit -m "chore: sync Printful product images"');
+    console.log('   git commit -m "chore: sync product images"');
     console.log('   git push');
   }
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
+main().catch(console.error);

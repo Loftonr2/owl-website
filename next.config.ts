@@ -43,5 +43,3 @@ const nextConfig: NextConfig = {
   // every Link href across the marketing surface.
   typedRoutes: false,
 };
-
-export default withBundleAnalyzer(nextConfig);
