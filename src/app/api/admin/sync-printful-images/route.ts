@@ -111,71 +111,50 @@ export async function POST() {
 
   const baseHeaders = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
 
-  // 0. Get store ID (account-level tokens require X-PF-Store-Id header)
+  // 0. Get all stores — find the one with products (account tokens require X-PF-Store-Id)
   let storeId: number | null = null;
+  let allStores: Array<{ id: number; name: string }> = [];
   try {
     const storesRes = await fetch(`${PRINTFUL_BASE}/stores`, { headers: baseHeaders });
     if (storesRes.ok) {
       const storesData = await storesRes.json() as { result: Array<{ id: number; name: string }> };
-      storeId = storesData.result?.[0]?.id ?? null;
+      allStores = storesData.result ?? [];
     }
-  } catch { /* ignore — will try without store_id */ }
+  } catch { /* ignore */ }
+
+  // Try each store, use the first one that returns products
+  let products: PrintfulProduct[] = [];
+  for (const store of allStores) {
+    const tryHeaders: Record<string, string> = { ...baseHeaders, "X-PF-Store-Id": String(store.id) };
+    try {
+      const res = await fetch(`${PRINTFUL_BASE}/store/products?limit=100`, { headers: tryHeaders });
+      if (res.ok) {
+        const d = await res.json() as { result?: PrintfulProduct[] };
+        const ps = (d.result ?? []).filter(p => !p.is_ignored);
+        if (ps.length > 0) {
+          products = ps;
+          storeId = store.id;
+          break;
+        }
+      }
+    } catch { /* try next store */ }
+  }
+
+  // If no store had products via sync endpoint, try without store header (single-store accounts)
+  if (products.length === 0 && allStores.length === 0) {
+    try {
+      const res = await fetch(`${PRINTFUL_BASE}/store/products?limit=100`, { headers: baseHeaders });
+      if (res.ok) {
+        const d = await res.json() as { result?: PrintfulProduct[] };
+        products = (d.result ?? []).filter(p => !p.is_ignored);
+      }
+    } catch { /* ignore */ }
+  }
 
   const headers: Record<string, string> = { ...baseHeaders };
   if (storeId) headers["X-PF-Store-Id"] = String(storeId);
 
-  // 1. Fetch all store products (8s timeout for Vercel Hobby 10s limit)
-  let products: PrintfulProduct[] = [];
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(`${PRINTFUL_BASE}/store/products?limit=100`, {
-      headers,
-      signal: controller.signal,
-    });
-    clearTimeout(timeout);
-
-    const rawText = await res.text();
-
-    if (!res.ok) {
-      return NextResponse.json({
-        error: "Printful API error",
-        status: res.status,
-        details: rawText.slice(0, 500),
-        hint: res.status === 401
-          ? "API key may be invalid or expired. Regenerate at printful.com → Settings → API"
-          : res.status === 403
-          ? "API key may not have store access. Check permissions."
-          : undefined,
-      }, { status: 502 });
-    }
-
-    let data: { result?: PrintfulProduct[]; code?: number; error?: string };
-    try {
-      data = JSON.parse(rawText) as { result?: PrintfulProduct[]; code?: number; error?: string };
-    } catch {
-      return NextResponse.json({
-        error: "Printful returned non-JSON response",
-        raw: rawText.slice(0, 500),
-      }, { status: 502 });
-    }
-
-    if (data.code && data.code !== 200) {
-      return NextResponse.json({
-        error: "Printful API returned error code",
-        code: data.code,
-        message: data.error,
-      }, { status: 502 });
-    }
-
-    products = (data.result ?? []).filter(p => !p.is_ignored);
-  } catch (err) {
-    const msg = String(err);
-    return NextResponse.json({
-      error: msg.includes("AbortError") ? "Request timed out (>8s) — Printful API may be slow" : "Network error calling Printful",
-      details: msg,
-    }, { status: 502 });
-  }
+  // Products already fetched in the store loop above
 
   const matched: Array<{ slug: string; name: string; printfulId: number; imageUrl: string }> = [];
   const skipped: Array<{ name: string; printfulId: number; reason: string }> = [];
@@ -224,6 +203,7 @@ export async function POST() {
     ],
     imagesTs_snippet: snippet,
     store_id_used: storeId,
+    all_stores: allStores.map(s => ({ id: s.id, name: s.name })),
     env_var_needed: "PRINTFUL_API_KEY",
   });
 }
