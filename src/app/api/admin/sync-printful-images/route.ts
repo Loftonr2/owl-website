@@ -111,18 +111,57 @@ export async function POST() {
 
   const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
 
-  // 1. Fetch all store products
+  // 1. Fetch all store products (8s timeout for Vercel Hobby 10s limit)
   let products: PrintfulProduct[] = [];
   try {
-    const res = await fetch(`${PRINTFUL_BASE}/store/products?limit=100`, { headers });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch(`${PRINTFUL_BASE}/store/products?limit=100`, {
+      headers,
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+
+    const rawText = await res.text();
+
     if (!res.ok) {
-      const err = await res.text();
-      return NextResponse.json({ error: "Printful API error", status: res.status, details: err }, { status: 502 });
+      return NextResponse.json({
+        error: "Printful API error",
+        status: res.status,
+        details: rawText.slice(0, 500),
+        hint: res.status === 401
+          ? "API key may be invalid or expired. Regenerate at printful.com → Settings → API"
+          : res.status === 403
+          ? "API key may not have store access. Check permissions."
+          : undefined,
+      }, { status: 502 });
     }
-    const data = await res.json() as { result: PrintfulProduct[] };
+
+    let data: { result?: PrintfulProduct[]; code?: number; error?: string };
+    try {
+      data = JSON.parse(rawText) as { result?: PrintfulProduct[]; code?: number; error?: string };
+    } catch {
+      return NextResponse.json({
+        error: "Printful returned non-JSON response",
+        raw: rawText.slice(0, 500),
+      }, { status: 502 });
+    }
+
+    if (data.code && data.code !== 200) {
+      return NextResponse.json({
+        error: "Printful API returned error code",
+        code: data.code,
+        message: data.error,
+      }, { status: 502 });
+    }
+
     products = (data.result ?? []).filter(p => !p.is_ignored);
   } catch (err) {
-    return NextResponse.json({ error: "Network error calling Printful", details: String(err) }, { status: 502 });
+    const msg = String(err);
+    return NextResponse.json({
+      error: msg.includes("AbortError") ? "Request timed out (>8s) — Printful API may be slow" : "Network error calling Printful",
+      details: msg,
+    }, { status: 502 });
   }
 
   const matched: Array<{ slug: string; name: string; printfulId: number; imageUrl: string }> = [];
@@ -167,28 +206,20 @@ export async function POST() {
     instructions: [
       "1. Copy the imagesTs_snippet below",
       "2. Open src/lib/images.ts",
-      "3. Paste BEFORE the line:  } as const satisfies Record<string, ProductImages>;",
-      "4. git add src/lib/images.ts && git commit -m 'chore: sync Printful product images' && git push",
-      "OR run the local script: npx tsx scripts/sync-printful-images.ts",
+      "3. Paste BEFORE: } as const satisfies Record<string, ProductImages>;",
+      "4. Commit and push",
     ],
     imagesTs_snippet: snippet,
     env_var_needed: "PRINTFUL_API_KEY",
-    env_var_location: "Vercel Dashboard → Project → Settings → Environment Variables",
   });
 }
 
 export async function GET() {
   return NextResponse.json({
     endpoint: "POST /api/admin/sync-printful-images",
-    description: "Fetches OWL product mockup images from Printful and returns imagesTs_snippet",
+    description: "Fetches OWL product mockup images from Printful",
     credentials: {
-      PRINTFUL_API_KEY: process.env.PRINTFUL_API_KEY ? "✅ set" : "❌ missing — add in Vercel env vars",
+      PRINTFUL_API_KEY: process.env.PRINTFUL_API_KEY ? "set" : "missing",
     },
-    what_it_does: [
-      "Calls GET /store/products from Printful API",
-      "Matches each product by title to OWL product slug",
-      "Extracts thumbnail_url from Printful",
-      "Returns imagesTs_snippet ready to paste into src/lib/images.ts",
-    ],
   });
 }
