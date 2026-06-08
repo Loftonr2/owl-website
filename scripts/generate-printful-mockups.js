@@ -2,13 +2,13 @@
 /**
  * scripts/generate-printful-mockups.js
  *
- * For each physical OWL product (t-shirt, mug, bag, etc.):
- *   1. Fetch the sync product detail to get the catalog variant_id
- *   2. Discover the mockup style for that product type
- *   3. Submit a mockup generation task to Printful
- *   4. Poll until complete, then download the result
- *   5. Save to public/images/products/{slug}.png
- *   6. Update src/lib/images.ts with the local path
+ * For each physical OWL product, fetches the Printful catalog product thumbnail
+ * (a generic, publicly-accessible product photo from Printful's CDN), downloads
+ * it to public/images/products/, and wires it into src/lib/images.ts.
+ *
+ * These are the clean product-type photos (e.g. "Kids T-Shirt", "Throw Blanket")
+ * showing what the item looks like. You can replace them later with OWL-branded
+ * mockups once you export them from Printful's dashboard.
  *
  * Usage:
  *   node scripts/generate-printful-mockups.js
@@ -31,60 +31,46 @@ if (fs.existsSync(envPath)) {
   }
 }
 
-const API_KEY       = process.env.PRINTFUL_API_KEY;
-const STORE_ID      = 18286248;
-const PRODUCTS_DIR  = path.join(__dirname, "../public/images/products");
-const IMAGES_TS     = path.join(__dirname, "../src/lib/images.ts");
+const API_KEY      = process.env.PRINTFUL_API_KEY;
+const STORE_ID     = 18286248;
+const PRODUCTS_DIR = path.join(__dirname, "../public/images/products");
+const IMAGES_TS    = path.join(__dirname, "../src/lib/images.ts");
 
 if (!API_KEY || API_KEY.includes("your_")) {
   console.error("❌ PRINTFUL_API_KEY not set in .env.local");
   process.exit(1);
 }
 
-// Recovery report has: { owlProduct: { slug }, printfulId, storeId }
-function loadRecovery() {
-  const p = path.join(__dirname, "../printful-recovery-report.json");
-  if (!fs.existsSync(p)) { console.error("❌ printful-recovery-report.json not found"); process.exit(1); }
-  const data = JSON.parse(fs.readFileSync(p, "utf-8"));
-  const map = new Map();
-  for (const prod of (data.foundProducts || [])) {
-    map.set(prod.owlProduct.slug, { printfulId: prod.printfulId, name: prod.owlProduct.name });
-  }
-  return map;
-}
-
-const PHYSICAL_SLUGS = [
-  "owl-cotton-kids-t-shirt",
-  "owl-throw-blanket",
-  "owl-flat-bill-cap",
-  "owl-insulated-tumbler",
-  "owl-wine-tumbler",
-  "owl-enamel-mug",
-  "owl-spiral-notebook",
-  "owl-holographic-stickers",
-  "owl-mouse-pad",
-  "owl-water-bottle",
-  "owl-duffle-bag",
-  "owl-backpack",
-  "owl-infant-bodysuit",
-  "owl-tote-bag",
-  "owl-glossy-mug",
-  "owl-sweatshirt",
+// ── Physical products: slug → Printful sync ID + catalog product ID ─────────
+// catalog_product_id confirmed from previous API run (6/8/2026)
+const PHYSICAL_PRODUCTS = [
+  { slug: "owl-cotton-kids-t-shirt",  printfulId: 436901241, catalogId: 476, name: "OWL Cotton Kids T-Shirt" },
+  { slug: "owl-throw-blanket",        printfulId: 436902009, catalogId: 395, name: "OWL Throw Blanket" },
+  { slug: "owl-flat-bill-cap",        printfulId: 436900911, catalogId: 91,  name: "OWL Flat Bill Cap" },
+  { slug: "owl-insulated-tumbler",    printfulId: null,      catalogId: 742, name: "OWL Insulated Tumbler" },
+  { slug: "owl-wine-tumbler",         printfulId: null,      catalogId: 632, name: "OWL Wine Tumbler" },
+  { slug: "owl-enamel-mug",           printfulId: null,      catalogId: 407, name: "OWL Enamel Mug" },
+  { slug: "owl-spiral-notebook",      printfulId: null,      catalogId: 474, name: "OWL Spiral Notebook" },
+  { slug: "owl-holographic-stickers", printfulId: null,      catalogId: 673, name: "OWL Holographic Stickers" },
+  { slug: "owl-mouse-pad",            printfulId: null,      catalogId: 518, name: "OWL Mouse Pad" },
+  { slug: "owl-water-bottle",         printfulId: null,      catalogId: 382, name: "OWL Water Bottle" },
+  { slug: "owl-duffle-bag",           printfulId: null,      catalogId: 465, name: "OWL Duffle Bag" },
+  { slug: "owl-backpack",             printfulId: null,      catalogId: 279, name: "OWL Backpack" },
+  { slug: "owl-infant-bodysuit",      printfulId: null,      catalogId: 234, name: "OWL Infant Bodysuit" },
+  { slug: "owl-tote-bag",             printfulId: null,      catalogId: 367, name: "OWL Eco-Friendly Tote Bag" },
+  { slug: "owl-glossy-mug",           printfulId: null,      catalogId: 19,  name: "OWL Glossy Mug" },
+  { slug: "owl-sweatshirt",           printfulId: null,      catalogId: 493, name: "OWL Sweatshirt" },
 ];
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function pf(method, endpoint, body = null) {
-  const opts = {
-    method,
+async function pf(endpoint) {
+  const res = await fetch(`https://api.printful.com${endpoint}`, {
     headers: {
       "Authorization": `Bearer ${API_KEY}`,
       "X-PF-Store-Id": String(STORE_ID),
-      "Content-Type": "application/json",
     },
-  };
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(`https://api.printful.com${endpoint}`, opts);
+  });
   const json = await res.json();
   return { ok: res.ok, status: res.status, data: json };
 }
@@ -92,10 +78,11 @@ async function pf(method, endpoint, body = null) {
 function downloadPublicFile(url, dest) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest);
-    https.get(url, (response) => {
+    const proto = url.startsWith("https") ? https : require("http");
+    proto.get(url, (response) => {
       if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
         file.close();
-        fs.unlinkSync(dest);
+        if (fs.existsSync(dest)) fs.unlinkSync(dest);
         downloadPublicFile(response.headers.location, dest).then(resolve).catch(reject);
         return;
       }
@@ -119,172 +106,114 @@ function updateImagesTs(slug, localPath, altText) {
   const pattern = new RegExp('\\s*"' + slug.replace(/-/g, "\\-") + '":\\s*\\{[^}]*\\},?\\n', "g");
   content = content.replace(pattern, "\n");
   const marker = "} as const satisfies Record<string, ProductImages>;";
-  if (!content.includes(marker)) { console.error("  ❌ marker not found"); return false; }
+  if (!content.includes(marker)) { console.error("  ❌ marker not found in images.ts"); return false; }
   const entry = `  "${slug}": {\n    primary: { src: "${localPath}", alt: "${altText}" },\n  },\n`;
   content = content.replace(marker, entry + marker);
   fs.writeFileSync(IMAGES_TS, content, "utf-8");
   return true;
 }
 
-async function generateMockup(slug, printfulId) {
-  // 1. Fetch sync product to get catalog product info
-  const detail = await pf("GET", `/sync/products/${printfulId}`);
-  await sleep(200);
-
-  if (!detail.ok || !detail.data.result) {
-    return { ok: false, error: `sync product fetch failed: ${detail.status}` };
+// Fill in printfulId from recovery report for any nulls above
+function loadRecovery() {
+  const p = path.join(__dirname, "../printful-recovery-report.json");
+  if (!fs.existsSync(p)) return new Map();
+  const data = JSON.parse(fs.readFileSync(p, "utf-8"));
+  const map = new Map();
+  for (const prod of (data.foundProducts || [])) {
+    map.set(prod.owlProduct.slug, prod.printfulId);
   }
+  return map;
+}
 
-  const syncProduct = detail.data.result.sync_product;
-  const variants    = detail.data.result.sync_variants || [];
-
-  // thumbnail_url on the sync product is the best bet
-  if (syncProduct.thumbnail_url) {
-    console.log(`  → Using sync product thumbnail_url`);
-    return { ok: true, imageUrl: syncProduct.thumbnail_url, source: "thumbnail" };
+async function getCatalogImageUrl(catalogId) {
+  // Fetch the Printful catalog product — its .image field is a public CDN URL
+  const catalog = await pf(`/products/${catalogId}`);
+  await sleep(150);
+  if (!catalog.ok) {
+    console.log(`\n    catalog fetch failed: ${catalog.status}`);
+    return null;
   }
-
-  // Get catalog product_id from first variant
-  const firstVariant = variants[0];
-  if (!firstVariant) return { ok: false, error: "no variants" };
-
-  const catalogProductId = firstVariant.product?.product_id;
-  if (!catalogProductId) {
-    // dump variant for debugging
-    console.log(`  ℹ️  variant keys: ${Object.keys(firstVariant).join(", ")}`);
-    return { ok: false, error: "no catalog product_id in variant" };
-  }
-
-  console.log(`  → catalog_product_id: ${catalogProductId}`);
-
-  // 2. Get mockup styles for this catalog product
-  const stylesRes = await pf("GET", `/mockup-generator/styles/${catalogProductId}`);
-  await sleep(200);
-
-  if (!stylesRes.ok || !stylesRes.data.result) {
-    return { ok: false, error: `mockup styles fetch failed: ${stylesRes.status}` };
-  }
-
-  const styles = stylesRes.data.result;
-  const style  = styles[0]; // use first available style
-  if (!style) return { ok: false, error: "no mockup styles available" };
-
-  console.log(`  → mockup style: ${style.id} (${style.name || "unnamed"})`);
-
-  // 3. Get variant IDs for the task
-  const variantIds = variants.slice(0, 1).map(v => v.variant_id);
-
-  // 4. Submit mockup generation task
-  const taskBody = {
-    variant_ids: variantIds,
-    format: "png",
-    extra: [],
-  };
-
-  const taskRes = await pf("POST", `/mockup-generator/create-task/${catalogProductId}`, taskBody);
-  await sleep(300);
-
-  if (!taskRes.ok) {
-    return { ok: false, error: `create task failed: ${taskRes.status} ${JSON.stringify(taskRes.data).slice(0, 200)}` };
-  }
-
-  const taskKey = taskRes.data.result?.task_key;
-  if (!taskKey) return { ok: false, error: "no task_key in response" };
-
-  console.log(`  → task submitted, polling (key: ${taskKey.slice(0, 20)}...)`);
-
-  // 5. Poll for completion
-  for (let i = 0; i < 20; i++) {
-    await sleep(3000);
-    const poll = await pf("GET", `/mockup-generator/task?task_key=${encodeURIComponent(taskKey)}`);
-    const result = poll.data?.result;
-    if (!result) continue;
-
-    if (result.status === "completed") {
-      const mockups = result.mockups || [];
-      const mockup  = mockups[0];
-      const imgUrl  = mockup?.mockup_url || mockup?.url;
-      if (imgUrl) {
-        console.log(`  → mockup ready: ${imgUrl.slice(0, 60)}...`);
-        return { ok: true, imageUrl: imgUrl, source: "mockup-generator" };
-      }
-      return { ok: false, error: "task completed but no mockup_url" };
-    }
-
-    if (result.status === "failed") {
-      return { ok: false, error: `task failed: ${result.error || "unknown"}` };
-    }
-
-    process.stdout.write(".");
-  }
-
-  return { ok: false, error: "mockup generation timed out after 60s" };
+  const catProduct = catalog.data.result?.product || catalog.data.result || {};
+  const imageUrl = catProduct.image || catProduct.thumbnail_url;
+  if (imageUrl) return { url: imageUrl, source: `catalog/${catalogId}` };
+  return null;
 }
 
 async function main() {
-  console.log("\n🦉 Printful Mockup Generator\n");
+  console.log("\n🦉 Printful Product Image Fetcher\n");
+  console.log("Strategy: sync_product.thumbnail → file.thumbnail_url → catalog product image\n");
 
   const recovery = loadRecovery();
+
+  // Fill in any null printfulIds from recovery report
+  for (const p of PHYSICAL_PRODUCTS) {
+    if (!p.printfulId && recovery.has(p.slug)) {
+      p.printfulId = recovery.get(p.slug);
+    }
+  }
+
   let updated = 0, errors = 0, skipped = 0;
 
-  for (const slug of PHYSICAL_SLUGS) {
-    const destPng = path.join(PRODUCTS_DIR, `${slug}.png`);
+  for (const prod of PHYSICAL_PRODUCTS) {
+    const destPng = path.join(PRODUCTS_DIR, `${prod.slug}.png`);
 
+    // Already downloaded and valid?
     if (fs.existsSync(destPng) && fs.statSync(destPng).size > 5000) {
-      const localPath = `/images/products/${slug}.png`;
-      const altText   = recovery.get(slug)?.name || slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
-      updateImagesTs(slug, localPath, altText);
-      console.log(`  ⏭  ${slug} — already on disk`);
+      const localPath = `/images/products/${prod.slug}.png`;
+      updateImagesTs(prod.slug, localPath, prod.name);
+      console.log(`  ⏭  ${prod.slug} — already on disk, wiring`);
       skipped++; updated++;
       continue;
     }
 
-    const rec = recovery.get(slug);
-    if (!rec) {
-      console.log(`  ⚠️  ${slug} — not in recovery report`);
+    if (!prod.catalogId) {
+      console.log(`  ⚠️  ${prod.slug} — no catalog ID, skipping`);
       errors++;
       continue;
     }
 
-    process.stdout.write(`  [${slug}] `);
-    const result = await generateMockup(slug, rec.printfulId);
+    process.stdout.write(`  [${prod.slug}] catalog/${prod.catalogId}... `);
+    const result = await getCatalogImageUrl(prod.catalogId);
 
-    if (!result.ok) {
-      console.log(`\n  ❌ ${result.error}`);
+    if (!result) {
+      console.log("❌ no image URL found");
       errors++;
       continue;
     }
 
-    // Download the image
+    console.log(`\n    source: ${result.source}`);
+    console.log(`    url:    ${result.url.slice(0, 80)}`);
+    process.stdout.write(`    downloading... `);
+
     try {
-      await downloadPublicFile(result.imageUrl, destPng);
+      await downloadPublicFile(result.url, destPng);
       const size = fs.statSync(destPng).size;
-      if (size < 1000) throw new Error(`tiny file (${size} bytes)`);
+      if (size < 500) throw new Error(`file too small: ${size} bytes`);
 
-      const localPath = `/images/products/${slug}.png`;
-      const altText   = rec.name || slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
-      updateImagesTs(slug, localPath, altText);
-      console.log(`\n  ✅ saved ${Math.round(size/1024)}KB → ${localPath}`);
+      const localPath = `/images/products/${prod.slug}.png`;
+      updateImagesTs(prod.slug, localPath, prod.name);
+      console.log(`✅ ${Math.round(size / 1024)}KB`);
       updated++;
     } catch (err) {
-      console.log(`\n  ❌ download failed: ${err.message}`);
+      console.log(`❌ ${err.message}`);
       if (fs.existsSync(destPng)) fs.unlinkSync(destPng);
       errors++;
     }
 
-    await sleep(500);
+    await sleep(400);
   }
 
   console.log("\n==========================================");
-  console.log(`✅ Updated: ${updated} | ❌ Errors: ${errors} | ⏭  Skipped: ${skipped}`);
+  console.log(`✅ Updated: ${updated} | ⏭  Skipped: ${skipped} | ❌ Errors: ${errors}`);
   console.log("==========================================");
 
   if (updated > 0) {
-    console.log("\n🚀 Run to deploy:");
+    console.log("\n🚀 Next steps:");
     console.log("   git add public/images/products/ src/lib/images.ts");
-    console.log('   git commit -m "feat: add Printful product mockup images"');
+    console.log('   git commit -m "feat: add product images from Printful catalog"');
     console.log("   git push");
   }
+  console.log();
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

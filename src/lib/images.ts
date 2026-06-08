@@ -502,6 +502,70 @@ export const products = {
   "owl-swimming-sticker-set": {
     primary: { src: "/images/products/owl-swimming-sticker-set.png", alt: "Owl Swimming Sticker Set" },
   },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  },
+  "owl-cotton-kids-t-shirt": {
+    primary: { src: "/images/products/owl-cotton-kids-t-shirt.png", alt: "OWL Cotton Kids T-Shirt" },
+  },
+  "owl-throw-blanket": {
+    primary: { src: "/images/products/owl-throw-blanket.png", alt: "OWL Throw Blanket" },
+  },
+  "owl-flat-bill-cap": {
+    primary: { src: "/images/products/owl-flat-bill-cap.png", alt: "OWL Flat Bill Cap" },
+  },
+  "owl-insulated-tumbler": {
+    primary: { src: "/images/products/owl-insulated-tumbler.png", alt: "OWL Insulated Tumbler" },
+  },
+  "owl-wine-tumbler": {
+    primary: { src: "/images/products/owl-wine-tumbler.png", alt: "OWL Wine Tumbler" },
+  },
+  "owl-enamel-mug": {
+    primary: { src: "/images/products/owl-enamel-mug.png", alt: "OWL Enamel Mug" },
+  },
+  "owl-spiral-notebook": {
+    primary: { src: "/images/products/owl-spiral-notebook.png", alt: "OWL Spiral Notebook" },
+  },
+  "owl-holographic-stickers": {
+    primary: { src: "/images/products/owl-holographic-stickers.png", alt: "OWL Holographic Stickers" },
+  },
+  "owl-mouse-pad": {
+    primary: { src: "/images/products/owl-mouse-pad.png", alt: "OWL Mouse Pad" },
+  },
+  "owl-water-bottle": {
+    primary: { src: "/images/products/owl-water-bottle.png", alt: "OWL Water Bottle" },
+  },
+  "owl-duffle-bag": {
+    primary: { src: "/images/products/owl-duffle-bag.png", alt: "OWL Duffle Bag" },
+  },
+  "owl-backpack": {
+    primary: { src: "/images/products/owl-backpack.png", alt: "OWL Backpack" },
+  },
+  "owl-infant-bodysuit": {
+    primary: { src: "/images/products/owl-infant-bodysuit.png", alt: "OWL Infant Bodysuit" },
+  },
+  "owl-tote-bag": {
+    primary: { src: "/images/products/owl-tote-bag.png", alt: "OWL Eco-Friendly Tote Bag" },
+  },
+  "owl-glossy-mug": {
+    primary: { src: "/images/products/owl-glossy-mug.png", alt: "OWL Glossy Mug" },
+  },
+  "owl-sweatshirt": {
+    primary: { src: "/images/products/owl-sweatshirt.png", alt: "OWL Sweatshirt" },
+  },
 } as const satisfies Record<string, ProductImages>;
 export type ProductImageKey = keyof typeof products;
 
