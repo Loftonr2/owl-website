@@ -109,7 +109,20 @@ export async function POST() {
     }, { status: 503 });
   }
 
-  const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
+  const baseHeaders = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
+
+  // 0. Get store ID (account-level tokens require X-PF-Store-Id header)
+  let storeId: number | null = null;
+  try {
+    const storesRes = await fetch(`${PRINTFUL_BASE}/stores`, { headers: baseHeaders });
+    if (storesRes.ok) {
+      const storesData = await storesRes.json() as { result: Array<{ id: number; name: string }> };
+      storeId = storesData.result?.[0]?.id ?? null;
+    }
+  } catch { /* ignore — will try without store_id */ }
+
+  const headers: Record<string, string> = { ...baseHeaders };
+  if (storeId) headers["X-PF-Store-Id"] = String(storeId);
 
   // 1. Fetch all store products (8s timeout for Vercel Hobby 10s limit)
   let products: PrintfulProduct[] = [];
@@ -210,6 +223,7 @@ export async function POST() {
       "4. Commit and push",
     ],
     imagesTs_snippet: snippet,
+    store_id_used: storeId,
     env_var_needed: "PRINTFUL_API_KEY",
   });
 }
