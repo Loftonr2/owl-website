@@ -56,7 +56,7 @@ const SHOP_CATEGORIES = [
     iconColor: "text-[#7c3aed]",
     eyebrow: "text-[#7c3aed]",
     hoverBorder: "hover:border-[#7c3aed]/40",
-    featuredSlugs: ["owl-holographic-stickers", "owl-animal-sticker-set", "owl-holiday-sticker-set", "owl-abcs-sticker-set"],
+    featuredSlugs: ["owl-emotions-stickers", "owl-animal-sticker-set", "owl-holiday-sticker-set", "owl-abcs-sticker-set"],
   },
   {
     value: "Apparel",
@@ -155,12 +155,12 @@ export default function ShopPage() {
           <ul
             role="list"
             aria-label="Shop by category"
-            className="mt-8 grid grid-cols-3 gap-4 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12"
+            className="mt-8 flex flex-wrap justify-center gap-4"
           >
             {SHOP_CATEGORIES.map((cat) => {
               const Icon = cat.icon;
               return (
-                <li key={cat.value}>
+                <li key={cat.value} className="w-24 flex-shrink-0">
                   <Link
                     href={`#shop-${categorySlug(cat.value)}`}
                     aria-label={`Browse ${cat.label}`}
