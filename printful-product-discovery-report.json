@@ -1,0 +1,374 @@
+{
+  "generatedAt": "2026-06-08T10:59:33.672Z",
+  "mode": "dry-run",
+  "stores": [
+    {
+      "id": 18296796,
+      "name": "OWL Sing Together",
+      "type": "native"
+    },
+    {
+      "id": 18286248,
+      "name": "OwlSingTogetherStore",
+      "type": "etsy"
+    },
+    {
+      "id": 18286226,
+      "name": "Personal orders",
+      "type": "native"
+    }
+  ],
+  "summary": {
+    "totalChecked": 36,
+    "matched": 0,
+    "unmatched": 33,
+    "duplicates": 0
+  },
+  "products": [
+    {
+      "productId": "4517696473",
+      "productName": "OWL Cotton Kids T-Shirt",
+      "category": "Apparel",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517694662",
+      "productName": "OWL Throw Blanket",
+      "category": "Home & Accessories",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517691576",
+      "productName": "OWL Flat Bill Cap",
+      "category": "Headwear",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517687356",
+      "productName": "OWL Teal Insulated Tumbler W/ Straw",
+      "category": "Drinkware",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517685872",
+      "productName": "OWL Teal Wine Tumbler",
+      "category": "Drinkware",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517685153",
+      "productName": "OWL Teal Enamel Mug",
+      "category": "Drinkware",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517683038",
+      "productName": "OWL Spiral Notebook",
+      "category": "Home & Accessories",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517610007",
+      "productName": "OWL Insect Sticker Set II",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517608787",
+      "productName": "OWL Insect Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517605519",
+      "productName": "OWL Animal Sticker Set III",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517603787",
+      "productName": "OWL Animal Sticker Set II",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517602369",
+      "productName": "OWL Counting Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517600519",
+      "productName": "OWL A+ Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517598855",
+      "productName": "OWL Colors Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517593458",
+      "productName": "OWL Music Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517593209",
+      "productName": "OWL Seasons Stickers Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517591892",
+      "productName": "OWL Pre-School Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517587082",
+      "productName": "OWL Holiday Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517501369",
+      "productName": "OWL Animal Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517499640",
+      "productName": "OWL Numbers Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517496529",
+      "productName": "OWL Baby Boy Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517494654",
+      "productName": "OWL Baby Girl Sticker Set",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517393453",
+      "productName": "OWL Holographic Stickers",
+      "category": "Stickers",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517390143",
+      "productName": "OWL Mouse Pad",
+      "category": "Home & Accessories",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517069629",
+      "productName": "OWL Stainless Steel Water Bottle",
+      "category": "Home & Accessories",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517061382",
+      "productName": "OWL Space Planets Duffle Bag",
+      "category": "Home & Accessories",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4517027775",
+      "productName": "OWL Space Planet Backpack",
+      "category": "Home & Accessories",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4516944689",
+      "productName": "OWL Infant Bodysuit",
+      "category": "Apparel",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4516917473",
+      "productName": "OWL Eco-Friendly Tote Bag",
+      "category": "Home & Accessories",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4516915899",
+      "productName": "White OWL Glossy Mug",
+      "category": "Drinkware",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4516906642",
+      "productName": "OWL T-Shirt",
+      "category": "Apparel",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4516897484",
+      "productName": "Embroidered Beanie",
+      "category": "Headwear",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "4516880570",
+      "productName": "OWL Sweatshirt",
+      "category": "Apparel",
+      "status": "NOT_FOUND",
+      "action": "Manual check needed — ID may not exist in any connected store",
+      "foundInStores": [],
+      "printfulDashboardUrl": "https://www.printful.com/dashboard/default/products"
+    },
+    {
+      "productId": "N/A",
+      "productName": "OWL Throw Blanket",
+      "category": "Home & Accessories",
+      "status": "FOUND_BY_NAME",
+      "action": "Confirm match before publishing",
+      "foundInStores": [
+        {
+          "storeId": 18286248,
+          "storeName": "OwlSingTogetherStore",
+          "syncProductId": 436902009,
+          "syncProductName": "OWL Throw Blanket",
+          "thumbnailUrl": null
+        }
+      ]
+    },
+    {
+      "productId": "N/A",
+      "productName": "OWL ABC's Sticker Set",
+      "category": "Stickers",
+      "status": "FOUND_BY_NAME",
+      "action": "Confirm match before publishing",
+      "foundInStores": [
+        {
+          "storeId": 18286248,
+          "storeName": "OwlSingTogetherStore",
+          "syncProductId": 436878466,
+          "syncProductName": "OWL ABC's Sticker Set",
+          "thumbnailUrl": null
+        }
+      ]
+    },
+    {
+      "productId": "N/A",
+      "productName": "OWL Infant Bodysuit",
+      "category": "Apparel",
+      "status": "FOUND_BY_NAME",
+      "action": "Confirm match before publishing",
+      "foundInStores": [
+        {
+          "storeId": 18286248,
+          "storeName": "OwlSingTogetherStore",
+          "syncProductId": 436736163,
+          "syncProductName": "OWL Infant Bodysuit",
+          "thumbnailUrl": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "generatedAt": "2026-06-09T07:59:29.109Z",
+  "totalProducts": 42,
+  "cleared": 0,
+  "alreadyClear": 0,
+  "failed": 42,
+  "details": {
+    "cleared": [],
+    "alreadyClear": [],
+    "failed": [
+      {
+        "name": "Insulated tumbler with a straw",
+        "syncId": 437050532,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "Latte mug",
+        "syncId": 437050516,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "White glossy mug",
+        "syncId": 437050458,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "Latte mug",
+        "syncId": 437050407,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "Enamel Mug",
+        "syncId": 437050380,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "Bubble-free stickers",
+        "syncId": 437050149,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "Bubble-free stickers",
+        "syncId": 437050054,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Throw Blanket",
+        "syncId": 436902009,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Cotton Kids T-Shirt",
+        "syncId": 436901241,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Flat Bill Cap",
+        "syncId": 436900911,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Teal Insulated Tumbler With Straw",
+        "syncId": 436899439,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Teal Wine Tumbler",
+        "syncId": 436899094,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Spiral Notebook",
+        "syncId": 436898141,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Teal Enamel Mug",
+        "syncId": 436897816,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Insect Sticker Set II",
+        "syncId": 436882193,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Insect Sticker Set ",
+        "syncId": 436881980,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Animal Sticker Set IV",
+        "syncId": 436881736,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Animal Sticker Set III",
+        "syncId": 436881374,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Animal Sticker Set II",
+        "syncId": 436881158,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Counting Sticker Set",
+        "syncId": 436880565,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL A+ Sticker Set",
+        "syncId": 436880333,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Colors Sticker Set",
+        "syncId": 436879876,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Music Sticker Set",
+        "syncId": 436879679,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Pre-School Sticker Set",
+        "syncId": 436879492,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Seasons Stickers Set",
+        "syncId": 436879251,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Holiday Sticker Set",
+        "syncId": 436878833,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL ABC's Sticker Set",
+        "syncId": 436878466,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Numbers Sticker Set",
+        "syncId": 436862004,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Animal Sticker Set",
+        "syncId": 436861304,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Baby Girl Sticker Set",
+        "syncId": 436860964,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Baby Boy Sticker Set",
+        "syncId": 436860629,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Holographic Stickers",
+        "syncId": 436841220,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Mouse Pad",
+        "syncId": 436840509,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Stainless Steel Water Bottle",
+        "syncId": 436764068,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Space Planets Duffle Bag",
+        "syncId": 436763425,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Space Planet Backpack",
+        "syncId": 436754670,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Infant Bodysuit",
+        "syncId": 436736163,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Eco-Friendly Tote Bag",
+        "syncId": 436731297,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "White OWL Glossy Mug",
+        "syncId": 436731071,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL T-Shirt",
+        "syncId": 436728456,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "Embroidered Beanie",
+        "syncId": 436726537,
+        "reason": "405: Method Not Allowed"
+      },
+      {
+        "name": "OWL Sweatshirt",
+        "syncId": 436722721,
+        "reason": "405: Method Not Allowed"
+      }
+    ]
+  }
+}

@@ -1,0 +1,575 @@
+{
+  "generatedAt": "2026-06-08T11:13:42.270Z",
+  "mode": "dry-run",
+  "stores": [
+    {
+      "id": 18296796,
+      "name": "OWL Sing Together",
+      "type": "native"
+    },
+    {
+      "id": 18286248,
+      "name": "OwlSingTogetherStore",
+      "type": "etsy"
+    },
+    {
+      "id": 18286226,
+      "name": "Personal orders",
+      "type": "native"
+    }
+  ],
+  "totalPrintfulProducts": 47,
+  "summary": {
+    "found": 34,
+    "missing": 0,
+    "wrongStore": 0
+  },
+  "foundProducts": [
+    {
+      "owlProduct": {
+        "id": "4517696473",
+        "name": "OWL Cotton Kids T-Shirt",
+        "category": "Apparel",
+        "slug": "owl-cotton-kids-t-shirt"
+      },
+      "printfulId": 436901241,
+      "externalId": "4517696473",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517694662",
+        "name": "OWL Throw Blanket",
+        "category": "Home & Accessories",
+        "slug": "owl-throw-blanket"
+      },
+      "printfulId": 436902009,
+      "externalId": "4517694662",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517691576",
+        "name": "OWL Flat Bill Cap",
+        "category": "Headwear",
+        "slug": "owl-flat-bill-cap"
+      },
+      "printfulId": 436900911,
+      "externalId": "4517691576",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517687356",
+        "name": "OWL Teal Insulated Tumbler W/ Straw",
+        "category": "Drinkware",
+        "slug": "owl-insulated-tumbler"
+      },
+      "printfulId": 436899439,
+      "externalId": "4517687356",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517685872",
+        "name": "OWL Teal Wine Tumbler",
+        "category": "Drinkware",
+        "slug": "owl-wine-tumbler"
+      },
+      "printfulId": 436899094,
+      "externalId": "4517685872",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517685153",
+        "name": "OWL Teal Enamel Mug",
+        "category": "Drinkware",
+        "slug": "owl-enamel-mug"
+      },
+      "printfulId": 437050380,
+      "externalId": "4517957803",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "name",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517683038",
+        "name": "OWL Spiral Notebook",
+        "category": "Home & Accessories",
+        "slug": "owl-spiral-notebook"
+      },
+      "printfulId": 436898141,
+      "externalId": "4517683038",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517610007",
+        "name": "OWL Insect Sticker Set II",
+        "category": "Stickers",
+        "slug": "owl-insect-sticker-set-ii"
+      },
+      "printfulId": 436882193,
+      "externalId": "4517610007",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517608787",
+        "name": "OWL Insect Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-insect-sticker-set"
+      },
+      "printfulId": 436882193,
+      "externalId": "4517610007",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "name",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517605519",
+        "name": "OWL Animal Sticker Set III",
+        "category": "Stickers",
+        "slug": "owl-animal-sticker-set-iii"
+      },
+      "printfulId": 436881374,
+      "externalId": "4517605519",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517603787",
+        "name": "OWL Animal Sticker Set II",
+        "category": "Stickers",
+        "slug": "owl-animal-sticker-set-ii"
+      },
+      "printfulId": 436881374,
+      "externalId": "4517605519",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "name",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517602369",
+        "name": "OWL Counting Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-counting-sticker-set"
+      },
+      "printfulId": 436880565,
+      "externalId": "4517602369",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517600519",
+        "name": "OWL A+ Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-aplus-sticker-set"
+      },
+      "printfulId": 436880333,
+      "externalId": "4517600519",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517598855",
+        "name": "OWL Colors Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-colors-sticker-set"
+      },
+      "printfulId": 436879876,
+      "externalId": "4517598855",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517593458",
+        "name": "OWL Music Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-music-sticker-set"
+      },
+      "printfulId": 436879679,
+      "externalId": "4517593458",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517593209",
+        "name": "OWL Seasons Stickers Set",
+        "category": "Stickers",
+        "slug": "owl-seasons-sticker-set"
+      },
+      "printfulId": 436879251,
+      "externalId": "4517593209",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517591892",
+        "name": "OWL Pre-School Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-preschool-sticker-set"
+      },
+      "printfulId": 436879492,
+      "externalId": "4517591892",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517587082",
+        "name": "OWL Holiday Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-holiday-sticker-set"
+      },
+      "printfulId": 436878833,
+      "externalId": "4517587082",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517501369",
+        "name": "OWL Animal Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-animal-sticker-set"
+      },
+      "printfulId": 436881736,
+      "externalId": "4517607203",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "name",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517499640",
+        "name": "OWL Numbers Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-numbers-sticker-set"
+      },
+      "printfulId": 436862004,
+      "externalId": "4517499640",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517496529",
+        "name": "OWL Baby Boy Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-baby-boy-sticker-set"
+      },
+      "printfulId": 436860629,
+      "externalId": "4517496529",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517494654",
+        "name": "OWL Baby Girl Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-baby-girl-sticker-set"
+      },
+      "printfulId": 436860964,
+      "externalId": "4517494654",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517393453",
+        "name": "OWL Holographic Stickers",
+        "category": "Stickers",
+        "slug": "owl-holographic-stickers"
+      },
+      "printfulId": 436841220,
+      "externalId": "4517393453",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517390143",
+        "name": "OWL Mouse Pad",
+        "category": "Home & Accessories",
+        "slug": "owl-mouse-pad"
+      },
+      "printfulId": 436840509,
+      "externalId": "4517390143",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517069629",
+        "name": "OWL Stainless Steel Water Bottle",
+        "category": "Home & Accessories",
+        "slug": "owl-water-bottle"
+      },
+      "printfulId": 436764068,
+      "externalId": "4517069629",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517061382",
+        "name": "OWL Space Planets Duffle Bag",
+        "category": "Home & Accessories",
+        "slug": "owl-duffle-bag"
+      },
+      "printfulId": 436763425,
+      "externalId": "4517061382",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4517027775",
+        "name": "OWL Space Planet Backpack",
+        "category": "Home & Accessories",
+        "slug": "owl-backpack"
+      },
+      "printfulId": 436754670,
+      "externalId": "4517027775",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4516944689",
+        "name": "OWL Infant Bodysuit",
+        "category": "Apparel",
+        "slug": "owl-infant-bodysuit"
+      },
+      "printfulId": 436736163,
+      "externalId": "4516944689",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4516917473",
+        "name": "OWL Eco-Friendly Tote Bag",
+        "category": "Home & Accessories",
+        "slug": "owl-tote-bag"
+      },
+      "printfulId": 436731297,
+      "externalId": "4516917473",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4516915899",
+        "name": "White OWL Glossy Mug",
+        "category": "Drinkware",
+        "slug": "owl-glossy-mug"
+      },
+      "printfulId": 436731071,
+      "externalId": "4516915899",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4516906642",
+        "name": "OWL T-Shirt",
+        "category": "Apparel",
+        "slug": "owl-t-shirt"
+      },
+      "printfulId": 437195070,
+      "externalId": "6a269c923aee07",
+      "storeId": 18296796,
+      "storeName": "OWL Sing Together",
+      "matchType": "name",
+      "thumbnail": "https://files.cdn.printful.com/files/bec/bec6c84cd598d1275e164039fdc19e9b_preview.png",
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4516897484",
+        "name": "Embroidered Beanie",
+        "category": "Headwear",
+        "slug": "owl-embroidered-beanie"
+      },
+      "printfulId": 437195064,
+      "externalId": "6a269c88222af6",
+      "storeId": 18296796,
+      "storeName": "OWL Sing Together",
+      "matchType": "name",
+      "thumbnail": "https://files.cdn.printful.com/files/983/98331b313212a31e1e5360a829882055_preview.png",
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "4516880570",
+        "name": "OWL Sweatshirt",
+        "category": "Apparel",
+        "slug": "owl-sweatshirt"
+      },
+      "printfulId": 436722721,
+      "externalId": "4516880570",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "external_id",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    },
+    {
+      "owlProduct": {
+        "id": "N/A",
+        "name": "OWL ABC's Sticker Set",
+        "category": "Stickers",
+        "slug": "owl-abcs-sticker-set"
+      },
+      "printfulId": 436878466,
+      "externalId": "4517588735",
+      "storeId": 18286248,
+      "storeName": "OwlSingTogetherStore",
+      "matchType": "name",
+      "thumbnail": null,
+      "status": "FOUND",
+      "action": "Already in store"
+    }
+  ],
+  "missingProducts": [],
+  "wrongStoreProducts": []
+}
