@@ -569,7 +569,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
   // ── Headwear ──────────────────────────────────────────────────────────────
   {
     slug: "owl-flat-bill-cap",
-    title: "OWL Flat Bill Cap",
+    title: "OWL Flat Ball Cap",
     price: "$19.00",
     ageRange: "All ages",
     ageBand: "5-8",
