@@ -216,6 +216,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
                     <span>Secure checkout via PayPal</span>
                   </div>
                   <PayPalCheckout
+                    slug={p.slug}
                     productTitle={p.title}
                     price={p.price}
                   />
