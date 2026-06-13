@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { SEED_PRODUCTS } from "@/lib/seed/products";
+import { PAYPAL_BASE } from "@/lib/paypal-server";
 
 /**
  * POST /api/webhooks/paypal
@@ -132,7 +133,7 @@ async function verifyPayPalSignature(req: Request, rawBody: string): Promise<boo
     const clientId     = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? "";
     const clientSecret = process.env.PAYPAL_CLIENT_SECRET ?? "";
 
-    const tokenRes = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
+    const tokenRes = await fetch(`${PAYPAL_BASE}/v1/oauth2/token`, {
       method: "POST",
       headers: {
         Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString("base64")}`,
@@ -148,7 +149,7 @@ async function verifyPayPalSignature(req: Request, rawBody: string): Promise<boo
 
     const { access_token } = await tokenRes.json() as { access_token: string };
 
-    const verifyRes = await fetch("https://api-m.paypal.com/v1/notifications/verify-webhook-signature", {
+    const verifyRes = await fetch(`${PAYPAL_BASE}/v1/notifications/verify-webhook-signature`, {
       method: "POST",
       headers: { Authorization: `Bearer ${access_token}`, "Content-Type": "application/json" },
       body: JSON.stringify({

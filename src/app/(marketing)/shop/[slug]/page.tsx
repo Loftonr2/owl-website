@@ -2,8 +2,8 @@ import Script from "next/script";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Bell, ShoppingBag } from "lucide-react";
-import { PayPalCheckout } from "@/components/store/paypal-checkout";
+import { Bell } from "lucide-react";
+import { AddToCartButton } from "@/components/store/add-to-cart-button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Chip } from "@/components/ui/chip";
 import { Button } from "@/components/ui/button";
@@ -53,13 +53,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
   const related = SEED_PRODUCTS.filter((r) => r.slug !== p.slug).slice(0, 4);
   const isComingSoon = p.isComingSoon ?? false;
 
-  // Phase 4 — product photo resolver.
-  // Primary tier: products[slug].primary. Gallery tier: products[slug].gallery.
-  // Both empty until commissioned. When primary is present, real image stacks
-  // over the tonal floor. When gallery has entries, a stacked thumbnail rail
-  // renders under the hero shot. No imagery is fabricated.
   const primaryImage = resolveProductImage(p.slug);
   const galleryImages = resolveProductGallery(p.slug);
+
+  // Numeric price for the cart (display only — server re-validates from seed)
+  const priceAmount = parseFloat(p.price.replace(/[^0-9.]/g, "")) || 0;
 
   const ld = JSON.stringify(
     productSchema({
@@ -68,9 +66,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
       image: `${siteConfig.url}/images/headers/shop-hero.png`,
       sku: p.slug,
       offers: {
-        price: parseFloat(p.price.replace("$", "")),
+        price: priceAmount,
         priceCurrency: "USD",
-        // PreOrder maps the truthful state for coming-soon products.
         availability: isComingSoon ? "PreOrder" : "InStock",
         url: `${siteConfig.url}/shop/${p.slug}`,
       },
@@ -88,9 +85,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
 
       <Section width="wide" pad="lg" bg="cream-deep">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-          {/* Gallery — tonal panel + (resolved primary image) + (gallery rail) */}
+          {/* Gallery */}
           <div className="space-y-4">
-            {/* Primary tile: tonal floor + optional <Image> on top + OwlMark + ribbon */}
             <div
               className={`relative aspect-square overflow-hidden rounded-owl-hero shadow-owl-2 ${toneStyles[p.tone]}`}
             >
@@ -123,8 +119,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
               {isComingSoon && <ComingSoonRibbon variant="corner" />}
             </div>
 
-            {/* Gallery thumbnails — only render when at least one shot exists.
-                Truthful asset interface: empty array → no rail. */}
             {galleryImages.length > 0 && (
               <ul
                 role="list"
@@ -211,15 +205,20 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-sm text-owl-mist">
-                    <ShoppingBag className="h-4 w-4" />
-                    <span>Secure checkout via PayPal</span>
-                  </div>
-                  <PayPalCheckout
+                  {/* Add to Cart — opens the cart drawer */}
+                  <AddToCartButton
                     slug={p.slug}
-                    productTitle={p.title}
+                    title={p.title}
                     price={p.price}
+                    priceAmount={priceAmount}
+                    image={primaryImage.src || undefined}
+                    category={p.category}
                   />
+
+                  <p className="text-center text-xs text-owl-mist">
+                    🔒 Secure checkout via PayPal · Cards accepted · No account needed
+                  </p>
+
                   <Button intent="tertiary" size="md" asChild>
                     <Link href="/shop">← Keep shopping</Link>
                   </Button>
@@ -232,7 +231,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
 
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream">
-               <SectionHeader eyebrow="Pairs with" title="Bundle suggestions" />
+          <SectionHeader eyebrow="Pairs with" title="Bundle suggestions" />
           <MediaRail
             ariaLabel="Related OWL products"
             columns={{ md: 3, lg: 4 }}
