@@ -10,7 +10,7 @@ import { PAYPAL_BASE } from "@/lib/paypal-server";
  *
  * ── SETUP (do once in PayPal Developer Dashboard) ────────────────────────
  * 1. developer.paypal.com → My Apps → Your App → Webhooks → Add Webhook
- * 2. URL: https://owlsingtogether.com/api/webhooks/paypal
+ * 2. URL: https://www.owlsingtogether.com/api/webhooks/paypal
  * 3. Events:
  *      CHECKOUT.ORDER.APPROVED
  *      PAYMENT.CAPTURE.COMPLETED
@@ -451,7 +451,7 @@ export async function GET() {
 
   return NextResponse.json({
     status:         "PayPal → Printful webhook active",
-    webhook_url:    "https://owlsingtogether.com/api/webhooks/paypal",
+    webhook_url:    "https://www.owlsingtogether.com/api/webhooks/paypal",
     fulfillment:    "Printful",
     printful_store: `Store ID ${PRINTFUL_STORE_ID} (OwlSingTogetherStore / Etsy)`,
     credentials: {
