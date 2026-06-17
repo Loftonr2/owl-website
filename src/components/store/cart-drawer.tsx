@@ -103,159 +103,167 @@ export function CartDrawer() {
           </button>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          {items.length === 0 ? (
-            // Empty state
-            <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-owl-cream-deep">
-                <ShoppingBag className="h-10 w-10 text-owl-mist" strokeWidth={1} aria-hidden />
+        {/* Scrollable body — items + checkout footer in one container so the
+            PayPal card fields (which expand the footer height) remain reachable */}
+        <div className="flex-1 overflow-y-auto">
+
+          {/* Item list / empty state */}
+          <div className="px-6 py-4">
+            {items.length === 0 ? (
+              // Empty state
+              <div className="flex h-full min-h-[60vh] flex-col items-center justify-center gap-6 text-center">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-owl-cream-deep">
+                  <ShoppingBag className="h-10 w-10 text-owl-mist" strokeWidth={1} aria-hidden />
+                </div>
+                <div>
+                  <p className="font-display text-lg font-bold text-owl-ink">Your cart is empty</p>
+                  <p className="mt-1 text-sm text-owl-mist">
+                    Add something wonderful for your little learner.
+                  </p>
+                </div>
+                <Link
+                  href="/shop"
+                  onClick={closeDrawer}
+                  className={cn(
+                    "rounded-owl-btn bg-owl-teal px-6 py-2.5 text-sm font-semibold text-white shadow-owl-1",
+                    "hover:bg-owl-teal-deep hover:-translate-y-px hover:shadow-owl-2",
+                    "transition-all duration-150 ease-owl-quick",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60"
+                  )}
+                >
+                  Browse the shop
+                </Link>
               </div>
-              <div>
-                <p className="font-display text-lg font-bold text-owl-ink">Your cart is empty</p>
-                <p className="mt-1 text-sm text-owl-mist">
-                  Add something wonderful for your little learner.
-                </p>
+            ) : (
+              // Item list
+              <ul className="space-y-4" role="list" aria-label="Cart items">
+                {items.map((item) => (
+                  <li
+                    key={item.slug}
+                    className="flex gap-4 rounded-owl-card bg-owl-white p-4 shadow-owl-1"
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-owl-card bg-owl-cream-deep">
+                      {item.image ? (
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          sizes="64px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center">
+                          <span className="font-display text-2xl font-extrabold text-owl-ink/20">
+                            {item.title.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Details */}
+                    <div className="flex flex-1 flex-col gap-1">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-sm font-semibold leading-tight text-owl-ink">
+                          {item.title}
+                        </p>
+                        <button
+                          type="button"
+                          aria-label={`Remove ${item.title}`}
+                          onClick={() => removeItem(item.slug)}
+                          className="mt-0.5 shrink-0 text-owl-mist hover:text-red-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-400"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" aria-hidden />
+                        </button>
+                      </div>
+
+                      <p className="text-sm font-bold text-owl-teal">{item.price}</p>
+
+                      {/* Quantity stepper */}
+                      <div className="mt-1 flex items-center gap-2">
+                        <button
+                          type="button"
+                          aria-label={`Decrease quantity of ${item.title}`}
+                          onClick={() => updateQty(item.slug, item.quantity - 1)}
+                          className={cn(
+                            "flex h-6 w-6 items-center justify-center rounded-full border border-owl-cream-deep",
+                            "text-owl-ink/60 hover:border-owl-teal hover:text-owl-teal",
+                            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-owl-teal/60",
+                            "transition-colors duration-100"
+                          )}
+                        >
+                          <Minus className="h-3 w-3" aria-hidden />
+                        </button>
+                        <span
+                          className="min-w-[1.5rem] text-center text-sm font-semibold text-owl-ink"
+                          aria-label={`Quantity: ${item.quantity}`}
+                        >
+                          {item.quantity}
+                        </span>
+                        <button
+                          type="button"
+                          aria-label={`Increase quantity of ${item.title}`}
+                          onClick={() => updateQty(item.slug, item.quantity + 1)}
+                          className={cn(
+                            "flex h-6 w-6 items-center justify-center rounded-full border border-owl-cream-deep",
+                            "text-owl-ink/60 hover:border-owl-teal hover:text-owl-teal",
+                            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-owl-teal/60",
+                            "transition-colors duration-100"
+                          )}
+                        >
+                          <Plus className="h-3 w-3" aria-hidden />
+                        </button>
+                        <span className="ml-auto text-xs text-owl-mist">
+                          ×{" "}
+                          <span className="font-semibold text-owl-ink/70">
+                            {item.quantity > 1
+                              ? `$${(item.priceAmount * item.quantity).toFixed(2)}`
+                              : item.price}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Checkout footer — lives inside the scroll container so the PayPal
+              card fields (email, card number, billing address) can expand freely
+              and the user can scroll down to reach the Pay button */}
+          {items.length > 0 && (
+            <div className="border-t border-owl-cream-deep bg-owl-cream px-6 pb-10 pt-4">
+              {/* Subtotal */}
+              <div className="mb-4 flex items-center justify-between">
+                <span className="text-sm font-medium text-owl-ink/70">Subtotal</span>
+                <span className="font-display text-lg font-bold text-owl-ink">
+                  {subtotalFormatted}
+                </span>
               </div>
+              <p className="mb-4 text-[11px] text-owl-mist">
+                Shipping calculated at PayPal checkout · Taxes may apply
+              </p>
+
+              {/* PayPal checkout reads from cart context */}
+              <CartPayPalCheckout onSuccess={closeDrawer} />
+
               <Link
                 href="/shop"
                 onClick={closeDrawer}
                 className={cn(
-                  "rounded-owl-btn bg-owl-teal px-6 py-2.5 text-sm font-semibold text-white shadow-owl-1",
-                  "hover:bg-owl-teal-deep hover:-translate-y-px hover:shadow-owl-2",
-                  "transition-all duration-150 ease-owl-quick",
+                  "mt-3 block w-full rounded-owl-btn border border-owl-cream-deep py-2.5 text-center text-sm font-semibold text-owl-ink/70",
+                  "hover:border-owl-teal hover:text-owl-teal",
+                  "transition-colors duration-150 ease-owl-quick",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60"
                 )}
               >
-                Browse the shop
+                Continue shopping
               </Link>
             </div>
-          ) : (
-            // Item list
-            <ul className="space-y-4" role="list" aria-label="Cart items">
-              {items.map((item) => (
-                <li
-                  key={item.slug}
-                  className="flex gap-4 rounded-owl-card bg-owl-white p-4 shadow-owl-1"
-                >
-                  {/* Thumbnail */}
-                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-owl-card bg-owl-cream-deep">
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        sizes="64px"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center">
-                        <span className="font-display text-2xl font-extrabold text-owl-ink/20">
-                          {item.title.charAt(0)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Details */}
-                  <div className="flex flex-1 flex-col gap-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className="text-sm font-semibold leading-tight text-owl-ink">
-                        {item.title}
-                      </p>
-                      <button
-                        type="button"
-                        aria-label={`Remove ${item.title}`}
-                        onClick={() => removeItem(item.slug)}
-                        className="mt-0.5 shrink-0 text-owl-mist hover:text-red-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-400"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" aria-hidden />
-                      </button>
-                    </div>
-
-                    <p className="text-sm font-bold text-owl-teal">{item.price}</p>
-
-                    {/* Quantity stepper */}
-                    <div className="mt-1 flex items-center gap-2">
-                      <button
-                        type="button"
-                        aria-label={`Decrease quantity of ${item.title}`}
-                        onClick={() => updateQty(item.slug, item.quantity - 1)}
-                        className={cn(
-                          "flex h-6 w-6 items-center justify-center rounded-full border border-owl-cream-deep",
-                          "text-owl-ink/60 hover:border-owl-teal hover:text-owl-teal",
-                          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-owl-teal/60",
-                          "transition-colors duration-100"
-                        )}
-                      >
-                        <Minus className="h-3 w-3" aria-hidden />
-                      </button>
-                      <span
-                        className="min-w-[1.5rem] text-center text-sm font-semibold text-owl-ink"
-                        aria-label={`Quantity: ${item.quantity}`}
-                      >
-                        {item.quantity}
-                      </span>
-                      <button
-                        type="button"
-                        aria-label={`Increase quantity of ${item.title}`}
-                        onClick={() => updateQty(item.slug, item.quantity + 1)}
-                        className={cn(
-                          "flex h-6 w-6 items-center justify-center rounded-full border border-owl-cream-deep",
-                          "text-owl-ink/60 hover:border-owl-teal hover:text-owl-teal",
-                          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-owl-teal/60",
-                          "transition-colors duration-100"
-                        )}
-                      >
-                        <Plus className="h-3 w-3" aria-hidden />
-                      </button>
-                      <span className="ml-auto text-xs text-owl-mist">
-                        ×{" "}
-                        <span className="font-semibold text-owl-ink/70">
-                          {item.quantity > 1
-                            ? `$${(item.priceAmount * item.quantity).toFixed(2)}`
-                            : item.price}
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
           )}
+
         </div>
-
-        {/* Footer — only shown when cart has items */}
-        {items.length > 0 && (
-          <div className="border-t border-owl-cream-deep bg-owl-cream px-6 pb-8 pt-4">
-            {/* Subtotal */}
-            <div className="mb-4 flex items-center justify-between">
-              <span className="text-sm font-medium text-owl-ink/70">Subtotal</span>
-              <span className="font-display text-lg font-bold text-owl-ink">
-                {subtotalFormatted}
-              </span>
-            </div>
-            <p className="mb-4 text-[11px] text-owl-mist">
-              Shipping calculated at PayPal checkout · Taxes may apply
-            </p>
-
-            {/* PayPal checkout reads from cart context */}
-            <CartPayPalCheckout onSuccess={closeDrawer} />
-
-            <Link
-              href="/shop"
-              onClick={closeDrawer}
-              className={cn(
-                "mt-3 block w-full rounded-owl-btn border border-owl-cream-deep py-2.5 text-center text-sm font-semibold text-owl-ink/70",
-                "hover:border-owl-teal hover:text-owl-teal",
-                "transition-colors duration-150 ease-owl-quick",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60"
-              )}
-            >
-              Continue shopping
-            </Link>
-          </div>
-        )}
       </div>
     </>
   );
