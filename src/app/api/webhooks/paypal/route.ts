@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { SEED_PRODUCTS } from "@/lib/seed/products";
 import { PAYPAL_BASE } from "@/lib/paypal-server";
+import { sendOrderConfirmationOnce } from "@/lib/email/send-order-confirmation";
 
 /**
  * POST /api/webhooks/paypal
@@ -179,24 +180,30 @@ async function saveOrderToSupabase(order: OrderRecord): Promise<void> {
   if (!supabaseUrl || !supabaseKey) return;
 
   try {
-    const res = await fetch(`${supabaseUrl}/rest/v1/orders`, {
+    // Upsert on external_id so the webhook and the capture route converge on a
+    // single order row (whichever arrives second enriches it) — and so shipping
+    // details captured here are available to the confirmation email.
+    const res = await fetch(`${supabaseUrl}/rest/v1/orders?on_conflict=external_id`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         apikey: supabaseKey,
         Authorization: `Bearer ${supabaseKey}`,
-        Prefer: "return=minimal",
+        Prefer: "resolution=merge-duplicates,return=minimal",
       },
       body: JSON.stringify({
-        external_id:    order.paypal_order_id,
-        source:         "paypal",
-        customer_email: order.customer_email,
-        total_cents:    Math.round(parseFloat(order.total_amount) * 100),
-        currency:       order.currency,
-        status:         order.printful_order_id ? "fulfilled" : order.status,
-        line_items:     order.line_items,
-        placed_at:      order.created_at,
-        raw_payload:    order.raw_event,
+        external_id:      order.paypal_order_id,
+        source:           "paypal",
+        customer_email:   order.customer_email,
+        customer_name:    order.shipping_name,
+        shipping_address: order.shipping_address,
+        total_cents:      Math.round(parseFloat(order.total_amount) * 100),
+        currency:         order.currency,
+        status:           order.printful_order_id ? "fulfilled" : order.status,
+        paypal_order_id:  order.paypal_order_id,
+        line_items:       order.line_items,
+        placed_at:        order.created_at,
+        raw_payload:      order.raw_event,
       }),
     });
     if (!res.ok) console.error("[PayPal Webhook] Supabase save failed:", await res.text());
@@ -383,6 +390,18 @@ export async function POST(req: Request) {
     raw_event:        event,
     created_at:       new Date().toISOString(),
   };
+
+  // Persist the paid order up front so the row + shipping details exist, then
+  // send the branded confirmation email exactly once. The capture route may also
+  // trigger this; the atomic DB claim guarantees a single send. Fulfillment below
+  // re-saves with the final status and never depends on the email succeeding.
+  await saveOrderToSupabase(orderRecord);
+  try {
+    const emailOutcome = await sendOrderConfirmationOnce(orderId);
+    console.log("[PayPal Webhook] Confirmation email:", emailOutcome.status, "—", customerEmail);
+  } catch (emailErr) {
+    console.error("[PayPal Webhook] Confirmation email unexpected error:", emailErr);
+  }
 
   // Manual review path
   if (!allReady) {

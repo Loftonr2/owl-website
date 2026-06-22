@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { findProductBySlug } from "@/lib/seed/products";
 import { getPayPalAccessToken, PAYPAL_BASE } from "@/lib/paypal-server";
+import { sendOrderConfirmationOnce } from "@/lib/email/send-order-confirmation";
 import type { CartOrderItem } from "@/types/cart";
 
 // -- Types -----------------------------------------------------------------------
@@ -68,16 +69,22 @@ async function saveOrderToSupabase(payload: SupabaseOrderPayload): Promise<void>
   }
 
   try {
-    const res = await fetch(`${supabaseUrl}/rest/v1/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify(payload),
-    });
+    // Upsert on external_id so the capture route and the PayPal webhook converge
+    // on a single order row (whichever arrives second enriches it) instead of
+    // colliding on the unique external_id constraint.
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/orders?on_conflict=external_id`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          Prefer: "resolution=merge-duplicates,return=minimal",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
     if (!res.ok) {
       console.error("[capture-order] Supabase save failed:", await res.text());
@@ -89,91 +96,6 @@ async function saveOrderToSupabase(payload: SupabaseOrderPayload): Promise<void>
   }
 }
 
-async function sendConfirmationEmail(data: {
-  customerEmail: string;
-  customerName: string;
-  lineItems: Array<{ name: string; quantity: number; unitPrice: string }>;
-  totalAmount: string;
-  paypalOrderId: string;
-}): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("[capture-order] RESEND_API_KEY not configured — confirmation email skipped.");
-    return;
-  }
-
-  const firstName = data.customerName.split(" ")[0] || "friend";
-
-  // Build item rows for the email
-  const itemRows = data.lineItems
-    .map(
-      (i) =>
-        `<tr>
-          <td style="padding:8px 0;color:#1c2b4a;font-size:15px;">${i.name}</td>
-          <td style="padding:8px 0;color:#6b7280;font-size:15px;text-align:center;">&times;${i.quantity}</td>
-          <td style="padding:8px 0;color:#1c2b4a;font-size:15px;text-align:right;">$${(parseFloat(i.unitPrice) * i.quantity).toFixed(2)}</td>
-        </tr>`
-    )
-    .join("");
-
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from: "OWL Sing Together <store@owlsingtogether.com>",
-        to: [data.customerEmail],
-        subject: "Your OWL order is confirmed!",
-        html: `
-          <div style="font-family:'Georgia',serif;max-width:580px;margin:0 auto;padding:40px 20px;background:#fffdf7;border-radius:16px;">
-            <img src="https://owlsingtogether.com/images/brand/circular-logo.png" alt="OWL Sing Together" width="72" style="display:block;margin:0 auto 24px;" />
-            <h1 style="color:#1c2b4a;font-size:26px;text-align:center;margin-bottom:8px;">Thank you, ${firstName}!</h1>
-            <p style="color:#4b5563;font-size:16px;line-height:1.7;text-align:center;">Your order has been received and is being prepared with care.</p>
-            <div style="background:#f0faf7;border-radius:12px;padding:24px;margin:28px 0;border:1px solid #d1ede7;">
-              <p style="margin:0 0 12px;color:#15a589;font-size:11px;font-weight:bold;letter-spacing:0.1em;text-transform:uppercase;">Order Summary</p>
-              <table style="width:100%;border-collapse:collapse;">
-                <thead>
-                  <tr style="border-bottom:1px solid #d1ede7;">
-                    <th style="padding:0 0 8px;color:#9ca3af;font-size:11px;text-align:left;font-weight:normal;">Item</th>
-                    <th style="padding:0 0 8px;color:#9ca3af;font-size:11px;text-align:center;font-weight:normal;">Qty</th>
-                    <th style="padding:0 0 8px;color:#9ca3af;font-size:11px;text-align:right;font-weight:normal;">Total</th>
-                  </tr>
-                </thead>
-                <tbody>${itemRows}</tbody>
-                <tfoot>
-                  <tr style="border-top:1px solid #d1ede7;">
-                    <td colspan="2" style="padding:12px 0 0;color:#1c2b4a;font-size:15px;font-weight:bold;">Order total</td>
-                    <td style="padding:12px 0 0;color:#15a589;font-size:17px;font-weight:bold;text-align:right;">$${data.totalAmount} USD</td>
-                  </tr>
-                </tfoot>
-              </table>
-              <p style="margin:16px 0 0;color:#9ca3af;font-size:12px;font-family:monospace;">Order ID: ${data.paypalOrderId}</p>
-            </div>
-            <p style="color:#4b5563;font-size:15px;line-height:1.7;">
-              You will receive a shipping confirmation once your order is on its way.
-              Have questions? Reply to this email or visit
-              <a href="https://owlsingtogether.com" style="color:#15a589;text-decoration:none;">owlsingtogether.com</a>.
-            </p>
-            <hr style="border:none;border-top:1px solid #e5e7eb;margin:32px 0 20px;" />
-            <p style="color:#9ca3af;font-size:12px;text-align:center;margin:0;">OWL Sing Together &middot; Multicultural music for little learners</p>
-          </div>
-        `,
-      }),
-    });
-
-    if (!res.ok) {
-      console.error("[capture-order] Resend error:", await res.text());
-    } else {
-      console.log("[capture-order] Confirmation email sent to:", data.customerEmail);
-    }
-  } catch (err) {
-    console.error("[capture-order] Email send error:", err);
-  }
-}
-
 // -- Main handler ---------------------------------------------------------------
 
 /**
@@ -182,8 +104,9 @@ async function sendConfirmationEmail(data: {
  * 1. Re-validates every item's price from SEED_PRODUCTS by slug
  * 2. Verifies the PayPal order amount matches the server-computed total
  * 3. Captures the payment
- * 4. Saves the order to Supabase with full line items
- * 5. Sends a confirmation email with the full item list
+ * 4. Upserts the order to Supabase with full line items
+ * 5. Sends the branded confirmation email exactly once (idempotent claim shared
+ *    with the PayPal webhook — see src/lib/email/send-order-confirmation.ts)
  * 6. Returns { success, orderId, captureId, customerEmail, customerName, totalAmount }
  *
  * Body: { orderID: string; items: Array<{ slug: string; quantity: number }> }
@@ -339,18 +262,15 @@ export async function POST(req: NextRequest) {
       raw_payload: captureData,
     });
 
-    // -- Send confirmation email ------------------------------------------------
-    await sendConfirmationEmail({
-      customerEmail,
-      customerName,
-      lineItems: lineEntries.map((e) => ({
-        name: e.name,
-        quantity: e.quantity,
-        unitPrice: e.unitAmount,
-      })),
-      totalAmount: expectedTotalStr,
-      paypalOrderId: orderID,
-    });
+    // -- Send confirmation email (idempotent — never blocks the response) -------
+    // The webhook may also call this; the atomic DB claim ensures exactly one send.
+    try {
+      const outcome = await sendOrderConfirmationOnce(orderID);
+      console.log("[capture-order] Confirmation email:", outcome.status, "—", customerEmail);
+    } catch (emailErr) {
+      // Defensive: the helper never throws, but a thrown error must not fail the order.
+      console.error("[capture-order] Confirmation email unexpected error:", emailErr);
+    }
 
     return NextResponse.json({
       success: true,
