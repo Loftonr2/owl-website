@@ -16,7 +16,7 @@ import { SEED_PRODUCTS } from "@/lib/seed/products";
  * joined with live Shopify pricing.
  */
 export function ShopBestsellers() {
-  const featured = SEED_PRODUCTS.filter((p) => p.featured).slice(0, 6);
+  const featured = SEED_PRODUCTS.filter((p) => p.featured).slice(0, 8);
 
   return (
     <Section width="wide" pad="lg" bg="cream-deep">
@@ -27,7 +27,7 @@ export function ShopBestsellers() {
       />
       <MediaRail
         ariaLabel="Bestselling OWL products"
-        columns={{ md: 3, lg: 4 }}
+        columns={{ md: 2, lg: 4 }}
         className="mt-8"
       >
         {featured.map((p) => (

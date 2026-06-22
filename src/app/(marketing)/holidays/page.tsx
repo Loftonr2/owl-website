@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Sparkles, Calendar, BookOpen, FileText, Music2 } from "lucide-react";
+import { Sparkles, Globe2, Church, Palette, Moon } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,9 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { HolidayCard } from "@/components/marketing/holiday-card";
 import { PrintableCard } from "@/components/marketing/printable-card";
+import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { OwlMark } from "@/components/brand/owl-logo";
 
@@ -46,24 +46,36 @@ export const metadata = pageMetadata({
  * as variety + warmth without becoming visual noise.
  */
 
-const EVERGREEN_CATEGORIES = [
+const CELEBRATION_CATEGORIES = [
+  {
+    icon: Globe2,
+    title: "Heritage Months",
+    body: "Black History Month, Hispanic Heritage Month, Asian Pacific Heritage Month, and more — all year long.",
+    intent: "teal" as const,
+  },
   {
     icon: Sparkles,
-    title: "Celebrate",
-    body: "Songs, dances, and the original stories behind every tradition.",
+    title: "International Festivities",
+    body: "Diwali, Lunar New Year, Hanukkah, Kwanzaa — global celebrations that belong in every classroom.",
     intent: "amber" as const,
   },
   {
-    icon: BookOpen,
-    title: "Traditions",
-    body: "Recipes, rituals, decorations — what families actually do.",
+    icon: Church,
+    title: "Religious Holidays",
+    body: "Respectful, age-appropriate introductions to the world's major faith celebrations.",
     intent: "rose" as const,
   },
   {
-    icon: Music2,
-    title: "Voices",
-    body: "Multilingual greetings, songs in original languages, family stories.",
+    icon: Palette,
+    title: "Cultural Arts",
+    body: "Music, dance, food, and craft traditions tied to every holiday hub.",
     intent: "teal" as const,
+  },
+  {
+    icon: Moon,
+    title: "Ramadan & Eid",
+    body: "A full month of fasting, prayer, and community — plus the joyful Eid al-Fitr celebration.",
+    intent: "amber" as const,
   },
 ];
 
@@ -94,40 +106,18 @@ export default function HolidaysPage() {
 
   return (
     <>
-      {/* 1 — Celebration hero (amber, sparkles ambient) */}
-      <CinematicHero
-        tone="amber"
-        slug="holidays"
-        sequenceSlug="holidays-celebration"
-        bannerAspect="wide"
+      {/* Hero */}
+      <VideoHeroBanner
+        src="/videos/holidays-hero.mp4"
+        poster="/images/headers/holidays-hero.png"
         eyebrow="Holidays"
         heading={
-          <>
-            Celebrate learning{" "}
-            <span className="text-owl-teal-deep">all year.</span>
-          </>
+          <>Celebrate Learning{" "}<span className="text-owl-teal">All Year.</span></>
         }
         subhead="Eleven cultural celebrations with videos, printables, and parent-friendly explainers — refreshed annually."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#hubs">
-              <Sparkles className="h-4 w-4" aria-hidden />
-              Explore the hubs
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="#by-month">
-              <Calendar className="h-4 w-4" aria-hidden />
-              Browse by month
-            </Link>
-          </Button>
-        }
-        meta={
-          <p>11 cultural hubs · refreshed each year · always free to read.</p>
-        }
-        ambient={<AmbientLayer pattern="sparkles" density={5} seed={91} />}
+        primaryCta={{ label: "Explore the Hubs", href: "#hubs" }}
+        secondaryCta={{ label: "Browse by Month", href: "#by-month" }}
+        meta={<p>11 cultural hubs · refreshed each year · always free to read.</p>}
       />
 
       {/* 2 — Browse-by-month strip */}
@@ -185,7 +175,7 @@ export default function HolidaysPage() {
       {/* 3 — Featured campaign banner */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="white">
-          <div className="relative isolate overflow-hidden rounded-owl-hero bg-owl-rose/20 p-8 shadow-owl-1 md:p-12">
+          <div className="relative isolate overflow-hidden rounded-owl-hero bg-owl-amber-soft/40 p-8 shadow-owl-1 md:p-12">
             <AmbientLayer
               pattern="sparkles"
               density={4}
@@ -194,23 +184,23 @@ export default function HolidaysPage() {
             />
             <div className="relative z-text grid grid-cols-1 items-center gap-8 md:grid-cols-[1.4fr,1fr]">
               <div>
-                <Chip intent="rose" className="mb-3">
-                  Now featured
+                <Chip intent="amber" className="mb-3">
+                  Featured Campaign
                 </Chip>
                 <h2 className="font-display text-3xl font-extrabold text-owl-ink sm:text-4xl">
-                  Diwali — the festival of lights.
+                  Hispanic Heritage Month — Sept 15 to Oct 15.
                 </h2>
                 <p className="mt-4 max-w-prose text-base leading-relaxed text-owl-ink/80">
-                  Five days of diyas, rangoli, and the story of welcoming neighbors home.
-                  A short song, a printable lamp craft, and a parent-friendly explainer
-                  in EN/ES.
+                  Celebrating the histories, cultures, and contributions of Hispanic and
+                  Latino Americans. Songs in Spanish and English, printable activity sheets,
+                  and a family-friendly explainer — refreshed annually.
                 </p>
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <Button intent="primary" size="lg" asChild>
-                    <Link href="/holidays/diwali">Open Diwali hub</Link>
+                    <Link href="/holidays/hispanic-heritage">Explore the Hub</Link>
                   </Button>
-                  <Button intent="tertiary" size="lg" asChild>
-                    <Link href="/watch/lchaim-we-love-life">Watch a cultural song</Link>
+                  <Button intent="secondary" size="lg" asChild>
+                    <Link href="/watch">Watch a cultural song</Link>
                   </Button>
                 </div>
               </div>
@@ -220,10 +210,10 @@ export default function HolidaysPage() {
                   In the hub
                 </p>
                 <ul className="mt-3 space-y-2 text-sm text-owl-ink">
-                  <li>🪔 Family-friendly history</li>
-                  <li>🎵 &ldquo;Diwali Lights Are Shining&rdquo;</li>
-                  <li>🖍️ Printable rangoli coloring sheets</li>
-                  <li>🌍 Pronunciations + greetings</li>
+                  <li>🌎 Family-friendly cultural history</li>
+                  <li>🎵 Bilingual sing-along songs</li>
+                  <li>🖍️ Printable activity & coloring sheets</li>
+                  <li>🌍 Español + English greetings</li>
                 </ul>
               </GlassPanel>
             </div>
@@ -231,22 +221,22 @@ export default function HolidaysPage() {
         </Section>
       </SectionReveal>
 
-      {/* 4 — Evergreen categories */}
+      {/* 4 — Celebration Categories */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream">
           <SectionIntro
-            eyebrow="Always available"
-            title="Evergreen categories"
-            subtitle="The pieces that don't need a calendar. Read any time."
+            eyebrow="Browse by type"
+            title="Celebration Categories"
+            subtitle="Every tradition finds a home here — heritage months, world festivities, and faith-based celebrations."
           />
           <StaggerGrid
             asList
-            ariaLabel="Evergreen holiday categories"
-            className="grid grid-cols-1 gap-5 md:grid-cols-3"
+            ariaLabel="Celebration categories"
+            className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5"
             stagger={0.07}
             offsetY={12}
           >
-            {EVERGREEN_CATEGORIES.map(({ icon: Icon, title, body, intent }) => (
+            {CELEBRATION_CATEGORIES.map(({ icon: Icon, title, body, intent }) => (
               <div
                 key={title}
                 className="h-full rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
@@ -255,7 +245,7 @@ export default function HolidaysPage() {
                   <Icon className="h-3.5 w-3.5" aria-hidden />
                   Category
                 </Chip>
-                <h3 className="font-display text-lg font-semibold text-owl-ink">{title}</h3>
+                <h3 className="font-display text-base font-semibold text-owl-ink">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-owl-mist">{body}</p>
               </div>
             ))}

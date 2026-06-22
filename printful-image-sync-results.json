@@ -1,0 +1,249 @@
+{
+  "generatedAt": "2026-06-08T11:17:44.803Z",
+  "results": {
+    "updated": 32,
+    "skipped": 0,
+    "noImage": 2,
+    "errors": 0
+  },
+  "products": [
+    {
+      "slug": "owl-cotton-kids-t-shirt",
+      "name": "OWL Cotton Kids T-Shirt",
+      "printfulId": 436901241,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998837410/7d78c7a19e22d9558fd1ead43584828c_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-throw-blanket",
+      "name": "OWL Throw Blanket",
+      "printfulId": 436902009,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998839658/8b2a28d2652a78036d9dbbc78a073028_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-flat-bill-cap",
+      "name": "OWL Flat Bill Cap",
+      "printfulId": 436900911,
+      "imageUrl": "https://files.cdn.printful.com/files/257/25706fdbe8d39e6d2f291bab360797c1_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-insulated-tumbler",
+      "name": "OWL Teal Insulated Tumbler W/ Straw",
+      "printfulId": 436899439,
+      "imageUrl": "https://files.cdn.printful.com/files/2ac/2ace1d1b656d2cff3819362ab8f1c33f_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-wine-tumbler",
+      "name": "OWL Teal Wine Tumbler",
+      "printfulId": 436899094,
+      "imageUrl": "https://files.cdn.printful.com/files/2ac/2ace1d1b656d2cff3819362ab8f1c33f_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-enamel-mug",
+      "name": "OWL Teal Enamel Mug",
+      "printfulId": 437050380,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/999073937/cc3ce192a5e6244539aa66da7d006960_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-spiral-notebook",
+      "name": "OWL Spiral Notebook",
+      "printfulId": 436898141,
+      "imageUrl": "https://files.cdn.printful.com/files/614/61434e80ae3fe7accb5ffa83e613ba09_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-insect-sticker-set-ii",
+      "name": "OWL Insect Sticker Set II",
+      "printfulId": 436882193,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998756133/77bcb0d35e2d519c587dc74e839f8d84_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-insect-sticker-set",
+      "name": "OWL Insect Sticker Set",
+      "printfulId": 436882193,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998756133/77bcb0d35e2d519c587dc74e839f8d84_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-animal-sticker-set-iii",
+      "name": "OWL Animal Sticker Set III",
+      "printfulId": 436881374,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998751509/ea3963c31f70af8336b87cbff1ff4c36_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-animal-sticker-set-ii",
+      "name": "OWL Animal Sticker Set II",
+      "printfulId": 436881374,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998751509/ea3963c31f70af8336b87cbff1ff4c36_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-counting-sticker-set",
+      "name": "OWL Counting Sticker Set",
+      "printfulId": 436880565,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998748907/ed0ca6e74c8acd12dd49b7b4526d9a26_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-aplus-sticker-set",
+      "name": "OWL A+ Sticker Set",
+      "printfulId": 436880333,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998747400/2ce22bf53bc1c87b4a1b9dbda2c9db8c_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-colors-sticker-set",
+      "name": "OWL Colors Sticker Set",
+      "printfulId": 436879876,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998745751/ef6944b76aa5f9ff8249375365d7c639_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-music-sticker-set",
+      "name": "OWL Music Sticker Set",
+      "printfulId": 436879679,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998744544/87cc5cad75341d6a3bb9103b9378a140_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-seasons-sticker-set",
+      "name": "OWL Seasons Stickers Set",
+      "printfulId": 436879251,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998741363/21e35bc4ea4360893246a8f02d20116e_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-preschool-sticker-set",
+      "name": "OWL Pre-School Sticker Set",
+      "printfulId": 436879492,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998743394/76da035cbbdcb7a1a9f216bc968ea9d8_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-holiday-sticker-set",
+      "name": "OWL Holiday Sticker Set",
+      "printfulId": 436878833,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998739219/0dbea2c5d5428ac31c126b216d424ccd_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-animal-sticker-set",
+      "name": "OWL Animal Sticker Set",
+      "printfulId": 436881736,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998753088/768cd431b765c7757999c2be06c9bbed_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-numbers-sticker-set",
+      "name": "OWL Numbers Sticker Set",
+      "printfulId": 436862004,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998666865/e94c94a776f488138207284e9bb7177e_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-baby-boy-sticker-set",
+      "name": "OWL Baby Boy Sticker Set",
+      "printfulId": 436860629,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998661437/13c9335edb1531253e95b239da2a003c_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-baby-girl-sticker-set",
+      "name": "OWL Baby Girl Sticker Set",
+      "printfulId": 436860964,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998663106/a875b0527de742da8c2f423e79ec76df_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-holographic-stickers",
+      "name": "OWL Holographic Stickers",
+      "printfulId": 436841220,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998586900/e11273b2cbbaf8de9394d012d757854c_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-mouse-pad",
+      "name": "OWL Mouse Pad",
+      "printfulId": 436840509,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998583974/d4b5c4babb20059f3ed61c6a70ebbbf0_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-water-bottle",
+      "name": "OWL Stainless Steel Water Bottle",
+      "printfulId": 436764068,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998296178/e8a6ef45ec64acf85bf692064152c36d_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-duffle-bag",
+      "name": "OWL Space Planets Duffle Bag",
+      "printfulId": 436763425,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998292243/869b97e8e431ae6e0cb1384899b3ae04_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-backpack",
+      "name": "OWL Space Planet Backpack",
+      "printfulId": 436754670,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998258123/e33177226a2d9439602a125f4111244b_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-infant-bodysuit",
+      "name": "OWL Infant Bodysuit",
+      "printfulId": 436736163,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998189701/7112340616b5fd661a6c8d34f9e17090_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-tote-bag",
+      "name": "OWL Eco-Friendly Tote Bag",
+      "printfulId": 436731297,
+      "imageUrl": "https://files.cdn.printful.com/files/958/958f7a39198da042b799694a03989ee4_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-glossy-mug",
+      "name": "White OWL Glossy Mug",
+      "printfulId": 436731071,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998167163/3067d5e62fa75337ba307d53e08a3fb5_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-t-shirt",
+      "name": "OWL T-Shirt",
+      "printfulId": 437195070,
+      "imageUrl": null,
+      "status": "no_image"
+    },
+    {
+      "slug": "owl-embroidered-beanie",
+      "name": "Embroidered Beanie",
+      "printfulId": 437195064,
+      "imageUrl": null,
+      "status": "no_image"
+    },
+    {
+      "slug": "owl-sweatshirt",
+      "name": "OWL Sweatshirt",
+      "printfulId": 436722721,
+      "imageUrl": "https://files.cdn.printful.com/files/614/61434e80ae3fe7accb5ffa83e613ba09_preview.png",
+      "status": "updated"
+    },
+    {
+      "slug": "owl-abcs-sticker-set",
+      "name": "OWL ABC's Sticker Set",
+      "printfulId": 436878466,
+      "imageUrl": "https://files.cdn.printful.com/printfile-preview/998737656/07d8874b828dbdb0c2f50e31777f48cf_preview.png",
+      "status": "updated"
+    }
+  ]
+}

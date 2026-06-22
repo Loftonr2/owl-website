@@ -46,13 +46,25 @@ export interface CinematicHeroProps extends Omit<BannerHeroProps, "bannerSlot"> 
    * Default: "150vh".
    */
   sequenceScrollDistance?: string;
+  /**
+   * Direct banner slot override (e.g. a <HeroVideo>).
+   * Takes precedence over both the static image AND any sequence.
+   * Pass a client component here; CinematicHero itself stays a server component.
+   */
+  bannerSlot?: ReactNode;
 }
 
 export function CinematicHero({
   sequenceSlug,
   sequenceScrollDistance,
+  bannerSlot: bannerSlotOverride,
   ...bannerProps
 }: CinematicHeroProps) {
+  // Direct override always wins (e.g. <HeroVideo>).
+  if (bannerSlotOverride != null) {
+    return <BannerHero {...bannerProps} bannerSlot={bannerSlotOverride} />;
+  }
+
   const sequence = sequenceSlug
     ? (heroFrames as Record<string, { available?: boolean }>)[sequenceSlug as string]
     : undefined;

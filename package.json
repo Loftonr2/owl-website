@@ -2,7 +2,7 @@
   "name": "owl-website",
   "version": "0.1.0",
   "private": true,
-  "description": "OWL Sing Together — public website, blog, store, newsletter, admin CRM, curriculum portal. Source of truth: ../OWL-Obsidian-Brain.",
+  "description": "OWL Sing Together \u2014 public website, blog, store, newsletter, admin CRM, curriculum portal. Source of truth: ../OWL-Obsidian-Brain.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,6 +13,7 @@
     "format:check": "prettier --check .",
     "test:e2e": "playwright test",
     "test:e2e:install": "playwright install --with-deps chromium",
+    "test:paypal": "playwright test tests/e2e/paypal-sandbox-checkout.spec.ts --config playwright.sandbox.config.ts --headed",
     "sanity:deploy": "sanity deploy",
     "sanity:graphql:deploy": "sanity graphql deploy",
     "supabase:gen-types": "supabase gen types typescript --local > src/types/database.ts",

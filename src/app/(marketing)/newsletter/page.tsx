@@ -1,10 +1,5 @@
 import Link from "next/link";
 import {
-  Mail,
-  Sparkles,
-  ShieldCheck,
-  Lock,
-  EyeOff,
   Heart,
   GraduationCap,
   Baby,
@@ -14,13 +9,11 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
-import { GlassPanel } from "@/components/ui/glass-panel";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterForm } from "@/components/marketing/newsletter-form";
 import { OwlMark } from "@/components/brand/owl-logo";
 
@@ -56,21 +49,33 @@ const BENEFITS = [
     icon: Heart,
     title: "One small parenting win",
     body: "A 90-second tip you can use the next time your child has big feelings.",
+    bg: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
+    border: "border-owl-rose/30",
+    iconBg: "bg-owl-rose/15 text-owl-rose",
   },
   {
     icon: Music2,
     title: "One new video + printable",
     body: "Match the song to the page; print on regular paper.",
+    bg: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    border: "border-owl-teal/30",
+    iconBg: "bg-owl-teal/15 text-owl-teal",
   },
   {
     icon: CalendarDays,
     title: "One cultural note",
     body: "Two-week heads-up before each holiday hub — never on the day of.",
+    bg: "bg-gradient-to-br from-[#fef3d8] via-[#fdf7eb] to-[#fff8ec]",
+    border: "border-owl-amber/30",
+    iconBg: "bg-owl-amber/20 text-owl-amber",
   },
   {
     icon: BookOpen,
     title: "A note from Larissa",
     body: "Written like a Sunday letter, not a marketing email. Five minutes to read.",
+    bg: "bg-gradient-to-br from-[#dff0e6] via-[#eef6f1] to-[#fff8ec]",
+    border: "border-owl-forest/25",
+    iconBg: "bg-owl-forest/15 text-owl-forest",
   },
 ];
 
@@ -111,52 +116,62 @@ const SEGMENTS = [
   },
 ];
 
-// Each accent maps to a card style (border + eyebrow tint).
+// Each accent maps to a card style (gradient bg + border + eyebrow tint).
 const accentStyles = {
   teal: {
-    border: "border-owl-teal/30",
+    cardGrad: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    border: "border-owl-teal/40",
     eyebrow: "text-owl-teal",
-    iconBg: "bg-owl-teal/10 text-owl-teal",
+    iconBg: "bg-owl-teal/15 text-owl-teal",
   },
   forest: {
-    border: "border-owl-forest/30",
+    cardGrad: "bg-gradient-to-br from-[#dff0e6] via-[#eef6f1] to-[#fff8ec]",
+    border: "border-owl-forest/35",
     eyebrow: "text-owl-forest",
-    iconBg: "bg-owl-forest/10 text-owl-forest",
+    iconBg: "bg-owl-forest/12 text-owl-forest",
   },
   rose: {
+    cardGrad: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
     border: "border-owl-rose/40",
     eyebrow: "text-owl-rose",
     iconBg: "bg-owl-rose/20 text-owl-rose",
   },
+  amber: {
+    cardGrad: "bg-gradient-to-br from-[#fef3d8] via-[#fdf7eb] to-[#fff8ec]",
+    border: "border-owl-amber/40",
+    eyebrow: "text-owl-amber",
+    iconBg: "bg-owl-amber/20 text-owl-amber",
+  },
 } as const;
 
-// ── Sample newsletter cards (TEXT-ONLY — never fabricate a screenshot). ─────
-// Mocked previews. When real archive issues exist (Beehiiv archive URL),
-// swap title/snippet/href for the real ones.
+// ── Sample newsletter cards ────────────────────────────────────────────────
 const SAMPLES = [
   {
-    issue: "Issue 12",
-    date: "Sun, May 12 2026",
-    headline: "When your child's feelings are bigger than the room.",
+    issue: "Issue #4",
+    date: "Sun, June 7, 2026",
+    headline: "Feelings Are Valid — The Big Emotions Guide Every Parent Needs Right Now",
     snippet:
-      "A short song about naming feelings, a printable you can fold into a pocket, and a tiny script for the next big-feeling moment.",
-    href: "/blog/sample-newsletter-feelings",
+      "Your toddler's meltdown isn't misbehavior. Here's what's actually happening in their brain — and what to say.",
+    href: "/newsletters/issue-04.html",
+    accent: "rose" as const,
   },
   {
-    issue: "Issue 11",
-    date: "Sun, May 5 2026",
-    headline: "Hispanic Heritage starts in two weeks. Here's what's inside.",
+    issue: "Issue #3",
+    date: "Sun, May 29, 2026",
+    headline: "Colors of the World — Teaching Colors Through Culture",
     snippet:
-      "Bilingual greetings, a recipe card from Larissa's grandmother, and the songs you can drop into circle time. EN/ES throughout.",
-    href: "/blog/sample-newsletter-heritage",
+      "Red isn't just red — it means luck in China, mourning in South Africa, and celebration in India. Here's the free printable.",
+    href: "/newsletters/issue-03.html",
+    accent: "amber" as const,
   },
   {
-    issue: "Issue 10",
-    date: "Sun, Apr 28 2026",
-    headline: "Slow Sundays — three rituals worth keeping.",
+    issue: "Issue #2",
+    date: "Sun, May 22, 2026",
+    headline: "The ABCs of Raising a Reader — The Phonics Science Every Parent Needs",
     snippet:
-      "Three families share the small Sunday rituals that keep their week feeling like it has edges. Plus a lullaby you can sing on the way home.",
-    href: "/blog/sample-newsletter-slow-sundays",
+      "Why singing the alphabet actually works — and what to do if your child isn't ready yet.",
+    href: "/newsletters/issue-02.html",
+    accent: "teal" as const,
   },
 ];
 
@@ -166,11 +181,9 @@ export default function NewsletterPage() {
       {/* 1 — Warm signup hero. Cream tone, sparkles ambient, single CTA.
             The hero's overlay slot carries the email form so the visitor
             can subscribe without scrolling. */}
-      <CinematicHero
-        tone="cream"
-        slug="newsletter"
-        sequenceSlug="newsletter-welcome"
-        bannerAspect="wide"
+      <VideoHeroBanner
+        src="/videos/newsletter-hero.mp4"
+        poster="/images/headers/newsletter-hero.png"
         eyebrow="The OWL Weekly"
         heading={
           <>
@@ -184,23 +197,6 @@ export default function NewsletterPage() {
             &ldquo;I&apos;m so glad you&apos;re here today.&rdquo; — Larissa
           </p>
         }
-        overlay={
-          <GlassPanel variant="frost" className="mx-auto max-w-md">
-            <div className="mb-2 inline-flex items-center gap-2">
-              <Mail className="h-4 w-4 text-owl-teal" aria-hidden />
-              <p className="font-display text-xs font-bold uppercase tracking-wide text-owl-teal">
-                Subscribe in one line
-              </p>
-            </div>
-            <NewsletterForm
-              source="other"
-              ctaLabel="Send me Sunday's letter"
-              headline=""
-              body=""
-            />
-          </GlassPanel>
-        }
-        ambient={<AmbientLayer pattern="sparkles" density={3} seed={71} />}
       />
 
       {/* 2 — Segmented signup cards (parents / educators / kids).
@@ -220,7 +216,7 @@ export default function NewsletterPage() {
               return (
                 <li key={s.key}>
                   <div
-                    className={`flex h-full flex-col rounded-owl-card border-2 ${styles.border} bg-owl-white p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2`}
+                    className={`flex h-full flex-col rounded-owl-card border-2 ${styles.border} ${styles.cardGrad} p-6 shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-1 hover:shadow-owl-2`}
                   >
                     <span
                       aria-hidden
@@ -264,14 +260,14 @@ export default function NewsletterPage() {
             align="center"
           />
           <ul role="list" className="mx-auto mt-6 grid max-w-5xl grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-4">
-            {BENEFITS.map(({ icon: Icon, title, body }) => (
+            {BENEFITS.map(({ icon: Icon, title, body, bg, border, iconBg }) => (
               <li
                 key={title}
-                className="rounded-owl-card border border-owl-cream-deep bg-owl-cream p-5 text-center shadow-owl-1"
+                className={`rounded-owl-card border ${border} ${bg} p-5 text-center shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2`}
               >
                 <span
                   aria-hidden
-                  className="mx-auto mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal"
+                  className={`mx-auto mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full ${iconBg}`}
                 >
                   <Icon className="h-5 w-5" />
                 </span>
@@ -283,187 +279,47 @@ export default function NewsletterPage() {
         </Section>
       </SectionReveal>
 
-      {/* 4 — Sample newsletter cards (text-only previews) */}
+      {/* 4 — Newsletter Previews */}
       <SectionReveal offset={24}>
         <Section width="wide" pad="lg" bg="cream-deep">
           <SectionIntro
             eyebrow="Recent issues"
-            title="Sample newsletter previews"
-            subtitle="A look at the last three Sundays before you commit. Click any preview to read the full archive."
+            title="Newsletter Previews"
+            subtitle="A look at the last three Sundays before you commit. Click any preview to read the full issue."
           />
           <ul role="list" className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {SAMPLES.map((s) => (
-              <li key={s.issue}>
-                <Link
-                  href={s.href}
-                  className="group flex h-full flex-col rounded-owl-card border border-owl-cream-deep bg-owl-white p-6 shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-0.5 hover:shadow-owl-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-owl-cream-deep"
-                >
-                  {/* Stylized envelope flap — pure SVG, no fabricated screenshot */}
-                  <div className="mb-4 flex items-center justify-between">
-                    <span className="rounded-full bg-owl-teal/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-owl-teal">
-                      {s.issue}
-                    </span>
-                    <OwlMark decorative className="h-6 w-6 opacity-80" />
-                  </div>
-                  <p className="text-xs font-medium text-owl-mist">{s.date}</p>
-                  <h3 className="mt-2 font-display text-lg font-bold leading-snug text-owl-ink">
-                    {s.headline}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-owl-ink/75">{s.snippet}</p>
-                  <p className="mt-auto pt-4 font-display text-sm font-semibold text-owl-teal transition-colors duration-200 group-hover:text-owl-teal-deep">
-                    Read this issue →
-                  </p>
-                </Link>
-              </li>
-            ))}
+            {SAMPLES.map((s) => {
+              const styles = accentStyles[s.accent];
+              return (
+                <li key={s.issue}>
+                  <Link
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group flex h-full flex-col rounded-owl-card border-2 ${styles.border} ${styles.cardGrad} p-6 shadow-owl-1 transition-all duration-300 ease-owl hover:-translate-y-1 hover:shadow-owl-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-owl-cream-deep`}
+                  >
+                    <div className="mb-4 flex items-center justify-between">
+                      <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${styles.iconBg}`}>
+                        {s.issue}
+                      </span>
+                      <OwlMark decorative className="h-6 w-6 opacity-80" />
+                    </div>
+                    <p className="text-xs font-medium text-owl-mist">{s.date}</p>
+                    <h3 className="mt-2 font-display text-lg font-bold leading-snug text-owl-ink">
+                      {s.headline}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-owl-ink/75">{s.snippet}</p>
+                    <p className={`mt-auto pt-4 font-display text-sm font-semibold transition-colors duration-200 ${styles.eyebrow}`}>
+                      Read this issue →
+                    </p>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </Section>
       </SectionReveal>
 
-      {/* 5 — Featured printable + playlist previews */}
-      <SectionReveal offset={20}>
-        <Section width="wide" pad="lg" bg="white">
-          <SectionIntro
-            eyebrow="What comes with subscribing"
-            title="Sample assets, free"
-            subtitle="Each Sunday email includes one free printable and a song link. Here's what landed in Issue 12."
-          />
-          <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {/* Featured printable preview */}
-            <div className="relative isolate flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-amber-soft/40 p-6 shadow-owl-1 md:p-8">
-              <AmbientLayer
-                pattern="paper"
-                density={3}
-                seed={89}
-                className="inset-0"
-              />
-              <div className="relative z-text">
-                <Sparkles className="mb-3 h-5 w-5 text-owl-amber" aria-hidden />
-                <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">
-                  Featured printable
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-extrabold text-owl-ink">
-                  Feelings face wheel
-                </h3>
-                <p className="mt-3 max-w-prose text-sm leading-relaxed text-owl-ink/75">
-                  A spinnable wheel to name and check in on big feelings. One page, ages 2–5,
-                  free with every subscription.
-                </p>
-                <Button intent="primary" size="md" asChild className="mt-5">
-                  <Link href="/printables/feelings-face-wheel">Preview the PDF</Link>
-                </Button>
-              </div>
-            </div>
-
-            {/* Featured playlist preview */}
-            <div className="relative isolate flex flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-teal/15 p-6 shadow-owl-1 md:p-8">
-              <AmbientLayer
-                pattern="notes"
-                density={3}
-                seed={97}
-                className="inset-0"
-              />
-              <div className="relative z-text">
-                <Music2 className="mb-3 h-5 w-5 text-owl-teal" aria-hidden />
-                <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-teal">
-                  Featured playlist
-                </p>
-                <h3 className="mt-2 font-display text-2xl font-extrabold text-owl-ink">
-                  Feelings &amp; friends
-                </h3>
-                <p className="mt-3 max-w-prose text-sm leading-relaxed text-owl-ink/75">
-                  Nine songs about naming big feelings — slow tempos, multicultural cast,
-                  pre-cleared for classroom playback.
-                </p>
-                <Button intent="secondary" size="md" asChild className="mt-5">
-                  <Link href="/music/feelings">Open the playlist</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Section>
-      </SectionReveal>
-
-      {/* 6 — Trust + privacy section (calm white band) */}
-      <SectionReveal offset={24}>
-        <Section width="narrow" pad="lg" bg="white">
-          <SectionIntro
-            eyebrow="No spam, ever"
-            title="What you can expect"
-            align="center"
-          />
-          <ul role="list" className="mx-auto mt-6 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
-            <li className="flex items-start gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-cream p-4">
-              <span
-                aria-hidden
-                className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-owl-success/15 text-owl-success"
-              >
-                <ShieldCheck className="h-4 w-4" />
-              </span>
-              <div>
-                <p className="font-display text-sm font-semibold text-owl-ink">Double opt-in</p>
-                <p className="text-xs text-owl-mist">
-                  We confirm your email before we ever send one. No surprise subscriptions.
-                </p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-cream p-4">
-              <span
-                aria-hidden
-                className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-owl-teal/15 text-owl-teal"
-              >
-                <Lock className="h-4 w-4" />
-              </span>
-              <div>
-                <p className="font-display text-sm font-semibold text-owl-ink">Never sold</p>
-                <p className="text-xs text-owl-mist">
-                  Your email is never sold, traded, or shared with marketing partners. Period.
-                </p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-cream p-4">
-              <span
-                aria-hidden
-                className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-owl-amber/15 text-owl-amber"
-              >
-                <EyeOff className="h-4 w-4" />
-              </span>
-              <div>
-                <p className="font-display text-sm font-semibold text-owl-ink">No tracking pixels on child content</p>
-                <p className="text-xs text-owl-mist">
-                  Printables emailed to you carry zero tracking pixels. Pages for kids stay COPPA-safe.
-                </p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-cream p-4">
-              <span
-                aria-hidden
-                className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-owl-forest/15 text-owl-forest"
-              >
-                <Mail className="h-4 w-4" />
-              </span>
-              <div>
-                <p className="font-display text-sm font-semibold text-owl-ink">One-click unsubscribe</p>
-                <p className="text-xs text-owl-mist">
-                  In every single email. Beehiiv delivers, Resend handles confirmations.
-                </p>
-              </div>
-            </li>
-          </ul>
-
-          <p className="mx-auto mt-8 max-w-prose text-center text-xs text-owl-mist">
-            Read our{" "}
-            <Link href="/privacy" className="font-semibold text-owl-teal underline-offset-2 hover:underline">
-              privacy policy
-            </Link>{" "}
-            or{" "}
-            <Link href="/contact" className="font-semibold text-owl-teal underline-offset-2 hover:underline">
-              email us
-            </Link>{" "}
-            with any questions. We reply.
-          </p>
-        </Section>
-      </SectionReveal>
     </>
   );
 }

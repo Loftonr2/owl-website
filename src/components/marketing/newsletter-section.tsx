@@ -2,7 +2,6 @@ import Image from "next/image";
 import { Section } from "@/components/ui/section";
 import { OwlMark } from "@/components/brand/owl-logo";
 import { NewsletterForm } from "./newsletter-form";
-import { AmbientLayer } from "./ambient-layer";
 import { headers } from "@/lib/images";
 
 /**
@@ -17,14 +16,6 @@ export function NewsletterSection() {
   return (
     <Section width="wide" pad="lg" bg="cream">
       <div className="relative isolate grid grid-cols-1 items-center gap-10 overflow-hidden rounded-owl-hero bg-owl-white p-6 shadow-owl-1 md:grid-cols-2 md:p-12">
-        {/* Soft sparkles ambient behind the headline */}
-        <AmbientLayer
-          pattern="sparkles"
-          density={3}
-          seed={101}
-          className="inset-0 right-1/2"
-        />
-
         <div className="relative z-text">
           <div className="mb-4 inline-flex items-center gap-2">
             <OwlMark decorative className="h-7 w-7" />

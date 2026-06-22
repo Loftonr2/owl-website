@@ -1,38 +1,56 @@
+import Link from "next/link";
 import { BookOpen, Globe2, GraduationCap, Heart, ShieldCheck } from "lucide-react";
 
 /**
- * Trust strip — 5 pillars from CLAUDE_READ_FIRST.md §11 / DESIGN_STYLE_GUIDE §9.
- *
- * v2 (redesign): bigger, breathier, with icon discs and short descriptors so it
- * does more work as a stand-alone trust block. Sits below the hero on cream
- * canvas. Still no client JS (server component) — micro-interactions are pure
- * Tailwind state utilities.
+ * Trust strip — 5 OWL pillars.
+ * v3: linked, colour-coded pastel-gradient cards. Styles in globals.css.
  */
+
 const PILLARS = [
   {
     icon: BookOpen,
     label: "Inclusive learning",
     blurb: "Every episode features children from many backgrounds.",
+    href: "/watch",
+    cardClass: "owl-pillar-inclusive",
+    iconBg: "rgba(11,166,131,0.12)",
+    iconColor: "#0ba683",
   },
   {
     icon: Heart,
     label: "Calm pacing",
     blurb: "Slow tempo, gentle music. Never overstimulating.",
+    href: "/watch",
+    cardClass: "owl-pillar-calm",
+    iconBg: "rgba(130,110,220,0.12)",
+    iconColor: "#826edc",
   },
   {
     icon: Globe2,
     label: "Multicultural",
     blurb: "Holiday hubs, bilingual touches, real heritage stories.",
+    href: "/holidays",
+    cardClass: "owl-pillar-multicultural",
+    iconBg: "rgba(232,156,58,0.14)",
+    iconColor: "#c47d18",
   },
   {
     icon: ShieldCheck,
     label: "Parent-friendly",
     blurb: "No autoplay, no popups, no child-tracking ads.",
+    href: "/parent-resources",
+    cardClass: "owl-pillar-parent",
+    iconBg: "rgba(88,163,101,0.12)",
+    iconColor: "#3d7a50",
   },
   {
     icon: GraduationCap,
     label: "Educator-ready",
     blurb: "Standards-aligned printables and lesson plans.",
+    href: "/educators",
+    cardClass: "owl-pillar-educator",
+    iconBg: "rgba(56,186,220,0.13)",
+    iconColor: "#1a8fad",
   },
 ] as const;
 
@@ -40,34 +58,35 @@ export function TrustStrip() {
   return (
     <section
       aria-label="What OWL stands for"
-      className="relative isolate border-y border-owl-cream-deep/60 bg-owl-cream"
+      className="relative isolate border-y border-owl-cream-deep/60 bg-owl-cream py-10 md:py-14"
     >
-      {/* Soft amber wash behind the row — subtle warmth */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(245,166,35,0.06),transparent_70%)]"
-      />
       <ul
         role="list"
-        className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-6 py-10 sm:px-10 md:grid-cols-5 md:gap-4 md:py-12"
+        className="mx-auto grid max-w-7xl grid-cols-2 gap-4 px-6 sm:px-10 md:grid-cols-5 md:gap-5"
       >
-        {PILLARS.map(({ icon: Icon, label, blurb }) => (
-          <li
-            key={label}
-            className="group flex flex-col items-center gap-2 rounded-owl-card bg-owl-white/40 p-4 text-center transition-colors duration-200 ease-owl-quick hover:bg-owl-white/80 md:p-5"
-          >
-            <span
-              aria-hidden
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal transition-transform duration-200 ease-owl-quick group-hover:scale-110 md:h-12 md:w-12"
+        {PILLARS.map(({ icon: Icon, label, blurb, href, cardClass, iconBg, iconColor }) => (
+          <li key={label}>
+            <Link
+              href={href}
+              aria-label={label + " — " + blurb}
+              className={"owl-pillar-card " + cardClass}
             >
-              <Icon className="h-5 w-5 md:h-6 md:w-6" aria-hidden />
-            </span>
-            <span className="font-display text-sm font-semibold text-owl-forest md:text-base">
-              {label}
-            </span>
-            <span className="hidden text-xs leading-snug text-owl-mist md:block">
-              {blurb}
-            </span>
+              <span
+                aria-hidden
+                className="owl-pillar-icon flex h-11 w-11 items-center justify-center rounded-full md:h-12 md:w-12"
+                style={{ background: iconBg, color: iconColor }}
+              >
+                <Icon className="h-5 w-5 md:h-6 md:w-6" aria-hidden />
+              </span>
+
+              <span className="relative z-10 font-display text-sm font-semibold text-owl-forest md:text-base">
+                {label}
+              </span>
+
+              <span className="relative z-10 hidden text-xs leading-snug text-owl-mist md:block">
+                {blurb}
+              </span>
+            </Link>
           </li>
         ))}
       </ul>

@@ -6,7 +6,7 @@ import { supabaseServer } from "@/lib/clients/supabase-server";
  *
  * Supabase sends the user here from the magic-link email. We swap the code
  * for a session cookie via supabase.auth.exchangeCodeForSession and then
- * redirect to the original `next` path (defaults to /admin).
+ * redirect to the original `next` path (defaults to /account, the role router).
  */
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);

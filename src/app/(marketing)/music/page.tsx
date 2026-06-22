@@ -2,17 +2,18 @@ import Link from "next/link";
 import {
   Music2,
   HeartHandshake,
-  Sparkles,
-  Moon,
-  Wind,
-  Sun,
   Search,
   Download,
   GraduationCap,
+  Bird,
+  BookOpen,
+  Leaf,
+  Palette,
+  MoreHorizontal,
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,6 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { MediaRail } from "@/components/marketing/media-rail";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { PlaylistCard } from "@/components/marketing/playlist-card";
 import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
@@ -56,12 +56,78 @@ export const metadata = pageMetadata({
  */
 
 const BROWSE_CATEGORIES = [
-  { value: "alphabet", label: "Alphabet", icon: Music2 },
-  { value: "feelings", label: "Feelings", icon: HeartHandshake },
-  { value: "holiday", label: "Holiday", icon: Sparkles },
-  { value: "bedtime", label: "Bedtime", icon: Moon },
-  { value: "movement", label: "Movement", icon: Wind },
-  { value: "counting", label: "Counting", icon: Sun },
+  {
+    value: "animals",
+    label: "Animals",
+    icon: Bird,
+    bg: "bg-gradient-to-br from-[#fef3d8] via-[#fdf7eb] to-[#fff8ec]",
+    border: "border-owl-amber/30 hover:border-owl-amber/60",
+    iconBg: "bg-owl-amber/20 text-owl-amber",
+    shadow: "hover:shadow-[0_8px_28px_rgba(245,158,11,0.30)]",
+    label_color: "text-owl-amber",
+  },
+  {
+    value: "alphabet",
+    label: "Alphabet",
+    icon: BookOpen,
+    bg: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    border: "border-owl-teal/30 hover:border-owl-teal/60",
+    iconBg: "bg-owl-teal/15 text-owl-teal",
+    shadow: "hover:shadow-[0_8px_28px_rgba(13,168,159,0.28)]",
+    label_color: "text-owl-teal",
+  },
+  {
+    value: "seasons",
+    label: "Seasons",
+    icon: Leaf,
+    bg: "bg-gradient-to-br from-[#dff0e6] via-[#eef6f1] to-[#fff8ec]",
+    border: "border-owl-forest/25 hover:border-owl-forest/50",
+    iconBg: "bg-owl-forest/15 text-owl-forest",
+    shadow: "hover:shadow-[0_8px_28px_rgba(20,107,68,0.25)]",
+    label_color: "text-owl-forest",
+  },
+  {
+    value: "theme",
+    label: "Theme",
+    icon: Palette,
+    bg: "bg-gradient-to-br from-[#ede9fe] via-[#f3f0ff] to-[#fff8ec]",
+    border: "border-[#7c3aed]/25 hover:border-[#7c3aed]/50",
+    iconBg: "bg-[#7c3aed]/15 text-[#7c3aed]",
+    shadow: "hover:shadow-[0_8px_28px_rgba(124,58,237,0.25)]",
+    label_color: "text-[#7c3aed]",
+  },
+  {
+    value: "feelings",
+    label: "Feelings",
+    icon: HeartHandshake,
+    bg: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
+    border: "border-owl-rose/30 hover:border-owl-rose/60",
+    iconBg: "bg-owl-rose/20 text-owl-rose",
+    shadow: "hover:shadow-[0_8px_28px_rgba(229,91,77,0.28)]",
+    label_color: "text-owl-rose",
+  },
+  {
+    value: "others",
+    label: "Others",
+    icon: MoreHorizontal,
+    bg: "bg-gradient-to-br from-[#dbeafe] via-[#eff6ff] to-[#fff8ec]",
+    border: "border-[#1d6fb5]/25 hover:border-[#1d6fb5]/50",
+    iconBg: "bg-[#1d6fb5]/15 text-[#1d6fb5]",
+    shadow: "hover:shadow-[0_8px_28px_rgba(29,111,181,0.25)]",
+    label_color: "text-[#1d6fb5]",
+  },
+];
+
+const AGE_CHIPS = [
+  { value: "toddler", label: "Toddler" },
+  { value: "prek", label: "Pre-K" },
+  { value: "k5", label: "K–5" },
+];
+
+const TEMPO_CHIPS = [
+  { value: "ago", label: "Ago" },
+  { value: "calm", label: "Calm" },
+  { value: "upbeat", label: "Upbeat" },
 ];
 
 export default function MusicPage() {
@@ -75,83 +141,60 @@ export default function MusicPage() {
 
   return (
     <>
-      {/* 1 — Music hero (cream, notes ambient, streaming overlay) */}
-      <CinematicHero
-        tone="cream"
-        slug="music"
-        sequenceSlug="music-recording-room"
-        bannerAspect="wide"
+      {/* 1 — Music hero */}
+      <VideoHeroBanner
+        src="/videos/music-hero.mp4"
+        poster="/images/headers/music-hero.png"
         eyebrow="Music"
         heading={
           <>
-            Explore our{" "}
-            <span className="text-owl-teal">sing-along playlists.</span>
+            Explore Our{" "}
+            <span className="text-owl-teal">Sing-Along Playlists!</span>
           </>
         }
         subhead="Same songs, every platform. Stream on Spotify, Apple Music, YouTube Music, or Amazon Music — or download the activity sheets."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="#playlists">
-              <Music2 className="h-4 w-4" aria-hidden />
-              Browse playlists
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="#streaming">Listen on every platform</Link>
-          </Button>
-        }
-        meta={
-          <p>
-            All songs mastered at 432 Hz, –14 LUFS. No autoplay anywhere on this site.
-          </p>
-        }
-        overlay={
-          <GlassPanel variant="frost" className="text-center sm:text-left">
-            <p className="font-display text-xs font-bold uppercase tracking-wide text-owl-teal">
-              Stream OWL
-            </p>
-            <div className="mt-2">
-              <StreamingPlatforms
-                spotify="https://open.spotify.com/artist/example"
-                appleMusic="https://music.apple.com/artist/example"
-                youtubeMusic="https://music.youtube.com/channel/example"
-                amazonMusic="https://music.amazon.com/artists/example"
-                size="sm"
-              />
-            </div>
-          </GlassPanel>
-        }
-        ambient={<AmbientLayer pattern="notes" density={5} seed={47} />}
+        primaryCta={{ label: "Browse playlists", href: "#playlists" }}
+        secondaryCta={{ label: "Listen on every platform", href: "#streaming" }}
+        meta={<p>All songs mastered at 432 Hz, –14 LUFS.</p>}
       />
 
-      {/* 2 — Search + filter chips */}
+      {/* 2 — Search + filter chips (Age × Theme × Tempo) */}
       <SectionReveal>
         <Section width="wide" pad="md" bg="cream">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <label className="relative block max-w-md flex-1">
-              <span className="sr-only">Search playlists</span>
+          <div className="flex flex-col gap-4">
+            {/* Search bar */}
+            <label className="relative block w-full max-w-2xl mx-auto">
+              <span className="sr-only">Search playlists, songs, topics</span>
               <Search
                 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-owl-mist"
                 aria-hidden
               />
               <input
                 type="search"
-                placeholder="Search by song, theme, or feeling"
-                className="h-11 w-full rounded-owl-btn border border-owl-cream-deep bg-owl-white pl-9 pr-4 text-sm text-owl-ink shadow-owl-1 transition-colors duration-150 placeholder:text-owl-mist focus:border-owl-teal focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                placeholder="Search playlists, songs, topics..."
+                className="h-12 w-full rounded-owl-btn border border-owl-cream-deep bg-owl-white pl-9 pr-4 text-sm text-owl-ink shadow-owl-1 transition-colors duration-150 placeholder:text-owl-mist focus:border-owl-teal focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
               />
             </label>
-
-            <div className="flex flex-wrap gap-2">
-              {PLAYLIST_CATEGORY_OPTIONS.map((c) => (
-                <CategoryChip
-                  key={c.value}
-                  href={`/music?category=${c.value}`}
-                  label={c.label}
-                  intent="teal"
-                />
-              ))}
+            {/* Filter rows */}
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-owl-mist">Age</p>
+                {AGE_CHIPS.map((c) => (
+                  <CategoryChip key={c.value} href={`/music?age=${c.value}`} label={c.label} intent="teal" />
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 sm:ml-4">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-owl-mist">Theme</p>
+                {PLAYLIST_CATEGORY_OPTIONS.slice(0, 3).map((c) => (
+                  <CategoryChip key={c.value} href={`/music?category=${c.value}`} label={c.label} intent="amber" />
+                ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 sm:ml-4">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-owl-mist">Tempo</p>
+                {TEMPO_CHIPS.map((c) => (
+                  <CategoryChip key={c.value} href={`/music?tempo=${c.value}`} label={c.label} intent="teal" />
+                ))}
+              </div>
             </div>
           </div>
         </Section>
@@ -193,19 +236,19 @@ export default function MusicPage() {
             stagger={0.06}
             offsetY={12}
           >
-            {BROWSE_CATEGORIES.map(({ value, label, icon: Icon }) => (
+            {BROWSE_CATEGORIES.map(({ value, label, icon: Icon, bg, border, iconBg, shadow, label_color }) => (
               <Link
                 key={value}
                 href={`/music?category=${value}`}
-                className="group flex h-full flex-col items-center gap-3 rounded-owl-card border border-owl-cream-deep bg-owl-cream p-5 text-center shadow-owl-1 transition-all duration-200 ease-owl-quick hover:-translate-y-0.5 hover:bg-owl-white hover:shadow-owl-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-owl-cream"
+                className={`group flex h-full flex-col items-center gap-3 rounded-owl-card border-2 ${border} ${bg} p-5 text-center shadow-owl-1 ${shadow} transition-all duration-300 ease-owl hover:-translate-y-2 hover:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2`}
               >
                 <span
                   aria-hidden
-                  className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-owl-teal/10 text-owl-teal transition-transform duration-200 ease-owl-quick group-hover:scale-110"
+                  className={`inline-flex h-14 w-14 items-center justify-center rounded-full ${iconBg} transition-all duration-300 ease-owl group-hover:scale-115 group-hover:rotate-6`}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-6 w-6" />
                 </span>
-                <span className="font-display text-sm font-semibold text-owl-ink">
+                <span className={`font-display text-sm font-bold ${label_color} transition-colors duration-200`}>
                   {label}
                 </span>
               </Link>
@@ -238,7 +281,6 @@ export default function MusicPage() {
       <SectionReveal>
         <Section width="wide" pad="lg" bg="white">
           <div className="relative isolate overflow-hidden rounded-owl-hero bg-owl-amber-soft/40 p-8 shadow-owl-1 md:p-12">
-            <AmbientLayer pattern="notes" density={3} seed={59} className="inset-0" />
             <div className="relative z-text grid grid-cols-1 items-center gap-8 md:grid-cols-[1.3fr,1fr]">
               <div>
                 <p className="font-display text-xs font-bold uppercase tracking-[0.22em] text-owl-teal">

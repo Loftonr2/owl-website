@@ -211,3 +211,107 @@
     display: none;
   }
 }
+
+/* ─── Trust-strip pillar cards ──────────────────────────────────────────────
+ * Pastel animated gradient cards used in TrustStrip on the homepage.
+ * Defined here (not inline) so they survive the Next.js server-component
+ * boundary and are included in the single CSS bundle.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+@keyframes owlPillarScroll {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.owl-pillar-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 14px 40px rgba(54, 71, 59, 0.07);
+  transition: transform 300ms ease, box-shadow 300ms ease, filter 300ms ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+
+.owl-pillar-card:focus-visible {
+  outline: 2px solid #0ba683;
+  outline-offset: 3px;
+}
+
+.owl-pillar-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 24px 56px rgba(54, 71, 59, 0.14);
+  filter: saturate(1.08) brightness(1.02);
+}
+
+/* animated gradient base layer */
+.owl-pillar-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-size: 220% 220%;
+  animation: owlPillarScroll 9s ease-in-out infinite;
+}
+
+/* gloss overlay — two soft white radial spots */
+.owl-pillar-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.70), transparent 30%),
+    radial-gradient(circle at 82% 82%, rgba(255, 255, 255, 0.40), transparent 30%);
+}
+
+.owl-pillar-card .owl-pillar-icon {
+  transition: transform 250ms ease;
+}
+
+.owl-pillar-card:hover .owl-pillar-icon {
+  transform: scale(1.12);
+}
+
+/* Per-card colour themes */
+.owl-pillar-inclusive::before {
+  background-image: linear-gradient(135deg, #e7f8ef 0%, #bfe8dc 50%, #fff8ec 100%);
+}
+
+.owl-pillar-calm::before {
+  background-image: linear-gradient(135deg, #eaebff 0%, #ddd8ff 50%, #f0eaff 100%);
+}
+
+.owl-pillar-multicultural::before {
+  background-image: linear-gradient(135deg, #fff4dc 0%, #ffd9b8 50%, #eefae5 100%);
+}
+
+.owl-pillar-parent::before {
+  background-image: linear-gradient(135deg, #eef7e2 0%, #d6ead0 50%, #fff8ed 100%);
+}
+
+.owl-pillar-educator::before {
+  background-image: linear-gradient(135deg, #e3f7ff 0%, #d0f2ea 50%, #eaf9ff 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .owl-pillar-card::before {
+    animation: none;
+  }
+  .owl-pillar-card,
+  .owl-pillar-card .owl-pillar-icon {
+    transition: none;
+  }
+  .owl-pillar-card:hover {
+    transform: none;
+    filter: none;
+  }
+}

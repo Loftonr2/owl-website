@@ -5,10 +5,10 @@ import { updateSession } from "@/lib/clients/supabase-middleware";
  * Middleware — runs on every non-static request.
  *
  *  1. Refresh the Supabase session cookie.
- *  2. If the request targets /admin or /studio and there's no session,
- *     redirect to /login?next=<original-path>.
- *  3. If the request is /login and the user is already authed, send them
- *     straight to /admin.
+ *  2. If the request targets a protected area (/admin, /studio, /portal,
+ *     /account) and there's no session, redirect to /login?next=<original-path>.
+ *  3. If an authed user hits /login or /signup, send them to /account (the
+ *     role router).
  */
 export async function middleware(request: NextRequest) {
   const { response, user } = await updateSession(request);

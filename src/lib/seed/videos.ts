@@ -174,7 +174,7 @@ export const SEED_VIDEOS: SeedVideo[] = [
       "Each letter paired with its phonetic sound at a deliberate pace — the OWL companion song to the alphabet learning ladder.",
     learningGoals: ["Letter-sound correspondence", "Phonemic awareness", "Pre-reading"],
     publishedAt: "2026-03-30",
-    youtubeId: "VbbuY2za7M4",
+    youtubeId: "QQPi_oGJ3CA",
   },
   {
     slug: "shell-be-comin-round-the-mountain",

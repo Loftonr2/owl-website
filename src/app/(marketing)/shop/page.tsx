@@ -1,341 +1,340 @@
 import Link from "next/link";
 import {
-  ShoppingBag,
-  Sparkles,
   Download,
-  Package,
-  Plus,
-  PackageOpen,
+  Layers,
+  Palette,
+  Star,
+  Monitor,
+  Shirt,
+  Coffee,
+  Home,
+  ArrowRight,
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { CinematicHero } from "@/components/marketing/cinematic-hero";
+import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
-import { CategoryChip } from "@/components/ui/category-chip";
-import { GlassPanel } from "@/components/ui/glass-panel";
-import { Chip } from "@/components/ui/chip";
 import { ProductCard } from "@/components/marketing/product-card";
-import { MediaRail } from "@/components/marketing/media-rail";
-import { StaggerGrid } from "@/components/marketing/stagger-grid";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-import { AmbientLayer } from "@/components/marketing/ambient-layer";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
-
-import { SEED_PRODUCTS, PRODUCT_CATEGORY_OPTIONS } from "@/lib/seed/products";
+import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
+import { SEED_PRODUCTS } from "@/lib/seed/products";
 
 export const metadata = pageMetadata({
   title: "Shop — OWL Sing Together",
   description:
-    "Plush, flashcards, coloring books, digital bundles. Multicultural, classroom-ready, built to grow.",
+    "Plush, stickers, apparel, drinkware, flashcards, and more. Multicultural, classroom-ready, built to grow.",
   path: "/shop",
 });
 
-/**
- * /shop — v3 (Visual-track Phase 5, premium retail).
- *
- * Page sections:
- *   1. Premium shopping hero (CinematicHero, sequenceSlug="shop-flatlay", slug="shop")
- *   2. Shop-by-category row (CategoryChips)
- *   3. Featured products (MediaRail)
- *   4. Seasonal bundles (StaggerGrid, 3 curated bundles)
- *   5. Digital downloads / resources (MediaRail, filtered to digital channels)
- *   6. Bestsellers (MediaRail)
- *   7. Newsletter band
- *   + <StickyMiniCart> mounted with demo state (Phase 3 will wire real cart)
- *
- * Coming Soon ribbons: every <ProductCard> renders its ribbon when
- * `isComingSoon: true` (currently true for every seed entry — commerce isn't
- * wired). The ribbon is built into the card; no per-page work to enable it.
- *
- * Motion vocabulary: premium retail — restrained stagger, generous whitespace,
- * cinematic poster moments. Sparkles ambient at low density throughout the hero
- * to lift the editorial feel.
- */
+function categorySlug(cat: string): string {
+  return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
 
-const SEASONAL_BUNDLES = [
+const SHOP_CATEGORIES = [
   {
-    name: "Back-to-school starter",
-    eyebrow: "Aug · Sep",
-    summary: "Flashcards + emotion tiles + a parent guide. Set up September in one box.",
-    skuCount: 3,
-    priceFrom: "$54",
-    tone: "amber" as const,
+    value: "Coloring",
+    label: "Coloring",
+    icon: Palette,
+    cardGrad: "bg-gradient-to-br from-[#fef3d8] via-[#fdf7eb] to-[#eefae5]",
+    bar: "bg-owl-amber",
+    iconBg: "bg-owl-amber/20",
+    iconColor: "text-owl-amber",
+    eyebrow: "text-owl-amber",
+    hoverBorder: "hover:border-owl-amber/50",
+    featuredSlugs: ["feelings-coloring", "numbers-math-coloring", "abc-coloring-book", "abcs-world-coloring"],
   },
   {
-    name: "Diwali home bundle",
-    eyebrow: "Oct · Nov",
-    summary: "Rangoli coloring sheets, lamp craft template, and the Diwali Lights song download.",
-    skuCount: 4,
-    priceFrom: "$24",
-    tone: "rose" as const,
+    value: "Stickers",
+    label: "Stickers",
+    icon: Star,
+    cardGrad: "bg-gradient-to-br from-[#ede9fe] via-[#f3f0ff] to-[#fff8ec]",
+    bar: "bg-[#7c3aed]",
+    iconBg: "bg-[#7c3aed]/15",
+    iconColor: "text-[#7c3aed]",
+    eyebrow: "text-[#7c3aed]",
+    hoverBorder: "hover:border-[#7c3aed]/40",
+    featuredSlugs: ["owl-emotions-stickers", "owl-animal-sticker-set", "owl-holiday-sticker-set", "owl-abcs-sticker-set"],
   },
   {
-    name: "Winter wind-down",
-    eyebrow: "Dec · Jan",
-    summary: "Lullaby album + bedtime printable pack + plush. Slow December evenings.",
-    skuCount: 3,
-    priceFrom: "$62",
-    tone: "forest" as const,
+    value: "Apparel",
+    label: "Apparel",
+    icon: Shirt,
+    cardGrad: "bg-gradient-to-br from-[#fce8e4] via-[#fdf3f1] to-[#fff8ec]",
+    bar: "bg-owl-rose",
+    iconBg: "bg-owl-rose/15",
+    iconColor: "text-owl-rose",
+    eyebrow: "text-owl-rose",
+    hoverBorder: "hover:border-owl-rose/50",
+    featuredSlugs: ["owl-sweatshirt", "owl-cotton-kids-t-shirt", "owl-infant-bodysuit", "owl-flat-bill-cap"],
   },
+  {
+    value: "Flashcards",
+    label: "Flashcards",
+    icon: Layers,
+    cardGrad: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    bar: "bg-owl-teal",
+    iconBg: "bg-owl-teal/15",
+    iconColor: "text-owl-teal",
+    eyebrow: "text-owl-teal",
+    hoverBorder: "hover:border-owl-teal/50",
+    featuredSlugs: ["bilingual-word-cards", "abc-flash-cards", "rhyme-time-game", "emotion-tiles"],
+  },
+  {
+    value: "Home & Accessories",
+    label: "Home",
+    icon: Home,
+    cardGrad: "bg-gradient-to-br from-[#dff0e6] via-[#eef6f1] to-[#fff8ec]",
+    bar: "bg-owl-forest",
+    iconBg: "bg-owl-forest/15",
+    iconColor: "text-owl-forest",
+    eyebrow: "text-owl-forest",
+    hoverBorder: "hover:border-owl-forest/40",
+    featuredSlugs: ["owl-backpack", "owl-water-bottle", "owl-tote-bag", "owl-throw-blanket"],
+  },
+  {
+    value: "Drinkware",
+    label: "Drinkware",
+    icon: Coffee,
+    cardGrad: "bg-gradient-to-br from-[#e5f8f4] via-[#f0faf7] to-[#fff8ec]",
+    bar: "bg-owl-teal",
+    iconBg: "bg-owl-teal/15",
+    iconColor: "text-owl-teal",
+    eyebrow: "text-owl-teal",
+    hoverBorder: "hover:border-owl-teal/50",
+    featuredSlugs: ["owl-enamel-mug", "owl-wine-tumbler", "owl-insulated-tumbler", "owl-glossy-mug"],
+  },
+  {
+    value: "Digital",
+    label: "Digital",
+    icon: Monitor,
+    cardGrad: "bg-gradient-to-br from-[#e6edf5] via-[#f1f5fa] to-[#fff8ec]",
+    bar: "bg-[#1d6fb5]",
+    iconBg: "bg-[#1d6fb5]/15",
+    iconColor: "text-[#1d6fb5]",
+    eyebrow: "text-[#1d6fb5]",
+    hoverBorder: "hover:border-[#1d6fb5]/40",
+    featuredSlugs: ["counting-math-album", "abc-adventure-album", "around-world-album", "calm-down-album"],
+  },
+] as const;
+
+const SECTION_ORDER = [
+  "Coloring", "Stickers", "Apparel", "Flashcards", "Home & Accessories", "Drinkware", "Digital",
 ];
 
 export default function ShopPage() {
-  const featured = SEED_PRODUCTS.filter((p) => p.featured);
-  const bestsellers = SEED_PRODUCTS.filter((p) => p.featured).slice(0, 4);
-  const digitalDownloads = SEED_PRODUCTS.filter((p) =>
-    ["gumroad", "kdp", "tpt"].includes(p.channel)
-  );
-  const all = SEED_PRODUCTS;
-
   return (
     <>
-      {/* 1 — Premium shopping hero (cream, sparkles, shop-flatlay sequence) */}
-      <CinematicHero
-        tone="cream"
-        slug="shop"
-        sequenceSlug="shop-flatlay"
-        bannerAspect="wide"
-        eyebrow="Shop OWLsome goods"
+      {/* 1 — Hero */}
+      <VideoHeroBanner
+        src="/videos/shop-hero.mp4"
+        poster="/images/headers/shop-hero.png"
+        eyebrow="Shop"
         heading={
           <>
-            Goods that grow with{" "}
-            <span className="text-owl-teal">your child.</span>
+            Shop Our{" "}
+            <span className="text-owl-teal">OWLsome Sing-Along Goods!</span>
           </>
         }
-        subhead="Print-on-demand plush, flashcards, coloring books, and digital bundles. Multicultural, classroom-ready, parent-approved."
-        primaryCta={
-          <Button intent="primary" size="lg" asChild>
-            <Link href="/newsletter">
-              <Sparkles className="h-4 w-4" aria-hidden />
-              Get launch updates
-            </Link>
-          </Button>
-        }
-        secondaryCta={
-          <Button intent="secondary" size="lg" asChild>
-            <Link href="#bestsellers">
-              <ShoppingBag className="h-4 w-4" aria-hidden />
-              Browse all goods
-            </Link>
-          </Button>
-        }
-        meta={
-          <p>
-            Cart wakes up alongside Stripe + Shopify in Phase 3. Every card below
-            shows its truthful state — "Coming Soon" ribbons aren't decoration.
-          </p>
-        }
-        ambient={<AmbientLayer pattern="sparkles" density={4} seed={167} />}
+        subhead="Apparel, stickers, drinkware, flashcards, and more — each one designed to make learning feel like play."
+        primaryCta={{ label: "Shop Now", href: "#shop-apparel" }}
+        secondaryCta={{ label: "View All Products", href: "/shop/all-products" }}
       />
 
-      {/* 2 — Shop-by-category row */}
+      {/* 2 — Category icon navigation */}
       <SectionReveal>
-        <Section width="wide" pad="md" bg="cream">
-          <div className="flex flex-col items-center gap-3 md:flex-row md:flex-wrap md:justify-center">
-            <p className="font-display text-xs font-bold uppercase tracking-[0.18em] text-owl-mist md:mr-3">
-              Shop by category
-            </p>
-            {PRODUCT_CATEGORY_OPTIONS.map((c) => (
-              <CategoryChip
-                key={c.value}
-                href={`/shop?category=${c.value}`}
-                label={c.label}
-                intent="teal"
-              />
-            ))}
+        <Section width="wide" pad="lg" bg="cream">
+          <SectionIntro
+            eyebrow="Shop by category"
+            title="Find what you're looking for"
+            subtitle="Every OWL product, organized by type. Click a category to jump right there."
+            align="center"
+          />
+          <ul
+            role="list"
+            aria-label="Shop by category"
+            className="mt-8 flex flex-wrap justify-center gap-4"
+          >
+            {SHOP_CATEGORIES.map((cat) => {
+              const Icon = cat.icon;
+              return (
+                <li key={cat.value} className="w-24 flex-shrink-0">
+                  <Link
+                    href={`#shop-${categorySlug(cat.value)}`}
+                    aria-label={`Browse ${cat.label}`}
+                    className={[
+                      "group relative flex flex-col items-center overflow-hidden rounded-owl-card",
+                      cat.cardGrad,
+                      "border border-owl-cream-deep/70 shadow-owl-1",
+                      "transition-all duration-300 ease-owl",
+                      "hover:-translate-y-1.5 hover:shadow-owl-2",
+                      cat.hoverBorder,
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal focus-visible:ring-offset-2",
+                      "py-5 px-3",
+                    ].join(" ")}
+                  >
+                    <span aria-hidden className={"pointer-events-none absolute inset-x-0 top-0 h-1.5 " + cat.bar} />
+                    <span
+                      className={[
+                        "mt-1 inline-flex h-12 w-12 items-center justify-center rounded-full",
+                        "transition-transform duration-300 ease-owl group-hover:scale-110",
+                        cat.iconBg,
+                        cat.iconColor,
+                      ].join(" ")}
+                    >
+                      <Icon className="h-6 w-6" aria-hidden />
+                    </span>
+                    <p className={["mt-2.5 font-display text-xs font-bold text-center", cat.iconColor].join(" ")}>
+                      {cat.label}
+                    </p>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-6 flex justify-center">
+            <Link
+              href="/shop/all-products"
+              className="flex items-center gap-2 rounded-full border border-owl-teal/40 bg-owl-teal/10 px-6 py-2.5 font-display text-sm font-semibold text-owl-teal transition-all hover:bg-owl-teal/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal"
+            >
+              View All Products
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </Section>
       </SectionReveal>
 
-      {/* 3 — Featured products */}
-      <SectionReveal>
-        <Section width="wide" pad="lg" bg="cream">
-          <SectionIntro
-            eyebrow="Featured"
-            title="Editor's picks this season"
-            subtitle="The seasonal lineup — what we're highlighting right now."
-          />
-          <MediaRail
-            ariaLabel="Featured OWL products"
-            columns={{ md: 3, lg: 4 }}
-            className="mt-8"
-            stagger={0.07}
-          >
-            {featured.map((p) => (
-              <ProductCard
-                key={p.slug}
-                slug={p.slug}
-                title={p.title}
-                price={p.price}
-                ageRange={p.ageRange}
-                category={p.category}
-                tone={p.tone}
-                isComingSoon={p.isComingSoon}
-              />
-            ))}
-          </MediaRail>
-        </Section>
-      </SectionReveal>
+      {/* 3 — Category product sections */}
+      {SECTION_ORDER.flatMap((sectionValue, catIdx) => {
+        const cat = SHOP_CATEGORIES.find(c => c.value === sectionValue);
+        if (!cat) return [];
+        return [{ cat, catIdx }];
+      }).map(({ cat, catIdx }) => {
+        const featured = cat.featuredSlugs.length > 0
+          ? cat.featuredSlugs
+              .map(slug => SEED_PRODUCTS.find(p => p.slug === slug))
+              .filter((p): p is NonNullable<typeof p> => !!p)
+          : SEED_PRODUCTS.filter(p => p.category === cat.value).slice(0, 4);
 
-      {/* 4 — Seasonal bundles */}
-      <SectionReveal>
-        <Section width="wide" pad="lg" bg="white">
-          <SectionIntro
-            eyebrow="Bundles"
-            title="Seasonal bundles"
-            subtitle="Curated by season — songs, printables, and physical goods that ship together."
-          />
-          <StaggerGrid
-            asList
-            ariaLabel="Seasonal product bundles"
-            className="grid grid-cols-1 gap-5 md:grid-cols-3"
-            stagger={0.08}
-            offsetY={14}
-          >
-            {SEASONAL_BUNDLES.map((b) => (
-              <div
-                key={b.name}
-                className="relative isolate flex h-full flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-cream p-6 shadow-owl-1 transition-shadow duration-300 ease-owl hover:shadow-owl-2"
-              >
-                <AmbientLayer pattern="sparkles" density={3} seed={b.name.length * 11} />
-                <div className="relative z-text">
-                  <Chip intent={b.tone} className="mb-3 self-start">
-                    {b.eyebrow}
-                  </Chip>
-                  <h3 className="font-display text-xl font-bold text-owl-ink">{b.name}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-owl-mist">{b.summary}</p>
-                  <div className="mt-4 flex items-baseline gap-3">
-                    <p className="font-display text-2xl font-extrabold text-owl-teal">{b.priceFrom}</p>
-                    <p className="text-xs text-owl-mist">/ bundle · {b.skuCount} items</p>
+        if (featured.length === 0) return null;
+
+        const totalInCat = SEED_PRODUCTS.filter(p => p.category === cat.value).length;
+        const bg = catIdx % 2 === 0 ? ("white" as const) : ("cream" as const);
+
+        return (
+          <SectionReveal key={cat.value}>
+            <Section width="wide" pad="lg" bg={bg} id={`shop-${categorySlug(cat.value)}`}>
+              <div className="mb-8 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <span
+                    className={[
+                      "inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full",
+                      cat.iconBg,
+                      cat.iconColor,
+                    ].join(" ")}
+                  >
+                    <cat.icon className="h-6 w-6" aria-hidden />
+                  </span>
+                  <div>
+                    <p className={["font-display text-xs font-bold uppercase tracking-[0.18em]", cat.eyebrow].join(" ")}>
+                      Shop
+                    </p>
+                    <h2 className="font-display text-2xl font-extrabold text-owl-ink sm:text-3xl">
+                      {cat.label}
+                    </h2>
                   </div>
-                  <Button intent="secondary" size="md" asChild className="mt-5 self-start">
-                    <Link href="/newsletter">Notify when bundle drops</Link>
-                  </Button>
                 </div>
+                <Link
+                  href={`/shop/${categorySlug(cat.value)}`}
+                  className={[
+                    "hidden sm:flex items-center gap-2 rounded-full px-5 py-2 font-display text-sm font-bold transition-all",
+                    "border-2 shadow-sm hover:scale-[1.02]",
+                    cat.iconColor,
+                    cat.hoverBorder.replace("hover:", ""),
+                    "bg-transparent hover:bg-white/50",
+                  ].join(" ")}
+                >
+                  More
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </div>
-            ))}
-          </StaggerGrid>
-        </Section>
-      </SectionReveal>
 
-      {/* 5 — Digital downloads / resources */}
+              <ul
+                role="list"
+                aria-label={cat.label + " products"}
+                className="grid grid-cols-2 gap-6 sm:grid-cols-4"
+              >
+                {featured.map((p) => (
+                  <li key={p.slug}>
+                    <ProductCard
+                      slug={p.slug}
+                      title={p.title}
+                      price={p.price}
+                      ageRange={p.ageRange}
+                      category={p.category}
+                      tone={p.tone}
+                      isComingSoon={p.isComingSoon}
+                    />
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 flex justify-end">
+                <Link
+                  href={`/shop/${categorySlug(cat.value)}`}
+                  className={[
+                    "group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-7 py-3",
+                    "font-display text-sm font-bold text-white shadow-owl-1",
+                    "transition-all duration-300 hover:scale-[1.03] hover:shadow-owl-2",
+                    cat.bar,
+                  ].join(" ")}
+                >
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full"
+                  />
+                  <span className="relative">More</span>
+                  <ArrowRight className="relative h-4 w-4" />
+                </Link>
+              </div>
+            </Section>
+          </SectionReveal>
+        );
+      })}
+
+      {/* 4 — Streaming + Download CTA */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream-deep">
           <SectionIntro
-            eyebrow="Instant"
-            title="Digital downloads & resources"
-            subtitle="Printable bundles + standards crosswalks. Delivered to your inbox the moment commerce is live."
+            eyebrow="Listen & download"
+            title="Music + free activity sheets"
+            subtitle="Stream OWL songs on your favorite platform, or download free activity sheets for every video."
+            align="center"
           />
-          <MediaRail
-            ariaLabel="Digital OWL products"
-            columns={{ md: 3, lg: 4 }}
-            className="mt-8"
-            stagger={0.05}
-          >
-            {digitalDownloads.map((p) => (
-              <ProductCard
-                key={p.slug}
-                slug={p.slug}
-                title={p.title}
-                price={p.price}
-                ageRange={p.ageRange}
-                category={p.category}
-                tone={p.tone}
-                isComingSoon={p.isComingSoon}
-              />
-            ))}
-          </MediaRail>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-6 flex justify-center">
+            <StreamingPlatforms
+              spotify="https://open.spotify.com/artist/example"
+              appleMusic="https://music.apple.com/artist/example"
+              youtubeMusic="https://music.youtube.com/channel/example"
+              amazonMusic="https://music.amazon.com/artists/example"
+            />
+          </div>
+          <div className="mt-5 flex justify-center">
             <Button intent="tertiary" size="lg" asChild>
               <Link href="/printables">
                 <Download className="h-4 w-4" aria-hidden />
-                Browse free printables
+                Download free activity sheets
               </Link>
             </Button>
           </div>
         </Section>
       </SectionReveal>
 
-      {/* 6 — Bestsellers */}
-      <SectionReveal>
-        <Section width="wide" pad="lg" bg="cream" id="bestsellers">
-          <SectionIntro
-            eyebrow="Family favorites"
-            title="Bestsellers"
-            subtitle="Most-requested SKUs once commerce wakes up."
-          />
-          <MediaRail
-            ariaLabel="OWL bestselling products"
-            columns={{ md: 3, lg: 4 }}
-            className="mt-8"
-            stagger={0.07}
-          >
-            {bestsellers.map((p) => (
-              <ProductCard
-                key={p.slug}
-                slug={p.slug}
-                title={p.title}
-                price={p.price}
-                ageRange={p.ageRange}
-                category={p.category}
-                tone={p.tone}
-                isComingSoon={p.isComingSoon}
-              />
-            ))}
-          </MediaRail>
-        </Section>
-      </SectionReveal>
-
-      {/* 7 — Full store grid */}
-      <SectionReveal>
-        <Section width="wide" pad="lg" bg="white" id="all-products">
-          <SectionIntro
-            eyebrow="The full store"
-            title="Browse everything"
-            subtitle="Multicultural, classroom-ready, parent-approved."
-          />
-          <MediaRail
-            ariaLabel="All OWL products"
-            columns={{ md: 3, lg: 4 }}
-            className="mt-8"
-            stagger={0.04}
-          >
-            {all.map((p) => (
-              <ProductCard
-                key={p.slug}
-                slug={p.slug}
-                title={p.title}
-                price={p.price}
-                ageRange={p.ageRange}
-                category={p.category}
-                tone={p.tone}
-                isComingSoon={p.isComingSoon}
-              />
-            ))}
-          </MediaRail>
-        </Section>
-      </SectionReveal>
-
       <SectionReveal>
         <NewsletterSection />
       </SectionReveal>
-
-      {/*
-        Sticky mini-cart — UNMOUNTED here pending Phase-3 commerce wake-up.
-
-        Previously this page mounted a dev-only demo cart for visual QA. That
-        demo was the lone primitive unique to /shop that the other 4 working
-        pages don't render, and isolating it lets us confirm it was the
-        cause of /shop not loading. The component itself is still in the
-        codebase at `src/components/marketing/sticky-mini-cart.tsx` — wire
-        it back in when Stripe + Shopify go live (OWL build plan Phase 3),
-        feeding `itemCount` and `total` from a real cart store.
-
-        To re-enable demo visually in dev, restore the import + the
-        `process.env.NODE_ENV !== "production" && <StickyMiniCart … />` block.
-      */}
     </>
   );
 }

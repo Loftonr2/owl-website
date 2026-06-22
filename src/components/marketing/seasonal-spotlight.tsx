@@ -1,9 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
-import { headers } from "@/lib/images";
 
 /**
  * Seasonal Spotlight — rotates with the cultural calendar.
@@ -18,12 +16,14 @@ export function SeasonalSpotlight() {
     <Section width="wide" pad="lg" bg="white">
       <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
         <div className="relative order-2 aspect-[5/4] w-full overflow-hidden rounded-owl-hero md:order-1">
-          <Image
-            src={headers.holidays.src}
-            alt={headers.holidays.alt}
-            fill
-            sizes="(min-width: 768px) 560px, 100vw"
-            className="object-cover"
+          <video
+            src="/videos/multicultural-spotlight.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
         <div className="order-1 md:order-2">

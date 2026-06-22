@@ -4,25 +4,29 @@ import { SiteFooter } from "@/components/marketing/site-footer";
 import { ScrollProgress } from "@/components/marketing/scroll-progress";
 import { PageFade } from "@/components/motion/page-fade";
 import { AccountNav } from "@/components/account/account-nav";
+import { CartProvider } from "@/contexts/cart-context";
+import { CartDrawer } from "@/components/store/cart-drawer";
 
 /**
  * Marketing layout — wraps every public page (home, watch, music, shop, etc.).
  * Admin and Studio routes are in separate route groups and don't get this chrome.
  *
- * v3 (Phase 2 shared visual system):
- *   - <PageFade> wraps <main> so route changes fade through instead of cut.
- *     Respects reduced-motion (cuts instantly for assistive users).
- *   - <ScrollProgress> + <SiteHeader> + <SiteFooter> unchanged from earlier phases.
+ * v4 (Phase 5 — Cart system) + account nav:
+ *   - <CartProvider> provides cart state to every page via context
+ *   - <CartDrawer> mounted once — slide-over panel above all content
+ *   - <SiteHeader> reads cart item count and opens the drawer on bag icon click
+ *   - accountSlot renders the role-aware Login / My Account control
  */
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
-    <>
+    <CartProvider>
       <ScrollProgress />
       <SiteHeader accountSlot={<AccountNav />} />
+      <CartDrawer />
       <main id="main">
         <PageFade>{children}</PageFade>
       </main>
       <SiteFooter />
-    </>
+    </CartProvider>
   );
 }

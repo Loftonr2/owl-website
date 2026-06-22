@@ -6,6 +6,7 @@ import { Menu, X, Search, ShoppingBag } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { OwlLockup } from "@/components/brand/owl-logo";
 import { MotionToggleCompact } from "@/components/motion/motion-toggle";
+import { useCart } from "@/contexts/cart-context";
 import { cn } from "@/lib/cn";
 
 /**
@@ -27,6 +28,7 @@ import { cn } from "@/lib/cn";
 export function SiteHeader({ accountSlot }: { accountSlot?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { itemCount, openDrawer } = useCart();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -91,13 +93,22 @@ export function SiteHeader({ accountSlot }: { accountSlot?: ReactNode }) {
           >
             <Search className="h-4 w-4" aria-hidden />
           </Link>
-          <Link
-            href="/shop"
-            aria-label="Cart"
-            className={utilityIconClasses}
+          <button
+            type="button"
+            aria-label={itemCount > 0 ? `Open cart — ${itemCount} item${itemCount === 1 ? "" : "s"}` : "Open cart"}
+            onClick={openDrawer}
+            className={cn(utilityIconClasses, "relative")}
           >
             <ShoppingBag className="h-4 w-4" aria-hidden />
-          </Link>
+            {itemCount > 0 && (
+              <span
+                aria-hidden
+                className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-owl-teal text-[10px] font-bold text-white"
+              >
+                {itemCount > 9 ? "9+" : itemCount}
+              </span>
+            )}
+          </button>
           <MotionToggleCompact className="hidden sm:flex" />
           {/* Role-aware Login / My Account control (server-rendered slot). */}
           {accountSlot && <div className="ml-1">{accountSlot}</div>}

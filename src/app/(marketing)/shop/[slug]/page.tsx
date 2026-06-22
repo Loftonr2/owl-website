@@ -2,7 +2,8 @@ import Script from "next/script";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Bell, ShoppingBag } from "lucide-react";
+import { Bell } from "lucide-react";
+import { AddToCartButton } from "@/components/store/add-to-cart-button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Chip } from "@/components/ui/chip";
 import { Button } from "@/components/ui/button";
@@ -52,13 +53,11 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
   const related = SEED_PRODUCTS.filter((r) => r.slug !== p.slug).slice(0, 4);
   const isComingSoon = p.isComingSoon ?? false;
 
-  // Phase 4 — product photo resolver.
-  // Primary tier: products[slug].primary. Gallery tier: products[slug].gallery.
-  // Both empty until commissioned. When primary is present, real image stacks
-  // over the tonal floor. When gallery has entries, a stacked thumbnail rail
-  // renders under the hero shot. No imagery is fabricated.
   const primaryImage = resolveProductImage(p.slug);
   const galleryImages = resolveProductGallery(p.slug);
+
+  // Numeric price for the cart (display only — server re-validates from seed)
+  const priceAmount = parseFloat(p.price.replace(/[^0-9.]/g, "")) || 0;
 
   const ld = JSON.stringify(
     productSchema({
@@ -67,9 +66,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
       image: `${siteConfig.url}/images/headers/shop-hero.png`,
       sku: p.slug,
       offers: {
-        price: parseFloat(p.price.replace("$", "")),
+        price: priceAmount,
         priceCurrency: "USD",
-        // PreOrder maps the truthful state for coming-soon products.
         availability: isComingSoon ? "PreOrder" : "InStock",
         url: `${siteConfig.url}/shop/${p.slug}`,
       },
@@ -87,9 +85,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
 
       <Section width="wide" pad="lg" bg="cream-deep">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-          {/* Gallery — tonal panel + (resolved primary image) + (gallery rail) */}
+          {/* Gallery */}
           <div className="space-y-4">
-            {/* Primary tile: tonal floor + optional <Image> on top + OwlMark + ribbon */}
             <div
               className={`relative aspect-square overflow-hidden rounded-owl-hero shadow-owl-2 ${toneStyles[p.tone]}`}
             >
@@ -122,8 +119,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
               {isComingSoon && <ComingSoonRibbon variant="corner" />}
             </div>
 
-            {/* Gallery thumbnails — only render when at least one shot exists.
-                Truthful asset interface: empty array → no rail. */}
             {galleryImages.length > 0 && (
               <ul
                 role="list"
@@ -187,36 +182,49 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
               </ul>
             </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8">
               {isComingSoon ? (
-                <>
-                  <Button intent="primary" size="lg" asChild>
-                    <Link href="/newsletter">
-                      <Bell className="h-4 w-4" aria-hidden />
-                      Notify me when it drops
-                    </Link>
-                  </Button>
-                  <Button intent="tertiary" size="lg" asChild>
-                    <Link href="/shop">Keep browsing</Link>
-                  </Button>
-                </>
+                <div className="space-y-3">
+                  <div className="rounded-2xl border border-owl-amber/30 bg-owl-amber/10 p-5 text-sm">
+                    <p className="font-semibold text-owl-amber">Coming Soon</p>
+                    <p className="mt-1 text-owl-ink/70">
+                      Join the OWL Newsletter to be notified when this product becomes available.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-3 sm:flex-row">
+                    <Button intent="primary" size="lg" asChild>
+                      <Link href="/newsletter">
+                        <Bell className="h-4 w-4" aria-hidden />
+                        Notify me when it drops
+                      </Link>
+                    </Button>
+                    <Button intent="tertiary" size="lg" asChild>
+                      <Link href="/shop">Keep browsing</Link>
+                    </Button>
+                  </div>
+                </div>
               ) : (
-                <>
-                  <Button intent="primary" size="lg">
-                    <ShoppingBag className="h-4 w-4" aria-hidden />
-                    Add to cart — {p.price}
+                <div className="space-y-4">
+                  {/* Add to Cart — opens the cart drawer */}
+                  <AddToCartButton
+                    slug={p.slug}
+                    title={p.title}
+                    price={p.price}
+                    priceAmount={priceAmount}
+                    image={primaryImage.src || undefined}
+                    category={p.category}
+                  />
+
+                  <p className="text-center text-xs text-owl-mist">
+                    🔒 Secure checkout via PayPal · Cards accepted · No account needed
+                  </p>
+
+                  <Button intent="tertiary" size="md" asChild>
+                    <Link href="/shop">← Keep shopping</Link>
                   </Button>
-                  <Button intent="secondary" size="lg" asChild>
-                    <Link href="/shop">Keep shopping</Link>
-                  </Button>
-                </>
+                </div>
               )}
             </div>
-            {isComingSoon && (
-              <p className="mt-3 text-xs italic text-owl-mist">
-                Cart wakes up alongside Stripe + Shopify in Phase 3 of the build plan.
-              </p>
-            )}
           </div>
         </div>
       </Section>

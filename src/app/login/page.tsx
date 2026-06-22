@@ -9,16 +9,11 @@ export const metadata = pageMetadata({
 });
 
 /**
- * Magic-link sign-in.
+ * Sign-in — email + password (primary) with a magic-link fallback.
  *
- * Flow:
- *   1. User enters email → submits the form (Server Action).
- *   2. Supabase emails a one-tap magic link.
- *   3. Link routes to /auth/callback, which exchanges the code for a
- *      session cookie and redirects to /admin (or ?next= target).
- *
- * OWL is invite-only: `enable_signup = false` in supabase/config.toml.
- * Only emails the admin has invited via the dashboard can sign in.
+ * On success the user lands on /account, the role router, which sends them to
+ * the Command Center (staff), the educator portal (teacher), or the customer
+ * portal. Confirmation + reset links route through /auth/callback.
  */
 export default async function LoginPage({
   searchParams,
