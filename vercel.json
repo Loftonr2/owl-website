@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    { "path": "/api/cron/send-newsletter", "schedule": "0 13 * * 5" },
+    { "path": "/api/cron/executive-report", "schedule": "0 11 * * 1" },
+    { "path": "/api/cron/refresh-coupons", "schedule": "0 10 * * 3" },
+    { "path": "/api/cron/sync-affiliates", "schedule": "30 10 * * 1" },
+    { "path": "/api/cron/update-crm-metrics", "schedule": "45 10 * * 1" }
+  ]
+}

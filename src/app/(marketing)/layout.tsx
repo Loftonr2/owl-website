@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/marketing/site-header";
 import { SiteFooter } from "@/components/marketing/site-footer";
 import { ScrollProgress } from "@/components/marketing/scroll-progress";
 import { PageFade } from "@/components/motion/page-fade";
+import { AccountNav } from "@/components/account/account-nav";
 
 /**
  * Marketing layout — wraps every public page (home, watch, music, shop, etc.).
@@ -17,7 +18,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <ScrollProgress />
-      <SiteHeader />
+      <SiteHeader accountSlot={<AccountNav />} />
       <main id="main">
         <PageFade>{children}</PageFade>
       </main>

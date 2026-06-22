@@ -14,7 +14,11 @@ export async function middleware(request: NextRequest) {
   const { response, user } = await updateSession(request);
   const { pathname } = request.nextUrl;
 
-  const isProtected = pathname.startsWith("/admin") || pathname.startsWith("/studio");
+  const isProtected =
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/studio") ||
+    pathname.startsWith("/portal") ||
+    pathname.startsWith("/account");
   if (isProtected && !user) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
@@ -22,11 +26,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (pathname === "/login" && user) {
-    const adminUrl = request.nextUrl.clone();
-    adminUrl.pathname = "/admin";
-    adminUrl.searchParams.delete("next");
-    return NextResponse.redirect(adminUrl);
+  // Authed users hitting /login or /signup go to the role router, which sends
+  // them to the right home (Command Center / educator portal / customer portal).
+  if ((pathname === "/login" || pathname === "/signup") && user) {
+    const accountUrl = request.nextUrl.clone();
+    accountUrl.pathname = "/account";
+    accountUrl.searchParams.delete("next");
+    return NextResponse.redirect(accountUrl);
   }
 
   return response;

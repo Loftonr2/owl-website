@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Menu, X, Search, ShoppingBag } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { OwlLockup } from "@/components/brand/owl-logo";
@@ -24,7 +24,7 @@ import { cn } from "@/lib/cn";
  * Mobile menu is a simple in-page disclosure (no portal). Still acceptable
  * for the current nav depth.
  */
-export function SiteHeader() {
+export function SiteHeader({ accountSlot }: { accountSlot?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -99,10 +99,12 @@ export function SiteHeader() {
             <ShoppingBag className="h-4 w-4" aria-hidden />
           </Link>
           <MotionToggleCompact className="hidden sm:flex" />
+          {/* Role-aware Login / My Account control (server-rendered slot). */}
+          {accountSlot && <div className="ml-1">{accountSlot}</div>}
           <Link
             href="/newsletter"
             className={cn(
-              "ml-1 rounded-owl-btn bg-owl-teal px-4 py-2 text-sm font-semibold text-white shadow-owl-1",
+              "ml-1 hidden rounded-owl-btn bg-owl-teal px-4 py-2 text-sm font-semibold text-white shadow-owl-1 lg:inline-block",
               "transition-[background-color,transform,box-shadow] duration-200 ease-owl-quick",
               "hover:bg-owl-teal-deep hover:-translate-y-px hover:shadow-owl-2",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-owl-cream"
