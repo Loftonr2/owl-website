@@ -1,6 +1,7 @@
 import Script from "next/script";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Newspaper } from "lucide-react";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Chip } from "@/components/ui/chip";
 import { BlogCard, estimateReadTime } from "@/components/marketing/blog-card";
@@ -17,17 +18,15 @@ import {
   SEED_NEWS_CATEGORIES,
   findNewsCategoryBySlug,
   isNewsCategorySlug,
+  findNewsArticleBySlug,
 } from "@/lib/seed/news";
+import { getCategoryFallbackImage } from "@/lib/content-images";
 
-// force-dynamic: this route calls Supabase (cookies-based) at render time.
-// generateStaticParams must NOT call Supabase — seed categories only.
 export const dynamic = "force-dynamic";
 
 type Params = { slug: string };
 
 export async function generateStaticParams(): Promise<Params[]> {
-  // No Supabase calls at build time — seed category slugs only.
-  // Individual article routes are rendered on demand (force-dynamic).
   return SEED_NEWS_CATEGORIES.map((c) => ({ slug: c.slug }));
 }
 
@@ -37,14 +36,24 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   if (isNewsCategorySlug(slug)) {
     const c = findNewsCategoryBySlug(slug)!;
     return pageMetadata({
-      title: `${c.name} — OWL News`,
+      title: `${c.name} - OWL News`,
       description: c.description,
       path: `/news/${c.slug}`,
     });
   }
 
   const article = await getPublishedPostBySlug("news", slug);
-  if (!article) return pageMetadata({ title: "Not found", noIndex: true });
+  if (!article) {
+    const seed = findNewsArticleBySlug(slug);
+    if (seed) {
+      return pageMetadata({
+        title: seed.title,
+        description: seed.excerpt,
+        path: `/news/${seed.slug}`,
+      });
+    }
+    return pageMetadata({ title: "Not found", noIndex: true });
+  }
   return pageMetadata({
     title: article.seo_title ?? article.title,
     description: article.seo_description ?? article.excerpt ?? "",
@@ -55,14 +64,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 export default async function NewsSlugPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
 
-  /* ── Category Hub ─────────────────────────────────────────────────── */
+  /* Category Hub */
   if (isNewsCategorySlug(slug)) {
     const category = findNewsCategoryBySlug(slug)!;
     const articles = await getPublishedPosts("news", { category: slug, limit: 12 });
 
     return (
       <>
-        {/* Hub hero */}
         <Section width="wide" pad="lg" bg="cream-deep">
           <Link
             href="/news"
@@ -74,7 +82,7 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
             News Category
           </p>
           <h1 className="mt-2 font-display text-4xl font-extrabold text-owl-ink sm:text-5xl">
-            {category.icon} {category.name}
+            {category.name}
           </h1>
           <p className="mt-3 max-w-prose text-base text-owl-mist sm:text-lg">
             {category.description}
@@ -83,9 +91,10 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
 
         <Section width="wide" pad="lg" bg="cream">
           {articles.length === 0 ? (
-            /* Empty state for category */
             <div className="rounded-owl-card border border-dashed border-owl-teal/30 bg-white/60 p-10 text-center">
-              <span className="text-4xl" aria-hidden>{category.icon}</span>
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-owl-teal/10">
+                <Newspaper className="h-6 w-6 text-owl-teal" aria-hidden />
+              </div>
               <p className="mt-3 font-display text-lg font-semibold text-owl-ink">
                 No {category.name} stories yet
               </p>
@@ -107,7 +116,8 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
                     slug={a.slug}
                     title={a.title}
                     summary={a.excerpt ?? ""}
-                    categoryName={`${category.icon} ${category.name}`}
+                    categoryName={category.name}
+                    category={a.category}
                     publishedAt={a.publish_date ?? a.created_at}
                     tone="teal"
                     featuredImage={a.featured_image}
@@ -127,27 +137,46 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
     );
   }
 
-  /* ── Article Detail ───────────────────────────────────────────────── */
-  const article = await getPublishedPostBySlug("news", slug);
-  if (!article) notFound();
+  /* Article Detail */
+  const dbArticle = await getPublishedPostBySlug("news", slug);
+  const seedArticle = dbArticle ? null : findNewsArticleBySlug(slug);
+
+  if (!dbArticle && !seedArticle) notFound();
+
+  const article = dbArticle ?? {
+    slug: seedArticle!.slug,
+    title: seedArticle!.title,
+    excerpt: seedArticle!.excerpt,
+    body: seedArticle!.body,
+    author: seedArticle!.author,
+    category: seedArticle!.category,
+    featured_image: null as string | null,
+    seo_title: null as string | null,
+    seo_description: null as string | null,
+    publish_date: seedArticle!.publishedAt,
+    created_at: seedArticle!.publishedAt,
+  };
 
   const category = findNewsCategoryBySlug(article.category) ?? {
     slug: article.category,
     name: article.category,
     description: "",
-    icon: "📰",
   };
 
   const related = await getPublishedPosts("news", { category: article.category, limit: 4 });
   const relatedFiltered = related.filter((a) => a.slug !== article.slug).slice(0, 3);
   const readTime = estimateReadTime(article.body);
 
+  const heroImage =
+    article.featured_image ??
+    getCategoryFallbackImage(article.category, "news");
+
   const ld = JSON.stringify(
     articleSchema({
       headline: article.title,
-      description: article.excerpt ?? article.seo_description ?? "",
+      description: article.excerpt ?? "",
       url: `${siteConfig.url}/news/${article.slug}`,
-      image: article.featured_image ?? `${siteConfig.url}/images/headers/newsletter-hero.png`,
+      image: heroImage,
       datePublished: article.publish_date ?? article.created_at,
       authorName: article.author,
     })
@@ -161,9 +190,7 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
         dangerouslySetInnerHTML={{ __html: ld }}
       />
 
-      {/* ── Article Header ─────────────────────────────────────────────── */}
       <Section width="narrow" pad="lg" bg="cream-deep">
-        {/* Back link */}
         <Link
           href="/news"
           className="text-xs font-semibold uppercase tracking-[0.2em] text-owl-teal hover:text-owl-teal-deep"
@@ -171,11 +198,8 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
           &larr; Back to News
         </Link>
 
-        {/* Badges */}
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Chip intent="teal">
-            {category.icon} {category.name}
-          </Chip>
+          <Chip intent="teal">{category.name}</Chip>
           {readTime > 0 && (
             <span className="rounded-full bg-owl-cream-deep px-3 py-0.5 text-xs font-medium text-owl-mist">
               {readTime} min read
@@ -183,17 +207,14 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
           )}
         </div>
 
-        {/* Title */}
         <h1 className="mt-4 font-display text-3xl font-extrabold leading-[1.1] text-owl-ink sm:text-5xl">
           {article.title}
         </h1>
 
-        {/* Excerpt */}
         {article.excerpt && (
           <p className="mt-4 text-lg leading-relaxed text-owl-mist">{article.excerpt}</p>
         )}
 
-        {/* Author + date */}
         <p className="mt-5 text-xs text-owl-mist">
           By <span className="font-semibold text-owl-ink">{article.author}</span>
           {article.publish_date && (
@@ -206,16 +227,13 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
         </p>
       </Section>
 
-      {/* ── Article Body ───────────────────────────────────────────────── */}
       <Section width="narrow" pad="lg" bg="cream">
-        {article.featured_image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={article.featured_image}
-            alt={article.title}
-            className="mb-8 w-full rounded-owl-card object-cover shadow-owl-2"
-          />
-        )}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={heroImage}
+          alt={article.title}
+          className="mb-8 w-full rounded-owl-card object-cover shadow-owl-2"
+        />
 
         <article className="prose-owl mx-auto max-w-prose space-y-5 text-base leading-relaxed text-owl-ink/90">
           {(article.body ?? "").split("\n\n").filter(Boolean).map((para, i) => (
@@ -223,13 +241,10 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
           ))}
         </article>
 
-        {/* Inline newsletter nudge */}
         <aside className="mx-auto mt-12 max-w-prose rounded-owl-card border border-owl-cream-deep bg-white p-6 shadow-sm">
-          <Chip intent="teal">
-            {category.icon} {category.name}
-          </Chip>
+          <Chip intent="teal">{category.name}</Chip>
           <p className="mt-3 font-display text-lg font-semibold text-owl-ink">
-            Don&apos;t miss OWL updates — subscribe to the weekly newsletter.
+            Don&apos;t miss OWL updates - subscribe to the weekly newsletter.
           </p>
           <Link
             href="/newsletter"
@@ -240,7 +255,6 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
         </aside>
       </Section>
 
-      {/* ── Related News ───────────────────────────────────────────────── */}
       {relatedFiltered.length > 0 && (
         <SectionReveal>
           <Section width="wide" pad="lg" bg="white">
@@ -252,7 +266,8 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
                     slug={a.slug}
                     title={a.title}
                     summary={a.excerpt ?? ""}
-                    categoryName={`${category.icon} ${category.name}`}
+                    categoryName={category.name}
+                    category={a.category}
                     publishedAt={a.publish_date ?? a.created_at}
                     tone="teal"
                     featuredImage={a.featured_image}

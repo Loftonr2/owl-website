@@ -1,6 +1,7 @@
 import Script from "next/script";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BookOpen } from "lucide-react";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Chip } from "@/components/ui/chip";
 import { BlogCard, estimateReadTime } from "@/components/marketing/blog-card";
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   if (isCategorySlug(slug)) {
     const c = findCategoryBySlug(slug)!;
     return pageMetadata({
-      title: `${c.name} — OWL Blog`,
+      title: `${c.name} - OWL Blog`,
       description: c.description,
       path: `/blog/${c.slug}`,
     });
@@ -55,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 export default async function BlogSlugPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
 
-  /* ── Category Hub ─────────────────────────────────────────────────── */
+  /* Category Hub */
   if (isCategorySlug(slug)) {
     const category = findCategoryBySlug(slug)!;
     const articles = await getPublishedPosts("blog", { category: slug, limit: 12 });
@@ -74,7 +75,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
             Category
           </p>
           <h1 className="mt-2 font-display text-4xl font-extrabold text-owl-ink sm:text-5xl">
-            {category.icon} {category.name}
+            {category.name}
           </h1>
           <p className="mt-3 max-w-prose text-base text-owl-mist sm:text-lg">
             {category.description}
@@ -85,11 +86,13 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
         <Section width="wide" pad="lg" bg="cream">
           {articles.length === 0 ? (
             <div className="rounded-owl-card border border-dashed border-owl-teal/30 bg-white/60 p-10 text-center">
-              <span className="text-4xl" aria-hidden>🦉</span>
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-owl-teal/10">
+                <BookOpen className="h-6 w-6 text-owl-teal" aria-hidden />
+              </div>
               <p className="mt-3 font-display text-lg font-semibold text-owl-ink">
                 No articles yet in {category.name}
               </p>
-              <p className="mt-1 text-sm text-owl-mist">More coming soon — check back shortly!</p>
+              <p className="mt-1 text-sm text-owl-mist">More coming soon - check back shortly!</p>
             </div>
           ) : (
             <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -100,6 +103,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
                     title={a.title}
                     summary={a.excerpt ?? ""}
                     categoryName={category.name}
+                    category={a.category}
                     publishedAt={a.publish_date ?? a.created_at}
                     tone="teal"
                     featuredImage={a.featured_image}
@@ -118,7 +122,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
     );
   }
 
-  /* ── Article Detail ───────────────────────────────────────────────── */
+  /* Article Detail */
   const article = await getPublishedPostBySlug("blog", slug);
   if (!article) notFound();
 
@@ -127,7 +131,6 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
     name: article.category,
     description: "",
     hero: "",
-    icon: "📝",
   };
 
   const related = await getPublishedPosts("blog", { category: article.category, limit: 4 });
@@ -153,14 +156,14 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
         dangerouslySetInnerHTML={{ __html: ld }}
       />
 
-      {/* ── Article Header ─────────────────────────────────────────────── */}
+      {/* Article Header */}
       <Section width="narrow" pad="lg" bg="cream-deep">
         {/* Back link */}
         <Link
           href={`/blog/${category.slug}`}
           className="text-xs font-semibold uppercase tracking-[0.2em] text-owl-teal hover:text-owl-teal-deep"
         >
-          &larr; {category.icon} {category.name}
+          &larr; {category.name}
         </Link>
 
         {/* Badges */}
@@ -196,7 +199,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
         </p>
       </Section>
 
-      {/* ── Article Body ───────────────────────────────────────────────── */}
+      {/* Article Body */}
       <Section width="narrow" pad="lg" bg="cream">
         {/* Featured image */}
         {article.featured_image && (
@@ -242,6 +245,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
                     title={a.title}
                     summary={a.excerpt ?? ""}
                     categoryName={category.name}
+                    category={a.category}
                     publishedAt={a.publish_date ?? a.created_at}
                     tone="teal"
                     featuredImage={a.featured_image}

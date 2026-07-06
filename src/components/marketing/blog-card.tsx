@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { Chip } from "@/components/ui/chip";
+import { getCategoryFallbackImage } from "@/lib/content-images";
 
 export type BlogCardProps = {
   slug: string;
   title: string;
   summary: string;
   categoryName: string;
+  /** Category slug - used to pick a fallback image when featuredImage is absent. */
+  category?: string;
   publishedAt: string;
   tone: "teal" | "amber" | "forest" | "rose" | "mist" | "cream";
   featuredImage?: string | null;
@@ -14,62 +17,42 @@ export type BlogCardProps = {
   contentType?: "blog" | "news";
 };
 
-const toneBg: Record<BlogCardProps["tone"], string> = {
-  teal:   "bg-owl-teal/15",
-  amber:  "bg-owl-amber-soft/40",
-  forest: "bg-owl-forest/15",
-  rose:   "bg-owl-rose/25",
-  mist:   "bg-owl-mist/20",
-  cream:  "bg-owl-cream-deep",
-};
-
-const toneText: Record<BlogCardProps["tone"], string> = {
-  teal:   "text-owl-teal",
-  amber:  "text-owl-amber",
-  forest: "text-owl-forest",
-  rose:   "text-owl-rose",
-  mist:   "text-owl-mist",
-  cream:  "text-owl-ink/60",
-};
-
 export function BlogCard({
   slug,
   title,
   summary,
   categoryName,
+  category,
   publishedAt,
-  tone,
+  tone: _tone,
   featuredImage,
   readTime,
   contentType = "blog",
 }: BlogCardProps) {
   const href = contentType === "news" ? `/news/${slug}` : `/blog/${slug}`;
 
+  // Always resolve to a real image - no letter placeholders.
+  const imageSrc =
+    featuredImage ||
+    getCategoryFallbackImage(category ?? "", contentType);
+
   return (
     <Link
       href={href}
       className="group flex h-full flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-owl-2"
     >
-      {/* Thumbnail */}
-      {featuredImage ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={featuredImage}
-          alt={title}
-          className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-        />
-      ) : (
-        <div className={`flex aspect-[16/9] items-center justify-center ${toneBg[tone]}`}>
-          <span className={`font-display text-5xl font-extrabold opacity-25 ${toneText[tone]}`}>
-            {title.charAt(0)}
-          </span>
-        </div>
-      )}
+      {/* Thumbnail - always shows a real image */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={imageSrc}
+        alt={title}
+        className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+      />
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-5">
         <Chip intent="teal" className="w-fit text-[11px]">{categoryName}</Chip>
-        <h3 className="mt-3 font-display text-base font-semibold leading-snug text-owl-ink group-hover:text-owl-teal transition-colors duration-150 line-clamp-2">
+        <h3 className="mt-3 font-display text-base font-semibold leading-snug text-owl-ink transition-colors duration-150 group-hover:text-owl-teal line-clamp-2">
           {title}
         </h3>
         <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-owl-mist">{summary}</p>

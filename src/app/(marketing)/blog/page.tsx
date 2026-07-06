@@ -1,4 +1,12 @@
 import Link from "next/link";
+import {
+  GraduationCap,
+  Heart,
+  Brain,
+  Music,
+  Star,
+  Shield,
+} from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
@@ -10,9 +18,10 @@ import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { getPublishedPosts } from "@/lib/content-posts";
 import { SEED_BLOG_CATEGORIES } from "@/lib/seed/blog";
+import { getCategoryFallbackImage } from "@/lib/content-images";
 
 export const metadata = pageMetadata({
-  title: "Blog & Resources ΓÇö OWL Sing Together",
+  title: "Blog & Resources - OWL Sing Together",
   description:
     "Inspiration, encouragement, and practical tips for families who believe in the power of music, play, and learning together.",
   path: "/blog",
@@ -21,13 +30,13 @@ export const metadata = pageMetadata({
 export const revalidate = 3600;
 
 const CATEGORY_CHIPS = [
-  { value: "homeschooling",     label: "Homeschooling",     icon: "≡ƒÅá" },
-  { value: "parenting-tips",    label: "Parenting Tips",    icon: "≡ƒÆ¢" },
-  { value: "child-development", label: "Child Development", icon: "≡ƒî▒" },
-  { value: "music-and-learning",label: "Music & Learning",  icon: "≡ƒÄ╡" },
-  { value: "activities",        label: "Activities",        icon: "Γ£Å∩╕Å" },
-  { value: "safety-wellness",   label: "Safety & Wellness", icon: "≡ƒ¢í∩╕Å" },
-];
+  { value: "homeschooling",      label: "Homeschooling",     Icon: GraduationCap },
+  { value: "parenting-tips",     label: "Parenting Tips",    Icon: Heart },
+  { value: "child-development",  label: "Child Development", Icon: Brain },
+  { value: "music-and-learning", label: "Music & Learning",  Icon: Music },
+  { value: "activities",         label: "Activities",        Icon: Star },
+  { value: "safety-wellness",    label: "Safety & Wellness", Icon: Shield },
+] as const;
 
 export default async function BlogPage() {
   const allPosts = await getPublishedPosts("blog", { limit: 10 });
@@ -36,7 +45,7 @@ export default async function BlogPage() {
 
   return (
     <>
-      {/* ΓöÇΓöÇ Hero ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */}
+      {/* Hero */}
       <VideoHeroBanner
         src="/videos/blog-hero.mp4"
         poster="/images/headers/blog-hero.png"
@@ -52,7 +61,7 @@ export default async function BlogPage() {
         primaryCta={{ label: "Explore Our Blog", href: "#articles" }}
       />
 
-      {/* ΓöÇΓöÇ Category Row ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */}
+      {/* Category Row */}
       <SectionReveal>
         <Section width="wide" pad="sm" bg="cream">
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
@@ -60,7 +69,8 @@ export default async function BlogPage() {
               <CategoryChip
                 key={c.value}
                 href={`/blog/${c.value}`}
-                label={`${c.icon}┬á${c.label}`}
+                label={c.label}
+                icon={c.Icon}
                 intent="teal"
               />
             ))}
@@ -68,7 +78,7 @@ export default async function BlogPage() {
         </Section>
       </SectionReveal>
 
-      {/* ΓöÇΓöÇ Featured Post ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */}
+      {/* Featured Post */}
       {featured ? (
         <SectionReveal>
           <Section width="wide" pad="lg" bg="white">
@@ -79,20 +89,12 @@ export default async function BlogPage() {
                 href={`/blog/${featured.slug}`}
                 className="group block overflow-hidden rounded-owl-card shadow-owl-2 transition-transform duration-300 hover:-translate-y-1"
               >
-                {featured.featured_image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={featured.featured_image}
-                    alt={featured.title}
-                    className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                  />
-                ) : (
-                  <div className="flex aspect-[16/10] items-center justify-center bg-owl-teal/10">
-                    <span className="font-display text-8xl font-extrabold text-owl-teal/20 select-none">
-                      {featured.title.charAt(0)}
-                    </span>
-                  </div>
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={featured.featured_image ?? getCategoryFallbackImage(featured.category, "blog")}
+                  alt={featured.title}
+                  className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                />
               </Link>
 
               {/* Meta + excerpt */}
@@ -123,7 +125,7 @@ export default async function BlogPage() {
                   )}
                   {featured.body && (
                     <>
-                      <span aria-hidden>┬╖</span>
+                      <span aria-hidden>&middot;</span>
                       <span>{estimateReadTime(featured.body)} min read</span>
                     </>
                   )}
@@ -138,12 +140,14 @@ export default async function BlogPage() {
           </Section>
         </SectionReveal>
       ) : (
-        /* Empty state ΓÇö no published posts yet */
+        /* Empty state - no published posts yet */
         <SectionReveal>
           <Section width="wide" pad="lg" bg="white">
             <div className="mx-auto max-w-lg rounded-owl-card border border-dashed border-owl-teal/30 bg-owl-cream/60 p-10 text-center">
-              <span className="text-5xl" aria-hidden>≡ƒªë</span>
-              <h2 className="mt-4 font-display text-xl font-bold text-owl-ink">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-owl-teal/10">
+                <Brain className="h-7 w-7 text-owl-teal" aria-hidden />
+              </div>
+              <h2 className="font-display text-xl font-bold text-owl-ink">
                 New posts are coming soon!
               </h2>
               <p className="mt-2 text-sm text-owl-mist">
@@ -157,7 +161,7 @@ export default async function BlogPage() {
         </SectionReveal>
       )}
 
-      {/* ΓöÇΓöÇ Latest Articles Grid ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */}
+      {/* Latest Articles Grid */}
       {rest.length > 0 && (
         <SectionReveal>
           <Section id="articles" width="wide" pad="lg" bg="cream">
@@ -175,6 +179,7 @@ export default async function BlogPage() {
                       title={a.title}
                       summary={a.excerpt ?? ""}
                       categoryName={cat?.name ?? a.category}
+                      category={a.category}
                       publishedAt={a.publish_date ?? a.created_at}
                       tone="teal"
                       featuredImage={a.featured_image}
@@ -188,7 +193,7 @@ export default async function BlogPage() {
         </SectionReveal>
       )}
 
-      {/* ΓöÇΓöÇ Newsletter Strip ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */}
+      {/* Newsletter Strip */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream-deep">
           <div className="rounded-owl-hero bg-owl-teal p-8 text-center sm:p-10 md:flex md:items-center md:justify-between md:text-left">
@@ -200,7 +205,7 @@ export default async function BlogPage() {
                 Get weekly encouragement and ideas!
               </h2>
               <p className="mt-1 text-sm text-white/80">
-                The OWL Weekly ΓÇö free, every Sunday.
+                The OWL Weekly - free, every Sunday.
               </p>
             </div>
             <Button intent="secondary" size="lg" asChild className="mt-5 shrink-0 md:mt-0 md:ml-8">
@@ -216,3 +221,4 @@ export default async function BlogPage() {
     </>
   );
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
