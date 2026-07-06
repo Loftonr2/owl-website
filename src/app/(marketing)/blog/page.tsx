@@ -27,7 +27,7 @@ export const metadata = pageMetadata({
   path: "/blog",
 });
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const CATEGORY_CHIPS = [
   { value: "homeschooling",      label: "Homeschooling",     Icon: GraduationCap },
@@ -39,7 +39,12 @@ const CATEGORY_CHIPS = [
 ] as const;
 
 export default async function BlogPage() {
-  const allPosts = await getPublishedPosts("blog", { limit: 10 });
+  let allPosts: Awaited<ReturnType<typeof getPublishedPosts>> = [];
+  try {
+    allPosts = await getPublishedPosts("blog", { limit: 10 });
+  } catch (err) {
+    console.error("[blog/page] Failed to fetch posts — rendering empty state:", err);
+  }
   const featured = allPosts[0] ?? null;
   const rest = allPosts.slice(1, 7);
 

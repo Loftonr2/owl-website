@@ -39,25 +39,30 @@ export async function getPublishedPosts(
   type: ContentType,
   options: { category?: string; limit?: number; offset?: number } = {}
 ): Promise<ContentPost[]> {
-  const supabase = await supabaseServer();
-  let query = supabase
-    .from("content_posts")
-    .select("*")
-    .eq("content_type", type)
-    .eq("status", "published")
-    .lte("publish_date", new Date().toISOString())
-    .order("publish_date", { ascending: false });
+  try {
+    const supabase = await supabaseServer();
+    let query = supabase
+      .from("content_posts")
+      .select("*")
+      .eq("content_type", type)
+      .eq("status", "published")
+      .lte("publish_date", new Date().toISOString())
+      .order("publish_date", { ascending: false });
 
-  if (options.category) query = query.eq("category", options.category);
-  if (options.limit) query = query.limit(options.limit);
-  if (options.offset) query = query.range(options.offset, (options.offset ?? 0) + (options.limit ?? 10) - 1);
+    if (options.category) query = query.eq("category", options.category);
+    if (options.limit) query = query.limit(options.limit);
+    if (options.offset) query = query.range(options.offset, (options.offset ?? 0) + (options.limit ?? 10) - 1);
 
-  const { data, error } = await query;
-  if (error) {
-    console.error("[content-posts] getPublishedPosts error:", error.message);
+    const { data, error } = await query;
+    if (error) {
+      console.error("[content-posts] getPublishedPosts query error:", error.message);
+      return [];
+    }
+    return (data ?? []) as ContentPost[];
+  } catch (err) {
+    console.error("[content-posts] getPublishedPosts unexpected error:", err);
     return [];
   }
-  return (data ?? []) as ContentPost[];
 }
 
 /**
@@ -67,37 +72,47 @@ export async function getPublishedPostBySlug(
   type: ContentType,
   slug: string
 ): Promise<ContentPost | null> {
-  const supabase = await supabaseServer();
-  const { data, error } = await supabase
-    .from("content_posts")
-    .select("*")
-    .eq("content_type", type)
-    .eq("slug", slug)
-    .eq("status", "published")
-    .lte("publish_date", new Date().toISOString())
-    .maybeSingle();
+  try {
+    const supabase = await supabaseServer();
+    const { data, error } = await supabase
+      .from("content_posts")
+      .select("*")
+      .eq("content_type", type)
+      .eq("slug", slug)
+      .eq("status", "published")
+      .lte("publish_date", new Date().toISOString())
+      .maybeSingle();
 
-  if (error) {
-    console.error("[content-posts] getPublishedPostBySlug error:", error.message);
+    if (error) {
+      console.error("[content-posts] getPublishedPostBySlug error:", error.message);
+      return null;
+    }
+    return data as ContentPost | null;
+  } catch (err) {
+    console.error("[content-posts] getPublishedPostBySlug unexpected error:", err);
     return null;
   }
-  return data as ContentPost | null;
 }
 
 /**
  * Fetch all published slugs for static generation.
  */
 export async function getPublishedSlugs(type: ContentType): Promise<string[]> {
-  const supabase = await supabaseServer();
-  const { data, error } = await supabase
-    .from("content_posts")
-    .select("slug")
-    .eq("content_type", type)
-    .eq("status", "published")
-    .lte("publish_date", new Date().toISOString());
+  try {
+    const supabase = await supabaseServer();
+    const { data, error } = await supabase
+      .from("content_posts")
+      .select("slug")
+      .eq("content_type", type)
+      .eq("status", "published")
+      .lte("publish_date", new Date().toISOString());
 
-  if (error) return [];
-  return (data ?? []).map((r: { slug: string }) => r.slug);
+    if (error) return [];
+    return (data ?? []).map((r: { slug: string }) => r.slug);
+  } catch (err) {
+    console.error("[content-posts] getPublishedSlugs unexpected error:", err);
+    return [];
+  }
 }
 
 // --- Admin helpers (service role - bypasses RLS) ---

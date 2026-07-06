@@ -30,7 +30,7 @@ export const metadata = pageMetadata({
   path: "/news",
 });
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 const CATEGORY_CHIPS = [
   { value: "all",           label: "All News",      Icon: Newspaper,    href: "/news" },
@@ -67,7 +67,12 @@ function seedArticlesToPosts(): SeedPost[] {
 }
 
 export default async function NewsPage() {
-  const dbNews = await getPublishedPosts("news", { limit: 10 });
+  let dbNews: Awaited<ReturnType<typeof getPublishedPosts>> = [];
+  try {
+    dbNews = await getPublishedPosts("news", { limit: 10 });
+  } catch (err) {
+    console.error("[news/page] Failed to fetch news — falling back to seed data:", err);
+  }
 
   // Fall back to seed articles when Supabase returns no published news.
   const allNews = dbNews.length > 0 ? dbNews : seedArticlesToPosts();
