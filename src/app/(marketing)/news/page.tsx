@@ -1,12 +1,4 @@
 import Link from "next/link";
-import {
-  Newspaper,
-  Megaphone,
-  CalendarDays,
-  BookOpen,
-  Users,
-  FileText,
-} from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
@@ -16,10 +8,9 @@ import { CategoryChip } from "@/components/ui/category-chip";
 import { BlogCard, estimateReadTime } from "@/components/marketing/blog-card";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
-import { getPublishedPosts } from "@/lib/content-posts";
 import {
-  SEED_NEWS_CATEGORIES,
   SEED_NEWS_ARTICLES,
+  SEED_NEWS_CATEGORIES,
 } from "@/lib/seed/news";
 import { getCategoryFallbackImage } from "@/lib/content-images";
 
@@ -30,53 +21,20 @@ export const metadata = pageMetadata({
   path: "/news",
 });
 
-export const dynamic = "force-dynamic";
+// Static page — no Supabase required. Rendered at build time from seed data.
+export const dynamic = "force-static";
 
 const CATEGORY_CHIPS = [
-  { value: "all",           label: "All News",      Icon: Newspaper,    href: "/news" },
-  { value: "announcements", label: "Announcements",  Icon: Megaphone,    href: "/news/announcements" },
-  { value: "events",        label: "Events",         Icon: CalendarDays, href: "/news/events" },
-  { value: "resources",     label: "Resources",      Icon: BookOpen,     href: "/news/resources" },
-  { value: "community",     label: "Community",      Icon: Users,        href: "/news/community" },
-  { value: "press",         label: "Press",          Icon: FileText,     href: "/news/press" },
+  { value: "all",           label: "All News",      href: "/news" },
+  { value: "announcements", label: "Announcements",  href: "/news/announcements" },
+  { value: "events",        label: "Events",         href: "/news/events" },
+  { value: "resources",     label: "Resources",      href: "/news/resources" },
+  { value: "community",     label: "Community",      href: "/news/community" },
+  { value: "press",         label: "Press",          href: "/news/press" },
 ] as const;
 
-// Minimal shape that satisfies the BlogCard props sourced from seed data.
-type SeedPost = {
-  slug: string;
-  title: string;
-  excerpt: string | null;
-  category: string;
-  featured_image: string | null;
-  publish_date: string | null;
-  created_at: string;
-  body: string | null;
-};
-
-function seedArticlesToPosts(): SeedPost[] {
-  return SEED_NEWS_ARTICLES.map((a) => ({
-    slug: a.slug,
-    title: a.title,
-    excerpt: a.excerpt,
-    category: a.category,
-    featured_image: null,
-    publish_date: a.publishedAt,
-    created_at: a.publishedAt,
-    body: a.body,
-  }));
-}
-
-export default async function NewsPage() {
-  let dbNews: Awaited<ReturnType<typeof getPublishedPosts>> = [];
-  try {
-    dbNews = await getPublishedPosts("news", { limit: 10 });
-  } catch (err) {
-    console.error("[news/page] Failed to fetch news — falling back to seed data:", err);
-  }
-
-  // Fall back to seed articles when Supabase returns no published news.
-  const allNews = dbNews.length > 0 ? dbNews : seedArticlesToPosts();
-
+export default function NewsPage() {
+  const allNews = SEED_NEWS_ARTICLES;
   const featured = allNews[0] ?? null;
   const rest = allNews.slice(1, 7);
 
@@ -107,7 +65,6 @@ export default async function NewsPage() {
                 key={c.value}
                 href={c.href}
                 label={c.label}
-                icon={c.Icon}
                 intent="teal"
                 active={c.value === "all"}
               />
@@ -129,7 +86,7 @@ export default async function NewsPage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={featured.featured_image ?? getCategoryFallbackImage(featured.category, "news")}
+                  src={getCategoryFallbackImage(featured.category, "news")}
                   alt={featured.title}
                   className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
@@ -138,7 +95,9 @@ export default async function NewsPage() {
               {/* Meta */}
               <div className="flex flex-col justify-center">
                 {(() => {
-                  const cat = SEED_NEWS_CATEGORIES.find((c) => c.slug === featured.category);
+                  const cat = SEED_NEWS_CATEGORIES.find(
+                    (c) => c.slug === featured.category
+                  );
                   return (
                     <span className="inline-flex w-fit items-center rounded-full bg-owl-teal/10 px-3 py-0.5 text-xs font-semibold text-owl-teal">
                       {cat?.name ?? featured.category}
@@ -148,20 +107,19 @@ export default async function NewsPage() {
                 <h2 className="mt-3 font-display text-2xl font-extrabold leading-tight text-owl-ink sm:text-3xl">
                   {featured.title}
                 </h2>
-                {featured.excerpt && (
-                  <p className="mt-3 text-sm leading-relaxed text-owl-ink/75 line-clamp-4">
-                    {featured.excerpt}
-                  </p>
-                )}
+                <p className="mt-3 text-sm leading-relaxed text-owl-ink/75 line-clamp-4">
+                  {featured.excerpt}
+                </p>
                 <p className="mt-2 text-xs text-owl-mist">
-                  {featured.publish_date &&
-                    new Date(featured.publish_date).toLocaleDateString("en-US", {
-                      dateStyle: "long",
-                    })}
+                  {new Date(featured.publishedAt).toLocaleDateString("en-US", {
+                    dateStyle: "long",
+                  })}
                 </p>
                 <div className="mt-5">
                   <Button intent="primary" size="sm" asChild>
-                    <Link href={`/news/${featured.slug}`}>Read Story &rarr;</Link>
+                    <Link href={`/news/${featured.slug}`}>
+                      Read Story &rarr;
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -180,18 +138,23 @@ export default async function NewsPage() {
               className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
               {rest.map((article) => {
-                const cat = SEED_NEWS_CATEGORIES.find((c) => c.slug === article.category);
+                const cat = SEED_NEWS_CATEGORIES.find(
+                  (c) => c.slug === article.category
+                );
                 return (
                   <li key={article.slug}>
                     <BlogCard
                       slug={article.slug}
                       title={article.title}
-                      summary={article.excerpt ?? ""}
+                      summary={article.excerpt}
                       categoryName={cat?.name ?? article.category}
                       category={article.category}
-                      publishedAt={article.publish_date ?? article.created_at}
-                      tone="teal"
-                      featuredImage={article.featured_image}
+                      publishedAt={article.publishedAt}
+                      tone={article.tone}
+                      featuredImage={getCategoryFallbackImage(
+                        article.category,
+                        "news"
+                      )}
                       readTime={estimateReadTime(article.body)}
                       contentType="news"
                     />
@@ -218,7 +181,12 @@ export default async function NewsPage() {
                 Weekly updates, events, and community stories - always free.
               </p>
             </div>
-            <Button intent="secondary" size="lg" asChild className="mt-5 shrink-0 md:mt-0 md:ml-8">
+            <Button
+              intent="secondary"
+              size="lg"
+              asChild
+              className="mt-5 shrink-0 md:mt-0 md:ml-8"
+            >
               <Link href="/newsletter">Subscribe Free &rarr;</Link>
             </Button>
           </div>
@@ -231,4 +199,3 @@ export default async function NewsPage() {
     </>
   );
 }
-

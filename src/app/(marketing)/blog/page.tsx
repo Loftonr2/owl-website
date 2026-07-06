@@ -1,12 +1,4 @@
 import Link from "next/link";
-import {
-  GraduationCap,
-  Heart,
-  Brain,
-  Music,
-  Star,
-  Shield,
-} from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
@@ -16,8 +8,7 @@ import { CategoryChip } from "@/components/ui/category-chip";
 import { BlogCard, estimateReadTime } from "@/components/marketing/blog-card";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
-import { getPublishedPosts } from "@/lib/content-posts";
-import { SEED_BLOG_CATEGORIES } from "@/lib/seed/blog";
+import { SEED_BLOG_ARTICLES, SEED_BLOG_CATEGORIES } from "@/lib/seed/blog";
 import { getCategoryFallbackImage } from "@/lib/content-images";
 
 export const metadata = pageMetadata({
@@ -27,24 +18,20 @@ export const metadata = pageMetadata({
   path: "/blog",
 });
 
-export const dynamic = "force-dynamic";
+// Static page — no Supabase required. Rendered at build time from seed data.
+export const dynamic = "force-static";
 
 const CATEGORY_CHIPS = [
-  { value: "homeschooling",      label: "Homeschooling",     Icon: GraduationCap },
-  { value: "parenting-tips",     label: "Parenting Tips",    Icon: Heart },
-  { value: "child-development",  label: "Child Development", Icon: Brain },
-  { value: "music-and-learning", label: "Music & Learning",  Icon: Music },
-  { value: "activities",         label: "Activities",        Icon: Star },
-  { value: "safety-wellness",    label: "Safety & Wellness", Icon: Shield },
+  { value: "homeschooling",      label: "Homeschooling" },
+  { value: "parenting-tips",     label: "Parenting Tips" },
+  { value: "child-development",  label: "Child Development" },
+  { value: "music-and-learning", label: "Music & Learning" },
+  { value: "activities",         label: "Activities" },
+  { value: "safety-wellness",    label: "Safety & Wellness" },
 ] as const;
 
-export default async function BlogPage() {
-  let allPosts: Awaited<ReturnType<typeof getPublishedPosts>> = [];
-  try {
-    allPosts = await getPublishedPosts("blog", { limit: 10 });
-  } catch (err) {
-    console.error("[blog/page] Failed to fetch posts — rendering empty state:", err);
-  }
+export default function BlogPage() {
+  const allPosts = SEED_BLOG_ARTICLES;
   const featured = allPosts[0] ?? null;
   const rest = allPosts.slice(1, 7);
 
@@ -75,7 +62,6 @@ export default async function BlogPage() {
                 key={c.value}
                 href={`/blog/${c.value}`}
                 label={c.label}
-                icon={c.Icon}
                 intent="teal"
               />
             ))}
@@ -84,7 +70,7 @@ export default async function BlogPage() {
       </SectionReveal>
 
       {/* Featured Post */}
-      {featured ? (
+      {featured && (
         <SectionReveal>
           <Section width="wide" pad="lg" bg="white">
             <SectionIntro eyebrow="Featured Post" title="Start Here" />
@@ -96,7 +82,7 @@ export default async function BlogPage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={featured.featured_image ?? getCategoryFallbackImage(featured.category, "blog")}
+                  src={getCategoryFallbackImage(featured.category, "blog")}
                   alt={featured.title}
                   className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
@@ -105,7 +91,9 @@ export default async function BlogPage() {
               {/* Meta + excerpt */}
               <div className="flex flex-col justify-center">
                 {(() => {
-                  const cat = SEED_BLOG_CATEGORIES.find((c) => c.slug === featured.category);
+                  const cat = SEED_BLOG_CATEGORIES.find(
+                    (c) => c.slug === featured.category
+                  );
                   return (
                     <span className="inline-flex w-fit items-center rounded-full bg-owl-teal/10 px-3 py-0.5 text-xs font-semibold text-owl-teal">
                       {cat?.name ?? featured.category}
@@ -115,19 +103,16 @@ export default async function BlogPage() {
                 <h2 className="mt-3 font-display text-2xl font-extrabold leading-tight text-owl-ink sm:text-3xl">
                   {featured.title}
                 </h2>
-                {featured.excerpt && (
-                  <p className="mt-3 text-sm leading-relaxed text-owl-ink/75 line-clamp-4">
-                    {featured.excerpt}
-                  </p>
-                )}
+                <p className="mt-3 text-sm leading-relaxed text-owl-ink/75 line-clamp-4">
+                  {featured.summary}
+                </p>
                 <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-owl-mist">
-                  {featured.publish_date && (
-                    <span>
-                      {new Date(featured.publish_date).toLocaleDateString("en-US", {
-                        dateStyle: "long",
-                      })}
-                    </span>
-                  )}
+                  <span>
+                    {new Date(featured.publishedAt).toLocaleDateString(
+                      "en-US",
+                      { dateStyle: "long" }
+                    )}
+                  </span>
                   {featured.body && (
                     <>
                       <span aria-hidden>&middot;</span>
@@ -137,30 +122,12 @@ export default async function BlogPage() {
                 </div>
                 <div className="mt-5">
                   <Button intent="primary" size="sm" asChild>
-                    <Link href={`/blog/${featured.slug}`}>Read Article &rarr;</Link>
+                    <Link href={`/blog/${featured.slug}`}>
+                      Read Article &rarr;
+                    </Link>
                   </Button>
                 </div>
               </div>
-            </div>
-          </Section>
-        </SectionReveal>
-      ) : (
-        /* Empty state - no published posts yet */
-        <SectionReveal>
-          <Section width="wide" pad="lg" bg="white">
-            <div className="mx-auto max-w-lg rounded-owl-card border border-dashed border-owl-teal/30 bg-owl-cream/60 p-10 text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-owl-teal/10">
-                <Brain className="h-7 w-7 text-owl-teal" aria-hidden />
-              </div>
-              <h2 className="font-display text-xl font-bold text-owl-ink">
-                New posts are coming soon!
-              </h2>
-              <p className="mt-2 text-sm text-owl-mist">
-                Larissa is writing something wonderful. Check back shortly or subscribe for weekly ideas.
-              </p>
-              <Button intent="secondary" size="sm" asChild className="mt-5">
-                <Link href="/newsletter">Get the OWL Newsletter</Link>
-              </Button>
             </div>
           </Section>
         </SectionReveal>
@@ -176,18 +143,23 @@ export default async function BlogPage() {
               className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
               {rest.map((a) => {
-                const cat = SEED_BLOG_CATEGORIES.find((c) => c.slug === a.category);
+                const cat = SEED_BLOG_CATEGORIES.find(
+                  (c) => c.slug === a.category
+                );
                 return (
                   <li key={a.slug}>
                     <BlogCard
                       slug={a.slug}
                       title={a.title}
-                      summary={a.excerpt ?? ""}
+                      summary={a.summary}
                       categoryName={cat?.name ?? a.category}
                       category={a.category}
-                      publishedAt={a.publish_date ?? a.created_at}
-                      tone="teal"
-                      featuredImage={a.featured_image}
+                      publishedAt={a.publishedAt}
+                      tone={a.tone}
+                      featuredImage={getCategoryFallbackImage(
+                        a.category,
+                        "blog"
+                      )}
                       readTime={estimateReadTime(a.body)}
                     />
                   </li>
@@ -213,7 +185,12 @@ export default async function BlogPage() {
                 The OWL Weekly - free, every Sunday.
               </p>
             </div>
-            <Button intent="secondary" size="lg" asChild className="mt-5 shrink-0 md:mt-0 md:ml-8">
+            <Button
+              intent="secondary"
+              size="lg"
+              asChild
+              className="mt-5 shrink-0 md:mt-0 md:ml-8"
+            >
               <Link href="/newsletter">Subscribe Free &rarr;</Link>
             </Button>
           </div>
@@ -226,4 +203,3 @@ export default async function BlogPage() {
     </>
   );
 }
-
