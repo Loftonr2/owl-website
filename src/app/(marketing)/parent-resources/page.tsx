@@ -11,13 +11,13 @@ import { SEED_PRINTABLES } from "@/lib/seed/printables";
 
 export const metadata = pageMetadata({
   title: "Parent Resources",
-  description: "Curated articles, printables, and tools for parents and caregivers — sorted by age.",
+  description: "Curated articles, printables, and tools for parents and caregivers ΓÇö sorted by age.",
   path: "/parent-resources",
 });
 
 export default function ParentResourcesPage() {
   const articlesForParents = SEED_BLOG_ARTICLES.filter(
-    (a) => a.category === "early-learning" || a.category === "sel-for-kids" || a.category === "music-child-development"
+    (a) => a.category === "child-development" || a.category === "parenting-tips" || a.category === "music-and-learning"
   ).slice(0, 6);
   const homePrintables = SEED_PRINTABLES.filter((p) =>
     ["Alphabet", "SEL", "Numbers", "Bilingual"].includes(p.skill)
@@ -28,7 +28,7 @@ export default function ParentResourcesPage() {
       <PageHero
         eyebrow="For parents"
         title="Tools for the home library shelf"
-        subtitle="The OWL bookshelf for parents — articles, printables, and routines that hold up when the day doesn't."
+        subtitle="The OWL bookshelf for parents ΓÇö articles, printables, and routines that hold up when the day doesn't."
         image={{ src: headers.blog.src, alt: headers.blog.alt }}
         ambient="leaves"
       />

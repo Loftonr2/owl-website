@@ -8,15 +8,28 @@ export type BlogCardProps = {
   categoryName: string;
   publishedAt: string;
   tone: "teal" | "amber" | "forest" | "rose" | "mist" | "cream";
+  featuredImage?: string | null;
+  readTime?: number | null;
+  /** When true the card links to /news/[slug] instead of /blog/[slug] */
+  contentType?: "blog" | "news";
 };
 
 const toneBg: Record<BlogCardProps["tone"], string> = {
-  teal: "bg-owl-teal/15",
-  amber: "bg-owl-amber-soft/40",
+  teal:   "bg-owl-teal/15",
+  amber:  "bg-owl-amber-soft/40",
   forest: "bg-owl-forest/15",
-  rose: "bg-owl-rose/25",
-  mist: "bg-owl-mist/20",
-  cream: "bg-owl-cream-deep",
+  rose:   "bg-owl-rose/25",
+  mist:   "bg-owl-mist/20",
+  cream:  "bg-owl-cream-deep",
+};
+
+const toneText: Record<BlogCardProps["tone"], string> = {
+  teal:   "text-owl-teal",
+  amber:  "text-owl-amber",
+  forest: "text-owl-forest",
+  rose:   "text-owl-rose",
+  mist:   "text-owl-mist",
+  cream:  "text-owl-ink/60",
 };
 
 export function BlogCard({
@@ -26,27 +39,65 @@ export function BlogCard({
   categoryName,
   publishedAt,
   tone,
+  featuredImage,
+  readTime,
+  contentType = "blog",
 }: BlogCardProps) {
+  const href = contentType === "news" ? `/news/${slug}` : `/blog/${slug}`;
+
   return (
     <Link
-      href={`/blog/${slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+      href={href}
+      className="group flex h-full flex-col overflow-hidden rounded-owl-card border border-owl-cream-deep bg-white shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-owl-2"
     >
-      <div className={`flex aspect-[16/9] items-center justify-center ${toneBg[tone]}`}>
-        <span className="font-display text-3xl font-bold text-owl-ink/30">
-          {title.charAt(0)}
-        </span>
-      </div>
+      {/* Thumbnail */}
+      {featuredImage ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={featuredImage}
+          alt={title}
+          className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+        />
+      ) : (
+        <div className={`flex aspect-[16/9] items-center justify-center ${toneBg[tone]}`}>
+          <span className={`font-display text-5xl font-extrabold opacity-25 ${toneText[tone]}`}>
+            {title.charAt(0)}
+          </span>
+        </div>
+      )}
+
+      {/* Content */}
       <div className="flex flex-1 flex-col p-5">
-        <Chip intent="teal" className="w-fit">{categoryName}</Chip>
-        <h3 className="mt-3 font-display text-lg font-semibold leading-tight text-owl-ink">
+        <Chip intent="teal" className="w-fit text-[11px]">{categoryName}</Chip>
+        <h3 className="mt-3 font-display text-base font-semibold leading-snug text-owl-ink group-hover:text-owl-teal transition-colors duration-150 line-clamp-2">
           {title}
         </h3>
-        <p className="mt-2 line-clamp-3 text-sm text-owl-mist">{summary}</p>
-        <p className="mt-auto pt-4 text-xs text-owl-mist">
-          {new Date(publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-        </p>
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-owl-mist">{summary}</p>
+
+        <div className="mt-auto flex items-center justify-between pt-4">
+          <p className="text-xs text-owl-mist/80">
+            {new Date(publishedAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </p>
+          {readTime != null && (
+            <p className="text-xs text-owl-mist/70">{readTime} min read</p>
+          )}
+        </div>
+
+        <span className="mt-3 text-xs font-semibold text-owl-teal opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+          Read more &rarr;
+        </span>
       </div>
     </Link>
   );
+}
+
+/** Utility: estimate read time from body text (~200 wpm). */
+export function estimateReadTime(body: string | null | undefined): number {
+  if (!body) return 1;
+  const words = body.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
 }

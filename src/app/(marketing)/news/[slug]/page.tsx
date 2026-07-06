@@ -14,10 +14,10 @@ import {
   getPublishedPosts,
 } from "@/lib/content-posts";
 import {
-  SEED_BLOG_CATEGORIES,
-  findCategoryBySlug,
-  isCategorySlug,
-} from "@/lib/seed/blog";
+  SEED_NEWS_CATEGORIES,
+  findNewsCategoryBySlug,
+  isNewsCategorySlug,
+} from "@/lib/seed/news";
 
 // force-dynamic: this route calls Supabase (cookies-based) at render time.
 // generateStaticParams must NOT call Supabase — seed categories only.
@@ -28,50 +28,50 @@ type Params = { slug: string };
 export async function generateStaticParams(): Promise<Params[]> {
   // No Supabase calls at build time — seed category slugs only.
   // Individual article routes are rendered on demand (force-dynamic).
-  return SEED_BLOG_CATEGORIES.map((c) => ({ slug: c.slug }));
+  return SEED_NEWS_CATEGORIES.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
 
-  if (isCategorySlug(slug)) {
-    const c = findCategoryBySlug(slug)!;
+  if (isNewsCategorySlug(slug)) {
+    const c = findNewsCategoryBySlug(slug)!;
     return pageMetadata({
-      title: `${c.name} — OWL Blog`,
+      title: `${c.name} — OWL News`,
       description: c.description,
-      path: `/blog/${c.slug}`,
+      path: `/news/${c.slug}`,
     });
   }
 
-  const article = await getPublishedPostBySlug("blog", slug);
+  const article = await getPublishedPostBySlug("news", slug);
   if (!article) return pageMetadata({ title: "Not found", noIndex: true });
   return pageMetadata({
     title: article.seo_title ?? article.title,
     description: article.seo_description ?? article.excerpt ?? "",
-    path: `/blog/${article.slug}`,
+    path: `/news/${article.slug}`,
   });
 }
 
-export default async function BlogSlugPage({ params }: { params: Promise<Params> }) {
+export default async function NewsSlugPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
 
   /* ── Category Hub ─────────────────────────────────────────────────── */
-  if (isCategorySlug(slug)) {
-    const category = findCategoryBySlug(slug)!;
-    const articles = await getPublishedPosts("blog", { category: slug, limit: 12 });
+  if (isNewsCategorySlug(slug)) {
+    const category = findNewsCategoryBySlug(slug)!;
+    const articles = await getPublishedPosts("news", { category: slug, limit: 12 });
 
     return (
       <>
         {/* Hub hero */}
         <Section width="wide" pad="lg" bg="cream-deep">
           <Link
-            href="/blog"
+            href="/news"
             className="text-xs font-semibold uppercase tracking-[0.2em] text-owl-teal hover:text-owl-teal-deep"
           >
-            &larr; Back to Blog
+            &larr; Back to News
           </Link>
           <p className="mt-4 font-display text-xs uppercase tracking-[0.2em] text-owl-teal">
-            Category
+            News Category
           </p>
           <h1 className="mt-2 font-display text-4xl font-extrabold text-owl-ink sm:text-5xl">
             {category.icon} {category.name}
@@ -81,15 +81,23 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
           </p>
         </Section>
 
-        {/* Article grid */}
         <Section width="wide" pad="lg" bg="cream">
           {articles.length === 0 ? (
+            /* Empty state for category */
             <div className="rounded-owl-card border border-dashed border-owl-teal/30 bg-white/60 p-10 text-center">
-              <span className="text-4xl" aria-hidden>🦉</span>
+              <span className="text-4xl" aria-hidden>{category.icon}</span>
               <p className="mt-3 font-display text-lg font-semibold text-owl-ink">
-                No articles yet in {category.name}
+                No {category.name} stories yet
               </p>
-              <p className="mt-1 text-sm text-owl-mist">More coming soon — check back shortly!</p>
+              <p className="mt-1 text-sm text-owl-mist">
+                New OWL updates are coming soon. Subscribe to be the first to know.
+              </p>
+              <Link
+                href="/newsletter"
+                className="mt-4 inline-block text-sm font-semibold text-owl-teal hover:text-owl-teal-deep"
+              >
+                Subscribe to OWL Weekly &rarr;
+              </Link>
             </div>
           ) : (
             <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -99,11 +107,12 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
                     slug={a.slug}
                     title={a.title}
                     summary={a.excerpt ?? ""}
-                    categoryName={category.name}
+                    categoryName={`${category.icon} ${category.name}`}
                     publishedAt={a.publish_date ?? a.created_at}
                     tone="teal"
                     featuredImage={a.featured_image}
                     readTime={estimateReadTime(a.body)}
+                    contentType="news"
                   />
                 </li>
               ))}
@@ -119,18 +128,17 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
   }
 
   /* ── Article Detail ───────────────────────────────────────────────── */
-  const article = await getPublishedPostBySlug("blog", slug);
+  const article = await getPublishedPostBySlug("news", slug);
   if (!article) notFound();
 
-  const category = findCategoryBySlug(article.category) ?? {
+  const category = findNewsCategoryBySlug(article.category) ?? {
     slug: article.category,
     name: article.category,
     description: "",
-    hero: "",
-    icon: "📝",
+    icon: "📰",
   };
 
-  const related = await getPublishedPosts("blog", { category: article.category, limit: 4 });
+  const related = await getPublishedPosts("news", { category: article.category, limit: 4 });
   const relatedFiltered = related.filter((a) => a.slug !== article.slug).slice(0, 3);
   const readTime = estimateReadTime(article.body);
 
@@ -138,8 +146,8 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
     articleSchema({
       headline: article.title,
       description: article.excerpt ?? article.seo_description ?? "",
-      url: `${siteConfig.url}/blog/${article.slug}`,
-      image: article.featured_image ?? `${siteConfig.url}/images/headers/blog-hero.png`,
+      url: `${siteConfig.url}/news/${article.slug}`,
+      image: article.featured_image ?? `${siteConfig.url}/images/headers/newsletter-hero.png`,
       datePublished: article.publish_date ?? article.created_at,
       authorName: article.author,
     })
@@ -148,7 +156,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
   return (
     <>
       <Script
-        id={`ld-article-${article.slug}`}
+        id={`ld-news-${article.slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: ld }}
       />
@@ -157,15 +165,17 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
       <Section width="narrow" pad="lg" bg="cream-deep">
         {/* Back link */}
         <Link
-          href={`/blog/${category.slug}`}
+          href="/news"
           className="text-xs font-semibold uppercase tracking-[0.2em] text-owl-teal hover:text-owl-teal-deep"
         >
-          &larr; {category.icon} {category.name}
+          &larr; Back to News
         </Link>
 
         {/* Badges */}
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Chip intent="teal">{category.name}</Chip>
+          <Chip intent="teal">
+            {category.icon} {category.name}
+          </Chip>
           {readTime > 0 && (
             <span className="rounded-full bg-owl-cream-deep px-3 py-0.5 text-xs font-medium text-owl-mist">
               {readTime} min read
@@ -198,7 +208,6 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
 
       {/* ── Article Body ───────────────────────────────────────────────── */}
       <Section width="narrow" pad="lg" bg="cream">
-        {/* Featured image */}
         {article.featured_image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -216,9 +225,11 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
 
         {/* Inline newsletter nudge */}
         <aside className="mx-auto mt-12 max-w-prose rounded-owl-card border border-owl-cream-deep bg-white p-6 shadow-sm">
-          <Chip intent="teal">{category.name}</Chip>
+          <Chip intent="teal">
+            {category.icon} {category.name}
+          </Chip>
           <p className="mt-3 font-display text-lg font-semibold text-owl-ink">
-            Get ideas like this every Sunday &mdash; free.
+            Don&apos;t miss OWL updates — subscribe to the weekly newsletter.
           </p>
           <Link
             href="/newsletter"
@@ -229,11 +240,11 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
         </aside>
       </Section>
 
-      {/* Related Articles */}
+      {/* ── Related News ───────────────────────────────────────────────── */}
       {relatedFiltered.length > 0 && (
         <SectionReveal>
           <Section width="wide" pad="lg" bg="white">
-            <SectionHeader eyebrow="Keep reading" title={`More in ${category.name}`} />
+            <SectionHeader eyebrow="More stories" title={`More ${category.name}`} />
             <ul role="list" className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedFiltered.map((a) => (
                 <li key={a.slug}>
@@ -241,11 +252,12 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
                     slug={a.slug}
                     title={a.title}
                     summary={a.excerpt ?? ""}
-                    categoryName={category.name}
+                    categoryName={`${category.icon} ${category.name}`}
                     publishedAt={a.publish_date ?? a.created_at}
                     tone="teal"
                     featuredImage={a.featured_image}
                     readTime={estimateReadTime(a.body)}
+                    contentType="news"
                   />
                 </li>
               ))}
@@ -253,10 +265,10 @@ export default async function BlogSlugPage({ params }: { params: Promise<Params>
 
             <div className="mt-8 flex justify-center">
               <Link
-                href="/blog"
+                href="/news"
                 className="text-sm font-semibold text-owl-teal hover:text-owl-teal-deep"
               >
-                &larr; Back to Blog
+                &larr; Back to News
               </Link>
             </div>
           </Section>
