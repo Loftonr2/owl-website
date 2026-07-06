@@ -33,6 +33,8 @@ export const siteConfig = {
       { label: "Printables", href: "/printables" },
       { label: "Shop", href: "/shop" },
       { label: "Educators", href: "/educators" },
+      { label: "Blog", href: "/blog" },
+      { label: "News", href: "/news" },
       { label: "About", href: "/about" },
       { label: "Newsletter", href: "/newsletter" },
     ],
