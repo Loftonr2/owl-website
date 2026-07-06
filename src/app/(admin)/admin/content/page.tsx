@@ -245,7 +245,7 @@ export default function AdminContentPage() {
             Content Management
           </h2>
           <p className="mt-1 text-sm text-owl-mist">
-            Manage blog posts and news articles ΓÇö filter, edit, schedule, and publish.
+            Manage blog posts and news articles — filter, edit, schedule, and publish.
           </p>
         </div>
         <button
@@ -270,7 +270,7 @@ export default function AdminContentPage() {
         <div className="flex items-center gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           <AlertTriangle className="h-5 w-5 shrink-0" />
           <span>
-            <strong>Blog queue low:</strong> Only {blogScheduled} post{blogScheduled !== 1 ? "s" : ""} remain scheduled. Add more content soon ΓÇö an alert email will be sent automatically.
+            <strong>Blog queue low:</strong> Only {blogScheduled} post{blogScheduled !== 1 ? "s" : ""} remain scheduled. Add more content soon — an alert email will be sent automatically.
           </span>
         </div>
       )}

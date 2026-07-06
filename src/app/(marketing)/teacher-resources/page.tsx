@@ -13,7 +13,7 @@ import { SEED_PRINTABLES } from "@/lib/seed/printables";
 
 export const metadata = pageMetadata({
   title: "Teacher Resources",
-  description: "Classroom-ready OWL printables, lesson tools, and standards-aligned guides for KΓÇô3 educators.",
+  description: "Classroom-ready OWL printables, lesson tools, and standards-aligned guides for K-3 educators.",
   path: "/teacher-resources",
 });
 
@@ -28,7 +28,7 @@ export default function TeacherResourcesPage() {
       <PageHero
         eyebrow="For teachers"
         title="Classroom-ready, standards-aligned"
-        subtitle="The OWL teacher toolbox ΓÇö printables, lesson tools, and resources mapped to ELOF and Common Core."
+        subtitle="The OWL teacher toolbox — printables, lesson tools, and resources mapped to ELOF and Common Core."
         image={{ src: headers.teacherResources.src, alt: headers.teacherResources.alt }}
         ambient="leaves"
         tone="forest"
@@ -73,14 +73,14 @@ export default function TeacherResourcesPage() {
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-[1.4fr,1fr]">
             <div>
               <p className="font-display text-xs uppercase tracking-[0.2em] text-owl-amber-soft">
-                Educator portal ΓÇö coming soon
+                Educator portal — coming soon
               </p>
               <h2 className="mt-3 font-display text-3xl font-bold text-white sm:text-4xl">
                 Full curriculum library + standards crosswalks
               </h2>
               <p className="mt-4 max-w-prose text-base text-white/85">
-                216 lesson plans across BirthΓÇô5, classroom playlists, and printable libraries
-                ΓÇö bundled with state-specific standards crosswalks.
+                216 lesson plans across Birth–5, classroom playlists, and printable libraries
+                — bundled with state-specific standards crosswalks.
               </p>
             </div>
             <div className="flex flex-col gap-3">

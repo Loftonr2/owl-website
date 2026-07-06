@@ -6,7 +6,7 @@
  *  2. Checks remaining queue counts per content_type
  *  3. Sends a low-queue alert email via Resend if queue Γëñ 3 and alert not yet sent
  *
- * Vercel calls this via its cron system ΓÇö no user auth needed, but we verify
+ * Vercel calls this via its cron system -- no user auth needed, but we verify
  * CRON_SECRET to prevent spoofed calls.
  */
 
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     // Step 2: Check queue counts
     const counts = await getScheduledQueueCounts();
-    log.push(`Queue ΓÇö blog: ${counts.blog}, news: ${counts.news}`);
+    log.push(`Queue -- blog: ${counts.blog}, news: ${counts.news}`);
 
     // Step 3: Low-queue alerts
     const alerts: string[] = [];
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
             await r.emails.send({
               from: EMAIL_FROM.hello,
               to: ["rickoflv@gmail.com"],
-              subject: `ΓÜá∩╕Å OWL ${type === "blog" ? "Blog" : "News"} queue is low ΓÇö ${count} post${count !== 1 ? "s" : ""} remaining`,
+              subject: `[WARN] OWL ${type === "blog" ? "Blog" : "News"} queue is low -- ${count} post${count !== 1 ? "s" : ""} remaining`,
               html: `
                 <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
                   <h2 style="color:#2d5c4e">OWL Content Queue Alert</h2>
@@ -80,12 +80,12 @@ export async function POST(req: NextRequest) {
             log.push(`Failed to send ${type} alert: ${String(emailErr)}`);
           }
         } else {
-          log.push(`${type} alert already sent ΓÇö skipping.`);
+          log.push(`${type} alert already sent -- skipping.`);
         }
       } else if (count === 0) {
-        log.push(`${type} queue empty ΓÇö no alert (user should already know).`);
+        log.push(`${type} queue empty -- no alert (user should already know).`);
       } else {
-        // Queue healthy ΓÇö reset alert_sent so next low-queue event fires again
+        // Queue healthy -- reset alert_sent so next low-queue event fires again
         await setAlertSent(type, false);
         log.push(`${type} queue healthy (${count}), alert_sent reset.`);
       }

@@ -29,7 +29,7 @@ export interface ContentPost {
   updated_at: string;
 }
 
-// ΓöÇΓöÇΓöÇ Public helpers (published only) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// --- Public helpers (published only) ---
 
 /**
  * Fetch published posts of a given type, newest first.
@@ -100,7 +100,7 @@ export async function getPublishedSlugs(type: ContentType): Promise<string[]> {
   return (data ?? []).map((r: { slug: string }) => r.slug);
 }
 
-// ΓöÇΓöÇΓöÇ Admin helpers (service role ΓÇö bypasses RLS) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// --- Admin helpers (service role - bypasses RLS) ---
 
 /**
  * Fetch ALL posts (admin CRM).
