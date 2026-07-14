@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,40 @@ export const metadata = pageMetadata({
 function categorySlug(cat: string): string {
   return cat.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
+
+/**
+ * 20 featured product slugs.
+ * Printify-fulfillable products are listed first. Slugs that do not exist in
+ * SEED_PRODUCTS are silently skipped by the filter below.
+ */
+const FEATURED_SLUGS: string[] = [
+  // Apparel (Printify)
+  "owl-sweatshirt",
+  "owl-cotton-kids-t-shirt",
+  "owl-infant-bodysuit",
+  "owl-t-shirt",
+  // Headwear (Printify)
+  "owl-flat-bill-cap",
+  "owl-embroidered-beanie",
+  // Home & Accessories (Printify)
+  "owl-backpack",
+  "owl-tote-bag",
+  "owl-throw-blanket",
+  "owl-water-bottle",
+  "owl-duffle-bag",
+  "owl-spiral-notebook",
+  "owl-mouse-pad",
+  // Drinkware (Printify)
+  "owl-insulated-tumbler",
+  "owl-wine-tumbler",
+  "owl-enamel-mug",
+  "owl-glossy-mug",
+  // Stickers (Printify)
+  "owl-holographic-stickers",
+  // Additional real products with images
+  "larissa-plush",
+  "rhyme-time-game",
+];
 
 const SHOP_CATEGORIES = [
   {
@@ -125,30 +159,73 @@ const SECTION_ORDER = [
 ];
 
 export default function ShopPage() {
+  /** Resolve the 20 featured products from seed data (preserves slug order) */
+  const featuredProducts = FEATURED_SLUGS
+    .map((slug) => SEED_PRODUCTS.find((p) => p.slug === slug))
+    .filter((p): p is NonNullable<typeof p> => !!p);
+
   return (
     <>
-      {/* 1 — Hero */}
-      <VideoHeroBanner
+      {/* 1 — Cinematic hero (matches Blog/News page height) */}
+      <NewsHeroBanner
         src="/videos/shop-hero.mp4"
-        poster="/images/headers/shop-hero.png"
-        eyebrow="Shop"
-        heading={
-          <>
-            Shop Our{" "}
-            <span className="text-owl-teal">OWLsome Sing-Along Goods!</span>
-          </>
-        }
-        subhead="Apparel, stickers, drinkware, flashcards, and more — each one designed to make learning feel like play."
-        primaryCta={{ label: "Shop Now", href: "#shop-apparel" }}
-        secondaryCta={{ label: "View All Products", href: "/shop/all-products" }}
+        title="Everything You Need. Moments You’ll Love."
+        subtitle="Apparel, stickers, drinkware, flashcards, and more — each one designed to make learning feel like play."
+        ctaLabel="Shop Now"
+        ctaHref="#featured-products"
       />
 
-      {/* 2 — Category icon navigation */}
+      {/* 2 — Featured Products */}
+      <SectionReveal>
+        <Section
+          width="wide"
+          pad="lg"
+          bg="white"
+          id="featured-products"
+        >
+          <SectionIntro
+            eyebrow="Featured Products"
+            title="Everything You Need"
+            subtitle="Real OWL products — apparel, drinkware, home goods, flashcards, stickers, and more."
+            align="center"
+          />
+          <ul
+            role="list"
+            aria-label="Featured products"
+            className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+          >
+            {featuredProducts.map((p) => (
+              <li key={p.slug}>
+                <ProductCard
+                  slug={p.slug}
+                  title={p.title}
+                  price={p.price}
+                  ageRange={p.ageRange}
+                  category={p.category}
+                  tone={p.tone}
+                  isComingSoon={p.isComingSoon}
+                />
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/shop/all-products"
+              className="flex items-center gap-2 rounded-full border border-owl-teal/40 bg-owl-teal/10 px-6 py-2.5 font-display text-sm font-semibold text-owl-teal transition-all hover:bg-owl-teal/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-owl-teal"
+            >
+              View All Products
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </Section>
+      </SectionReveal>
+
+      {/* 3 — Category icon navigation */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream">
           <SectionIntro
             eyebrow="Shop by category"
-            title="Find what you're looking for"
+            title="Find what you’re looking for"
             subtitle="Every OWL product, organized by type. Click a category to jump right there."
             align="center"
           />
@@ -206,7 +283,7 @@ export default function ShopPage() {
         </Section>
       </SectionReveal>
 
-      {/* 3 — Category product sections */}
+      {/* 4 — Category product sections */}
       {SECTION_ORDER.flatMap((sectionValue, catIdx) => {
         const cat = SHOP_CATEGORIES.find(c => c.value === sectionValue);
         if (!cat) return [];
@@ -220,7 +297,6 @@ export default function ShopPage() {
 
         if (featured.length === 0) return null;
 
-        const totalInCat = SEED_PRODUCTS.filter(p => p.category === cat.value).length;
         const bg = catIdx % 2 === 0 ? ("white" as const) : ("cream" as const);
 
         return (
@@ -304,7 +380,7 @@ export default function ShopPage() {
         );
       })}
 
-      {/* 4 — Streaming + Download CTA */}
+      {/* 5 — Streaming + Download CTA */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream-deep">
           <SectionIntro
