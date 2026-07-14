@@ -12,6 +12,7 @@ import {
   SEED_NEWS_ARTICLES,
   SEED_NEWS_CATEGORIES,
 } from "@/lib/seed/news";
+import { getPublishedPosts } from "@/lib/content-posts";
 import { getCategoryFallbackImage } from "@/lib/content-images";
 
 export const metadata = pageMetadata({
@@ -21,8 +22,8 @@ export const metadata = pageMetadata({
   path: "/news",
 });
 
-// Static page — no Supabase required. Rendered at build time from seed data.
-export const dynamic = "force-static";
+// Dynamic — fetches from Supabase on every request, falls back to seed data if unavailable.
+export const dynamic = "force-dynamic";
 
 const CATEGORY_CHIPS = [
   { value: "all",           label: "All News",      href: "/news" },
@@ -33,10 +34,57 @@ const CATEGORY_CHIPS = [
   { value: "press",         label: "Press",          href: "/news/press" },
 ] as const;
 
-export default function NewsPage() {
-  const allNews = SEED_NEWS_ARTICLES;
-  const featured = allNews[0] ?? null;
-  const rest = allNews.slice(1, 7);
+type ToneValue = "teal" | "amber" | "forest" | "rose" | "mist" | "cream";
+
+/** Normalized shape used by both Supabase and seed data paths. */
+type NewsDisplay = {
+  slug: string;
+  title: string;
+  category: string;
+  summary: string;
+  publishedAt: string;
+  body: string | null;
+  tone: ToneValue;
+  featuredImage: string | null;
+};
+
+export default async function NewsPage() {
+  // Try Supabase first. getPublishedPosts has internal try/catch so it never throws.
+  let articles: NewsDisplay[] = [];
+  try {
+    const dbPosts = await getPublishedPosts("news", { limit: 7 });
+    if (dbPosts.length > 0) {
+      articles = dbPosts.map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        category: p.category,
+        summary: p.excerpt ?? "",
+        publishedAt: p.publish_date ?? p.created_at,
+        body: p.body,
+        tone: "teal" as ToneValue,
+        featuredImage: p.featured_image,
+      }));
+    }
+  } catch {
+    // Supabase unavailable — fall through to seed data.
+  }
+
+  // Fall back to seed data when Supabase returns nothing.
+  if (articles.length === 0) {
+    articles = SEED_NEWS_ARTICLES.map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      category: a.category,
+      summary: a.excerpt,
+      publishedAt: a.publishedAt,
+      body: a.body,
+      tone: a.tone,
+      featuredImage: null,
+    }));
+  }
+
+  const featured = articles[0] ?? null;
+  const rest = articles.slice(1, 7);
 
   return (
     <>
@@ -86,7 +134,10 @@ export default function NewsPage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={getCategoryFallbackImage(featured.category, "news")}
+                  src={
+                    featured.featuredImage ??
+                    getCategoryFallbackImage(featured.category, "news")
+                  }
                   alt={featured.title}
                   className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
@@ -108,7 +159,7 @@ export default function NewsPage() {
                   {featured.title}
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-owl-ink/75 line-clamp-4">
-                  {featured.excerpt}
+                  {featured.summary}
                 </p>
                 <p className="mt-2 text-xs text-owl-mist">
                   {new Date(featured.publishedAt).toLocaleDateString("en-US", {
@@ -146,16 +197,16 @@ export default function NewsPage() {
                     <BlogCard
                       slug={article.slug}
                       title={article.title}
-                      summary={article.excerpt}
+                      summary={article.summary}
                       categoryName={cat?.name ?? article.category}
                       category={article.category}
                       publishedAt={article.publishedAt}
                       tone={article.tone}
-                      featuredImage={getCategoryFallbackImage(
-                        article.category,
-                        "news"
-                      )}
-                      readTime={estimateReadTime(article.body)}
+                      featuredImage={
+                        article.featuredImage ??
+                        getCategoryFallbackImage(article.category, "news")
+                      }
+                      readTime={estimateReadTime(article.body ?? "")}
                       contentType="news"
                     />
                   </li>

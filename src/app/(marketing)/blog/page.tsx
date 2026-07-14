@@ -9,6 +9,7 @@ import { BlogCard, estimateReadTime } from "@/components/marketing/blog-card";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { SEED_BLOG_ARTICLES, SEED_BLOG_CATEGORIES } from "@/lib/seed/blog";
+import { getPublishedPosts } from "@/lib/content-posts";
 import { getCategoryFallbackImage } from "@/lib/content-images";
 
 export const metadata = pageMetadata({
@@ -18,8 +19,8 @@ export const metadata = pageMetadata({
   path: "/blog",
 });
 
-// Static page — no Supabase required. Rendered at build time from seed data.
-export const dynamic = "force-static";
+// Dynamic — fetches from Supabase on every request, falls back to seed data if unavailable.
+export const dynamic = "force-dynamic";
 
 const CATEGORY_CHIPS = [
   { value: "homeschooling",      label: "Homeschooling" },
@@ -30,10 +31,57 @@ const CATEGORY_CHIPS = [
   { value: "safety-wellness",    label: "Safety & Wellness" },
 ] as const;
 
-export default function BlogPage() {
-  const allPosts = SEED_BLOG_ARTICLES;
-  const featured = allPosts[0] ?? null;
-  const rest = allPosts.slice(1, 7);
+type ToneValue = "teal" | "amber" | "forest" | "rose" | "mist" | "cream";
+
+/** Normalized shape used by both Supabase and seed data paths. */
+type PostDisplay = {
+  slug: string;
+  title: string;
+  category: string;
+  summary: string;
+  publishedAt: string;
+  body: string | null;
+  tone: ToneValue;
+  featuredImage: string | null;
+};
+
+export default async function BlogPage() {
+  // Try Supabase first. getPublishedPosts has internal try/catch so it never throws.
+  let posts: PostDisplay[] = [];
+  try {
+    const dbPosts = await getPublishedPosts("blog", { limit: 7 });
+    if (dbPosts.length > 0) {
+      posts = dbPosts.map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        category: p.category,
+        summary: p.excerpt ?? "",
+        publishedAt: p.publish_date ?? p.created_at,
+        body: p.body,
+        tone: "teal" as ToneValue,
+        featuredImage: p.featured_image,
+      }));
+    }
+  } catch {
+    // Supabase unavailable — fall through to seed data.
+  }
+
+  // Fall back to seed data when Supabase returns nothing.
+  if (posts.length === 0) {
+    posts = SEED_BLOG_ARTICLES.map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      category: a.category,
+      summary: a.summary,
+      publishedAt: a.publishedAt,
+      body: a.body,
+      tone: a.tone,
+      featuredImage: null,
+    }));
+  }
+
+  const featured = posts[0] ?? null;
+  const rest = posts.slice(1, 7);
 
   return (
     <>
@@ -82,7 +130,10 @@ export default function BlogPage() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={getCategoryFallbackImage(featured.category, "blog")}
+                  src={
+                    featured.featuredImage ??
+                    getCategoryFallbackImage(featured.category, "blog")
+                  }
                   alt={featured.title}
                   className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                 />
@@ -156,11 +207,11 @@ export default function BlogPage() {
                       category={a.category}
                       publishedAt={a.publishedAt}
                       tone={a.tone}
-                      featuredImage={getCategoryFallbackImage(
-                        a.category,
-                        "blog"
-                      )}
-                      readTime={estimateReadTime(a.body)}
+                      featuredImage={
+                        a.featuredImage ??
+                        getCategoryFallbackImage(a.category, "blog")
+                      }
+                      readTime={estimateReadTime(a.body ?? "")}
                     />
                   </li>
                 );

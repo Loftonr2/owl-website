@@ -41,6 +41,7 @@ interface EditState {
   publish_date: string;
   seo_title: string;
   seo_description: string;
+  featured_image: string;
 }
 
 const STATUS_COLORS: Record<PostStatus, string> = {
@@ -153,6 +154,7 @@ export default function AdminContentPage() {
       publish_date: post.publish_date ? post.publish_date.slice(0, 10) : "",
       seo_title: post.seo_title ?? "",
       seo_description: post.seo_description ?? "",
+      featured_image: post.featured_image ?? "",
     });
     setSaveResult("idle");
   }
@@ -181,6 +183,7 @@ export default function AdminContentPage() {
           publish_date: editState.publish_date || null,
           seo_title: editState.seo_title,
           seo_description: editState.seo_description,
+          featured_image: editState.featured_image || null,
         }),
       });
       const data = await res.json();
@@ -552,6 +555,30 @@ export default function AdminContentPage() {
                           className="w-full rounded-lg border border-owl-cream-deep px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
                         />
                       </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-owl-mist mb-1">
+                        Featured Image URL
+                        <span className="ml-1 font-normal text-owl-mist/60">(optional — full URL or /images/... path)</span>
+                      </label>
+                      <input
+                        type="url"
+                        value={editState.featured_image}
+                        onChange={(e) => setEditState((s) => s ? { ...s, featured_image: e.target.value } : s)}
+                        placeholder="https://... or /images/headers/blog-hero.png"
+                        className="w-full rounded-lg border border-owl-cream-deep px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                      />
+                      {editState.featured_image && (
+                        <div className="mt-2">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={editState.featured_image}
+                            alt="Featured image preview"
+                            className="h-20 w-32 rounded-lg object-cover shadow-sm border border-owl-cream-deep"
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                          />
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-3">
