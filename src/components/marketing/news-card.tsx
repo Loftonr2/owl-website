@@ -1,13 +1,16 @@
 /**
  * NewsCard
- * Compact article card used in the 5-column "Latest News" grid.
+ * Compact article card used in 5-column grids on the News and Blog pages.
  *
- * Design spec (News page mockup):
+ * Design spec (News/Blog mockup):
  *  - 16:10 thumbnail image (fills the top of the card)
  *  - Color-coded category pill (small, rounded-full)
  *  - Bold title, 2-line clamp
  *  - Calendar icon + formatted date at the bottom
  *  - Subtle border + shadow; lifts 4px on hover
+ *
+ * The optional `href` prop lets the Blog page reuse this card component
+ * with links to /blog/{slug} instead of the default /news/{slug}.
  */
 import Link from "next/link";
 import { Calendar } from "lucide-react";
@@ -20,6 +23,11 @@ export interface NewsCardProps {
   publishedAt: string;
   featuredImage: string;
   category: UINewsCategory;
+  /**
+   * Explicit link destination. Defaults to /news/{slug}.
+   * Pass /blog/{slug} when reusing this card on the Blog page.
+   */
+  href?: string;
   className?: string;
 }
 
@@ -29,8 +37,11 @@ export function NewsCard({
   publishedAt,
   featuredImage,
   category,
+  href,
   className,
 }: NewsCardProps) {
+  const linkHref = href ?? `/news/${slug}`;
+
   const dateStr = new Date(publishedAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -39,7 +50,7 @@ export function NewsCard({
 
   return (
     <Link
-      href={`/news/${slug}`}
+      href={linkHref}
       className={cn(
         "group flex flex-col overflow-hidden rounded-2xl bg-white",
         "border border-neutral-100 shadow-sm",
@@ -53,8 +64,7 @@ export function NewsCard({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={featuredImage}
-          alt=""
-          aria-hidden
+          alt={title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </div>
