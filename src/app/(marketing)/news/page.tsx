@@ -2,18 +2,16 @@ import Link from "next/link";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
-import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
 import { CategoryChip } from "@/components/ui/category-chip";
-import { BlogCard, estimateReadTime } from "@/components/marketing/blog-card";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
+import { ContentReveal } from "@/components/marketing/content-reveal";
 import {
   SEED_NEWS_ARTICLES,
   SEED_NEWS_CATEGORIES,
 } from "@/lib/seed/news";
 import { getPublishedPosts } from "@/lib/content-posts";
-import { getCategoryFallbackImage } from "@/lib/content-images";
 
 export const metadata = pageMetadata({
   title: "News - OWL Sing Together",
@@ -22,7 +20,7 @@ export const metadata = pageMetadata({
   path: "/news",
 });
 
-// Dynamic — fetches from Supabase on every request, falls back to seed data if unavailable.
+// Dynamic -- fetches from Supabase on every request, falls back to seed data if unavailable.
 export const dynamic = "force-dynamic";
 
 const CATEGORY_CHIPS = [
@@ -49,10 +47,10 @@ type NewsDisplay = {
 };
 
 export default async function NewsPage() {
-  // Try Supabase first. getPublishedPosts has internal try/catch so it never throws.
+  // Fetch up to 50 published articles -- ContentReveal handles pagination client-side.
   let articles: NewsDisplay[] = [];
   try {
-    const dbPosts = await getPublishedPosts("news", { limit: 7 });
+    const dbPosts = await getPublishedPosts("news", { limit: 50 });
     if (dbPosts.length > 0) {
       articles = dbPosts.map((p) => ({
         slug: p.slug,
@@ -66,7 +64,7 @@ export default async function NewsPage() {
       }));
     }
   } catch {
-    // Supabase unavailable — fall through to seed data.
+    // Supabase unavailable -- fall through to seed data.
   }
 
   // Fall back to seed data when Supabase returns nothing.
@@ -83,15 +81,16 @@ export default async function NewsPage() {
     }));
   }
 
-  const featured = articles[0] ?? null;
-  const rest = articles.slice(1, 7);
+  const categories = SEED_NEWS_CATEGORIES.map((c) => ({
+    slug: c.slug,
+    name: c.name,
+  }));
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero -- no poster so no static image flashes before the video */}
       <VideoHeroBanner
         src="/videos/news-hero.mp4"
-        poster="/images/headers/newsletter-hero.png"
         eyebrow="OWL News"
         heading={
           <>
@@ -104,7 +103,7 @@ export default async function NewsPage() {
         primaryCta={{ label: "Explore Latest News", href: "#news" }}
       />
 
-      {/* Category Row */}
+      {/* Category filter row */}
       <SectionReveal>
         <Section width="wide" pad="sm" bg="cream">
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
@@ -121,109 +120,25 @@ export default async function NewsPage() {
         </Section>
       </SectionReveal>
 
-      {/* Featured Story */}
-      {featured && (
-        <SectionReveal>
-          <Section width="wide" pad="lg" bg="white">
-            <SectionIntro eyebrow="Featured Story" title="Latest from OWL" />
-            <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-[1.4fr,1fr] items-center">
-              {/* Thumbnail */}
-              <Link
-                href={`/news/${featured.slug}`}
-                className="group block overflow-hidden rounded-owl-card shadow-owl-2 transition-transform duration-300 hover:-translate-y-1"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={
-                    featured.featuredImage ??
-                    getCategoryFallbackImage(featured.category, "news")
-                  }
-                  alt={featured.title}
-                  className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                />
-              </Link>
+      {/* Content: featured + grid with See More pagination */}
+      <ContentReveal
+        items={articles}
+        contentType="news"
+        categories={categories}
+        featuredEyebrow="Featured Story"
+        featuredTitle="Latest from OWL"
+        gridEyebrow="More News"
+        gridTitle="Stay in the Loop"
+        gridId="news"
+      />
 
-              {/* Meta */}
-              <div className="flex flex-col justify-center">
-                {(() => {
-                  const cat = SEED_NEWS_CATEGORIES.find(
-                    (c) => c.slug === featured.category
-                  );
-                  return (
-                    <span className="inline-flex w-fit items-center rounded-full bg-owl-teal/10 px-3 py-0.5 text-xs font-semibold text-owl-teal">
-                      {cat?.name ?? featured.category}
-                    </span>
-                  );
-                })()}
-                <h2 className="mt-3 font-display text-2xl font-extrabold leading-tight text-owl-ink sm:text-3xl">
-                  {featured.title}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-owl-ink/75 line-clamp-4">
-                  {featured.summary}
-                </p>
-                <p className="mt-2 text-xs text-owl-mist">
-                  {new Date(featured.publishedAt).toLocaleDateString("en-US", {
-                    dateStyle: "long",
-                  })}
-                </p>
-                <div className="mt-5">
-                  <Button intent="primary" size="sm" asChild>
-                    <Link href={`/news/${featured.slug}`}>
-                      Read Story &rarr;
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Section>
-        </SectionReveal>
-      )}
-
-      {/* More News Grid */}
-      {rest.length > 0 && (
-        <SectionReveal>
-          <Section id="news" width="wide" pad="lg" bg="cream">
-            <SectionIntro eyebrow="More News" title="Stay in the Loop" />
-            <ul
-              role="list"
-              className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {rest.map((article) => {
-                const cat = SEED_NEWS_CATEGORIES.find(
-                  (c) => c.slug === article.category
-                );
-                return (
-                  <li key={article.slug}>
-                    <BlogCard
-                      slug={article.slug}
-                      title={article.title}
-                      summary={article.summary}
-                      categoryName={cat?.name ?? article.category}
-                      category={article.category}
-                      publishedAt={article.publishedAt}
-                      tone={article.tone}
-                      featuredImage={
-                        article.featuredImage ??
-                        getCategoryFallbackImage(article.category, "news")
-                      }
-                      readTime={estimateReadTime(article.body ?? "")}
-                      contentType="news"
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          </Section>
-        </SectionReveal>
-      )}
-
-      {/* Newsletter Panel */}
+      {/* Newsletter panel */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream-deep">
           <div className="rounded-owl-hero bg-owl-teal p-8 text-center sm:p-10 md:flex md:items-center md:justify-between md:text-left">
             <div className="text-white">
               <p className="font-display text-xs font-bold uppercase tracking-widest text-owl-amber-soft">
-                Don&apos;t Miss Out!
+                Don't Miss Out!
               </p>
               <h2 className="mt-1 font-display text-2xl font-extrabold sm:text-3xl">
                 Be first to hear OWL news

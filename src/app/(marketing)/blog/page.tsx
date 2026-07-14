@@ -2,15 +2,13 @@ import Link from "next/link";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
 import { Section } from "@/components/ui/section";
-import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
 import { CategoryChip } from "@/components/ui/category-chip";
-import { BlogCard, estimateReadTime } from "@/components/marketing/blog-card";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
+import { ContentReveal } from "@/components/marketing/content-reveal";
 import { SEED_BLOG_ARTICLES, SEED_BLOG_CATEGORIES } from "@/lib/seed/blog";
 import { getPublishedPosts } from "@/lib/content-posts";
-import { getCategoryFallbackImage } from "@/lib/content-images";
 
 export const metadata = pageMetadata({
   title: "Blog & Resources - OWL Sing Together",
@@ -19,7 +17,7 @@ export const metadata = pageMetadata({
   path: "/blog",
 });
 
-// Dynamic — fetches from Supabase on every request, falls back to seed data if unavailable.
+// Dynamic -- fetches from Supabase on every request, falls back to seed data if unavailable.
 export const dynamic = "force-dynamic";
 
 const CATEGORY_CHIPS = [
@@ -46,10 +44,10 @@ type PostDisplay = {
 };
 
 export default async function BlogPage() {
-  // Try Supabase first. getPublishedPosts has internal try/catch so it never throws.
+  // Fetch up to 50 published posts -- ContentReveal handles pagination client-side.
   let posts: PostDisplay[] = [];
   try {
-    const dbPosts = await getPublishedPosts("blog", { limit: 7 });
+    const dbPosts = await getPublishedPosts("blog", { limit: 50 });
     if (dbPosts.length > 0) {
       posts = dbPosts.map((p) => ({
         slug: p.slug,
@@ -63,7 +61,7 @@ export default async function BlogPage() {
       }));
     }
   } catch {
-    // Supabase unavailable — fall through to seed data.
+    // Supabase unavailable -- fall through to seed data.
   }
 
   // Fall back to seed data when Supabase returns nothing.
@@ -80,15 +78,16 @@ export default async function BlogPage() {
     }));
   }
 
-  const featured = posts[0] ?? null;
-  const rest = posts.slice(1, 7);
+  const categories = SEED_BLOG_CATEGORIES.map((c) => ({
+    slug: c.slug,
+    name: c.name,
+  }));
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero -- no poster so no static image flashes before the video */}
       <VideoHeroBanner
         src="/videos/blog-hero.mp4"
-        poster="/images/headers/blog-hero.png"
         eyebrow="OWL Blog & Resources"
         heading={
           <>
@@ -101,7 +100,7 @@ export default async function BlogPage() {
         primaryCta={{ label: "Explore Our Blog", href: "#articles" }}
       />
 
-      {/* Category Row */}
+      {/* Category filter row */}
       <SectionReveal>
         <Section width="wide" pad="sm" bg="cream">
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
@@ -117,111 +116,19 @@ export default async function BlogPage() {
         </Section>
       </SectionReveal>
 
-      {/* Featured Post */}
-      {featured && (
-        <SectionReveal>
-          <Section width="wide" pad="lg" bg="white">
-            <SectionIntro eyebrow="Featured Post" title="Start Here" />
-            <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-[1.4fr,1fr] items-center">
-              {/* Thumbnail */}
-              <Link
-                href={`/blog/${featured.slug}`}
-                className="group block overflow-hidden rounded-owl-card shadow-owl-2 transition-transform duration-300 hover:-translate-y-1"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={
-                    featured.featuredImage ??
-                    getCategoryFallbackImage(featured.category, "blog")
-                  }
-                  alt={featured.title}
-                  className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                />
-              </Link>
+      {/* Content: featured + grid with See More pagination */}
+      <ContentReveal
+        items={posts}
+        contentType="blog"
+        categories={categories}
+        featuredEyebrow="Featured Post"
+        featuredTitle="Start Here"
+        gridEyebrow="Latest Articles"
+        gridTitle="Keep Reading"
+        gridId="articles"
+      />
 
-              {/* Meta + excerpt */}
-              <div className="flex flex-col justify-center">
-                {(() => {
-                  const cat = SEED_BLOG_CATEGORIES.find(
-                    (c) => c.slug === featured.category
-                  );
-                  return (
-                    <span className="inline-flex w-fit items-center rounded-full bg-owl-teal/10 px-3 py-0.5 text-xs font-semibold text-owl-teal">
-                      {cat?.name ?? featured.category}
-                    </span>
-                  );
-                })()}
-                <h2 className="mt-3 font-display text-2xl font-extrabold leading-tight text-owl-ink sm:text-3xl">
-                  {featured.title}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-owl-ink/75 line-clamp-4">
-                  {featured.summary}
-                </p>
-                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-owl-mist">
-                  <span>
-                    {new Date(featured.publishedAt).toLocaleDateString(
-                      "en-US",
-                      { dateStyle: "long" }
-                    )}
-                  </span>
-                  {featured.body && (
-                    <>
-                      <span aria-hidden>&middot;</span>
-                      <span>{estimateReadTime(featured.body)} min read</span>
-                    </>
-                  )}
-                </div>
-                <div className="mt-5">
-                  <Button intent="primary" size="sm" asChild>
-                    <Link href={`/blog/${featured.slug}`}>
-                      Read Article &rarr;
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Section>
-        </SectionReveal>
-      )}
-
-      {/* Latest Articles Grid */}
-      {rest.length > 0 && (
-        <SectionReveal>
-          <Section id="articles" width="wide" pad="lg" bg="cream">
-            <SectionIntro eyebrow="Latest Articles" title="Keep Reading" />
-            <ul
-              role="list"
-              className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {rest.map((a) => {
-                const cat = SEED_BLOG_CATEGORIES.find(
-                  (c) => c.slug === a.category
-                );
-                return (
-                  <li key={a.slug}>
-                    <BlogCard
-                      slug={a.slug}
-                      title={a.title}
-                      summary={a.summary}
-                      categoryName={cat?.name ?? a.category}
-                      category={a.category}
-                      publishedAt={a.publishedAt}
-                      tone={a.tone}
-                      featuredImage={
-                        a.featuredImage ??
-                        getCategoryFallbackImage(a.category, "blog")
-                      }
-                      readTime={estimateReadTime(a.body ?? "")}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          </Section>
-        </SectionReveal>
-      )}
-
-      {/* Newsletter Strip */}
+      {/* Newsletter strip */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream-deep">
           <div className="rounded-owl-hero bg-owl-teal p-8 text-center sm:p-10 md:flex md:items-center md:justify-between md:text-left">
