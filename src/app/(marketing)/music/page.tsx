@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  Music2,
   HeartHandshake,
   Search,
   Download,
@@ -13,7 +12,7 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -142,19 +141,20 @@ export default function MusicPage() {
   return (
     <>
       {/* 1 — Music hero */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/music-hero.mp4"
-        poster="/images/headers/music-hero.png"
         eyebrow="Music"
-        heading={
+        title={
           <>
             Explore Our{" "}
             <span className="text-owl-teal">Sing-Along Playlists!</span>
           </>
         }
-        subhead="Same songs, every platform. Stream on Spotify, Apple Music, YouTube Music, or Amazon Music — or download the activity sheets."
-        primaryCta={{ label: "Browse playlists", href: "#playlists" }}
-        secondaryCta={{ label: "Listen on every platform", href: "#streaming" }}
+        subtitle="Same songs, every platform. Stream on Spotify, Apple Music, YouTube Music, or Amazon Music — or download the activity sheets."
+        ctaLabel="Browse playlists"
+        ctaHref="#playlists"
+        ctaLabel2="Listen on every platform"
+        ctaHref2="#streaming"
         meta={<p>All songs mastered at 432 Hz, –14 LUFS.</p>}
       />
 

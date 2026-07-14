@@ -9,10 +9,9 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { Button } from "@/components/ui/button";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 import { NewsletterForm } from "@/components/marketing/newsletter-form";
 import { OwlMark } from "@/components/brand/owl-logo";
@@ -181,17 +180,16 @@ export default function NewsletterPage() {
       {/* 1 — Warm signup hero. Cream tone, sparkles ambient, single CTA.
             The hero's overlay slot carries the email form so the visitor
             can subscribe without scrolling. */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/newsletter-hero.mp4"
-        poster="/images/headers/newsletter-hero.png"
         eyebrow="The OWL Weekly"
-        heading={
+        title={
           <>
             A small letter from Larissa,{" "}
             <span className="text-owl-teal">every Sunday.</span>
           </>
         }
-        subhead="Five minutes to read. One short video, one printable, one cultural note, one small parenting win. Written like a note to a friend."
+        subtitle="Five minutes to read. One short video, one printable, one cultural note, one small parenting win. Written like a note to a friend."
         meta={
           <p className="italic">
             &ldquo;I&apos;m so glad you&apos;re here today.&rdquo; — Larissa

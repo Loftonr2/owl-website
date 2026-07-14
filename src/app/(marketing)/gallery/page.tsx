@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Search, Music2, Play, Share2, ShoppingBag } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -75,16 +75,17 @@ export default function GalleryPage() {
   return (
     <>
       {/* Hero */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/gallery-hero.mp4"
-        poster="/images/headers/gallery-hero.png"
         eyebrow="OWL Image Gallery"
-        heading={
+        title={
           <>Explore, Inspire, and{" "}<span className="text-owl-teal">Create Together</span></>
         }
-        subhead="Colorful OWL artwork, seasonal scenes, character art, and behind-the-scenes moments."
-        primaryCta={{ label: "Browse Gallery", href: "#gallery" }}
-        secondaryCta={{ label: "Download Free Art", href: "/newsletter" }}
+        subtitle="Colorful OWL artwork, seasonal scenes, character art, and behind-the-scenes moments."
+        ctaLabel="Browse Gallery"
+        ctaHref="#gallery"
+        ctaLabel2="Download Free Art"
+        ctaHref2="/newsletter"
       />
 
       {/* 2 — Search + Filter chips */}

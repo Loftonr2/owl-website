@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Sparkles, Globe2, Church, Palette, Moon } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -107,16 +107,17 @@ export default function HolidaysPage() {
   return (
     <>
       {/* Hero */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/holidays-hero.mp4"
-        poster="/images/headers/holidays-hero.png"
         eyebrow="Holidays"
-        heading={
+        title={
           <>Celebrate Learning{" "}<span className="text-owl-teal">All Year.</span></>
         }
-        subhead="Eleven cultural celebrations with videos, printables, and parent-friendly explainers — refreshed annually."
-        primaryCta={{ label: "Explore the Hubs", href: "#hubs" }}
-        secondaryCta={{ label: "Browse by Month", href: "#by-month" }}
+        subtitle="Eleven cultural celebrations with videos, printables, and parent-friendly explainers — refreshed annually."
+        ctaLabel="Explore the Hubs"
+        ctaHref="#hubs"
+        ctaLabel2="Browse by Month"
+        ctaHref2="#by-month"
         meta={<p>11 cultural hubs · refreshed each year · always free to read.</p>}
       />
 

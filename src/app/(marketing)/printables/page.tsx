@@ -1,5 +1,5 @@
 import { pageMetadata } from "@/lib/seo/metadata";
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { PrintableCard } from "@/components/marketing/printable-card";
 import { PrintableOfTheWeek } from "@/components/marketing/printable-of-the-week";
@@ -23,16 +23,17 @@ export default function PrintablesPage() {
 
   return (
     <>
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/printables-hero.mp4"
-        poster="/images/headers/printables-hero.png"
         eyebrow="Printables"
-        heading={
+        title={
           <>Free + Premium Printables for{" "}<span className="text-owl-teal">Home & Classroom</span></>
         }
-        subhead="Multicultural illustrations, age-banded, classroom-ready. Most are free; bundles unlock more."
-        primaryCta={{ label: "Browse Free Printables", href: "#free" }}
-        secondaryCta={{ label: "View Bundles", href: "#bundles" }}
+        subtitle="Multicultural illustrations, age-banded, classroom-ready. Most are free; bundles unlock more."
+        ctaLabel="Browse Free Printables"
+        ctaHref="#free"
+        ctaLabel2="View Bundles"
+        ctaHref2="#bundles"
       />
 
       <Section width="wide" pad="lg" bg="cream" id="free">

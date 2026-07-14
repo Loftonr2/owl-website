@@ -4,7 +4,7 @@ import { Sparkles, Heart, Globe2, GraduationCap, BookOpen, Music2, Users } from 
 import { pageMetadata } from "@/lib/seo/metadata";
 
 // Shared system primitives
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { GlassPanel } from "@/components/ui/glass-panel";
@@ -105,16 +105,17 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/about-hero.mp4"
-        poster="/images/headers/about-hero.png"
         eyebrow="Meet Larissa"
-        heading={
+        title={
           <>Welcome to Our{" "}<span className="text-owl-teal">Heartfelt Journey.</span></>
         }
-        subhead="OWL Sing Together carries the tradition of Mr. Rogers into a digital, multicultural age — where every child feels seen, heard, and sung to."
-        primaryCta={{ label: "Explore Now", href: "/watch" }}
-        secondaryCta={{ label: "Subscribe to the OWL Weekly", href: "/newsletter" }}
+        subtitle="OWL Sing Together carries the tradition of Mr. Rogers into a digital, multicultural age — where every child feels seen, heard, and sung to."
+        ctaLabel="Explore Now"
+        ctaHref="/watch"
+        ctaLabel2="Subscribe to the OWL Weekly"
+        ctaHref2="/newsletter"
         meta={<p className="italic">&ldquo;I&apos;m so glad you&apos;re here today.&rdquo; — Larissa</p>}
       />
 

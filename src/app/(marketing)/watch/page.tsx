@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -61,16 +61,17 @@ export default function WatchPage() {
   return (
     <>
       {/* Hero */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/watch-hero.mp4"
-        poster="/images/headers/watch-hero.png"
         eyebrow="Watch"
-        heading={
+        title={
           <>Watch, Sing, and{" "}<span className="text-owl-teal">Learn Together.</span></>
         }
-        subhead="Free multicultural sing-along videos for children Birth–14. New songs every month."
-        primaryCta={{ label: "Browse Videos", href: "#videos" }}
-        secondaryCta={{ label: "Watch on YouTube", href: "https://www.youtube.com/@Owlsingtogetherchannel" }}
+        subtitle="Free multicultural sing-along videos for children Birth–14. New songs every month."
+        ctaLabel="Browse Videos"
+        ctaHref="#videos"
+        ctaLabel2="Watch on YouTube"
+        ctaHref2="https://www.youtube.com/@Owlsingtogetherchannel"
       />
 
       {/* 2 — Featured videos rail */}

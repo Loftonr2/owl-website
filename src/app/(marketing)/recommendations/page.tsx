@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -139,19 +139,20 @@ export default function RecommendationsPage() {
   return (
     <>
       {/* 1 — Editorial hero (cream / sparkles + stars) */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/blog-hero.mp4"
-        poster="/images/headers/blog-hero.png"
         eyebrow="Larissa's Picks"
-        heading={
+        title={
           <>
             Editorial picks for{" "}
             <span className="text-owl-teal">every shelf, every age.</span>
           </>
         }
-        subhead="OWL-made favorites and a few trusted partners. Each pick supports a specific learning goal — no fluff, no algorithm-chasing."
-        primaryCta={{ label: "See this week's picks", href: "#picks" }}
-        secondaryCta={{ label: "Compare with alternatives", href: "#compare" }}
+        subtitle="OWL-made favorites and a few trusted partners. Each pick supports a specific learning goal — no fluff, no algorithm-chasing."
+        ctaLabel="See this week's picks"
+        ctaHref="#picks"
+        ctaLabel2="Compare with alternatives"
+        ctaHref2="#compare"
         meta={<p>Updated every Sunday in the OWL Weekly. Affiliate links disclosed.</p>}
       />
 

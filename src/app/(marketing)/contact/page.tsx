@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo/metadata";
 
-import { VideoHeroBanner } from "@/components/marketing/video-hero-banner";
+import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { Section } from "@/components/ui/section";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Button } from "@/components/ui/button";
@@ -151,16 +151,17 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <VideoHeroBanner
+      <NewsHeroBanner
         src="/videos/about-hero.mp4"
-        poster="/images/headers/contact-hero.png"
         eyebrow="Contact & Licensing"
-        heading={
+        title={
           <>We&apos;d Love to{" "}<span className="text-owl-teal">Hear from You.</span></>
         }
-        subhead="OWL is a small, mission-led team. Your message goes straight to a real human. Pick the segment that fits and we'll route you to the right place."
-        primaryCta={{ label: "Send a Message", href: "#inquiry" }}
-        secondaryCta={{ label: "Licensing Inquiry", href: "#inquiry" }}
+        subtitle="OWL is a small, mission-led team. Your message goes straight to a real human. Pick the segment that fits and we'll route you to the right place."
+        ctaLabel="Send a Message"
+        ctaHref="#inquiry"
+        ctaLabel2="Licensing Inquiry"
+        ctaHref2="#inquiry"
       />
 
       {/* 2 — Contact Segment Cards */}
