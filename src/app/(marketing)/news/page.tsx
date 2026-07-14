@@ -90,7 +90,7 @@ export default async function NewsPage() {
     <>
       {/* Hero */}
       <VideoHeroBanner
-        src="/videos/blog-hero.mp4"
+        src="/videos/news-hero.mp4"
         poster="/images/headers/newsletter-hero.png"
         eyebrow="OWL News"
         heading={
