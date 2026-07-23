@@ -24,6 +24,9 @@ function mapCoupon(d: CouponDraft) {
  * credentials, harvest fresh coupons via its adapter and upsert them (dedup by
  * network + code). Networks without credentials are skipped cleanly. With no
  * real adapters configured this simply expires stale coupons and logs skips.
+ *
+ * Also activates / expires account-bound coupon_campaigns via the DB function
+ * fn_activate_due_coupon_campaigns (idempotent — safe to run every minute).
  */
 export const refreshCoupons: JobFn = async (db) => {
   const nowIso = new Date().toISOString();
@@ -141,6 +144,14 @@ export const refreshCoupons: JobFn = async (db) => {
           .eq("id", runId);
       }
     }
+  }
+
+  // Activate / expire account-bound coupon_campaigns.
+  // fn_activate_due_coupon_campaigns() is idempotent — safe to run every minute.
+  try {
+    await db.rpc("fn_activate_due_coupon_campaigns");
+  } catch (ccErr) {
+    console.warn("[refresh-coupons] fn_activate_due_coupon_campaigns error:", ccErr);
   }
 
   return {
