@@ -4,11 +4,41 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import {
   FileText, Newspaper, Filter, Search, CalendarDays, CheckCircle2,
   Clock, FileEdit, Eye, EyeOff, Save, X, Loader2, AlertTriangle,
-  ChevronDown, ChevronUp, RefreshCw,
+  ChevronDown, ChevronUp, RefreshCw, Tag, Mail,
 } from "lucide-react";
 
 type ContentType = "blog" | "news";
 type PostStatus = "draft" | "scheduled" | "published";
+type WorkflowStatus =
+  | "topic_identified" | "researching" | "draft" | "editing"
+  | "awaiting_approval" | "approved" | "scheduled" | "published"
+  | "needs_updating" | "archived";
+
+const WORKFLOW_META: Record<WorkflowStatus, { label: string; color: string }> = {
+  topic_identified:  { label: "Topic",        color: "bg-slate-100 text-slate-700" },
+  researching:       { label: "Research",     color: "bg-blue-100 text-blue-700" },
+  draft:             { label: "Draft",        color: "bg-amber-100 text-amber-700" },
+  editing:           { label: "Editing",      color: "bg-orange-100 text-orange-700" },
+  awaiting_approval: { label: "Approval",     color: "bg-purple-100 text-purple-700" },
+  approved:          { label: "Approved",     color: "bg-teal-100 text-teal-700" },
+  scheduled:         { label: "Scheduled",    color: "bg-sky-100 text-sky-700" },
+  published:         { label: "Published",    color: "bg-green-100 text-green-700" },
+  needs_updating:    { label: "Needs Update", color: "bg-red-100 text-red-700" },
+  archived:          { label: "Archived",     color: "bg-gray-100 text-gray-500" },
+};
+
+const WORKFLOW_TRANSITIONS: Record<WorkflowStatus, WorkflowStatus[]> = {
+  topic_identified:  ["researching","archived"],
+  researching:       ["draft","topic_identified"],
+  draft:             ["editing","researching"],
+  editing:           ["awaiting_approval","draft"],
+  awaiting_approval: ["approved","editing"],
+  approved:          ["scheduled","editing"],
+  scheduled:         ["published","approved"],
+  published:         ["needs_updating","archived"],
+  needs_updating:    ["draft","archived"],
+  archived:          [],
+};
 
 interface ContentPost {
   id: string;
@@ -20,10 +50,17 @@ interface ContentPost {
   body: string | null;
   publish_date: string | null;
   status: PostStatus;
+  workflow_status: WorkflowStatus;
   author: string;
   seo_title: string | null;
   seo_description: string | null;
+  primary_keyword: string | null;
+  secondary_keywords: string[] | null;
+  og_title: string | null;
+  og_description: string | null;
   featured_image: string | null;
+  newsletter_eligible: boolean;
+  editorial_priority: number;
   alert_sent: boolean;
   created_at: string;
   updated_at: string;
@@ -41,7 +78,14 @@ interface EditState {
   publish_date: string;
   seo_title: string;
   seo_description: string;
+  og_title: string;
+  og_description: string;
+  primary_keyword: string;
+  secondary_keywords: string;
   featured_image: string;
+  workflow_status: WorkflowStatus;
+  newsletter_eligible: boolean;
+  editorial_priority: number;
 }
 
 const STATUS_COLORS: Record<PostStatus, string> = {
@@ -154,7 +198,14 @@ export default function AdminContentPage() {
       publish_date: post.publish_date ? post.publish_date.slice(0, 10) : "",
       seo_title: post.seo_title ?? "",
       seo_description: post.seo_description ?? "",
+      og_title: post.og_title ?? "",
+      og_description: post.og_description ?? "",
+      primary_keyword: post.primary_keyword ?? "",
+      secondary_keywords: (post.secondary_keywords ?? []).join(", "),
       featured_image: post.featured_image ?? "",
+      workflow_status: post.workflow_status,
+      newsletter_eligible: post.newsletter_eligible,
+      editorial_priority: post.editorial_priority,
     });
     setSaveResult("idle");
   }
@@ -183,7 +234,16 @@ export default function AdminContentPage() {
           publish_date: editState.publish_date || null,
           seo_title: editState.seo_title,
           seo_description: editState.seo_description,
+          og_title: editState.og_title,
+          og_description: editState.og_description,
+          primary_keyword: editState.primary_keyword || null,
+          secondary_keywords: editState.secondary_keywords
+            ? editState.secondary_keywords.split(",").map((s) => s.trim()).filter(Boolean)
+            : [],
           featured_image: editState.featured_image || null,
+          workflow_status: editState.workflow_status,
+          newsletter_eligible: editState.newsletter_eligible,
+          editorial_priority: editState.editorial_priority,
         }),
       });
       const data = await res.json();
@@ -379,9 +439,17 @@ export default function AdminContentPage() {
                     {post.content_type === "blog" ? <FileText className="mr-1 inline h-3 w-3" /> : <Newspaper className="mr-1 inline h-3 w-3" />}
                     {post.content_type}
                   </span>
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_COLORS[post.status]}`}>
-                    {post.status}
-                  </span>
+                  {post.workflow_status && WORKFLOW_META[post.workflow_status] && (
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${WORKFLOW_META[post.workflow_status].color}`}>
+                      {WORKFLOW_META[post.workflow_status].label}
+                    </span>
+                  )}
+                  {post.newsletter_eligible && (
+                    <span className="rounded-full bg-owl-teal/15 px-2 py-0.5 text-xs font-medium text-owl-teal-deep flex items-center gap-0.5">
+                      <Mail className="h-2.5 w-2.5" />
+                      NL
+                    </span>
+                  )}
 
                   {/* Title + slug */}
                   <div className="flex-1 min-w-0">
@@ -579,6 +647,104 @@ export default function AdminContentPage() {
                           />
                         </div>
                       )}
+                    </div>
+
+                    {/* Workflow status transition */}
+                    <div>
+                      <label className="block text-xs font-semibold text-owl-mist mb-1">Workflow Status</label>
+                      <div className="flex flex-wrap gap-2">
+                        {(WORKFLOW_TRANSITIONS[editState.workflow_status] ?? []).map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            onClick={() => setEditState((st) => st ? { ...st, workflow_status: s } : st)}
+                            className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
+                              editState.workflow_status === s
+                                ? "border-owl-teal bg-owl-teal/10 text-owl-teal-deep"
+                                : "border-owl-cream-deep bg-white text-owl-ink hover:border-owl-teal"
+                            }`}
+                          >
+                            {WORKFLOW_META[s]?.label ?? s}
+                          </button>
+                        ))}
+                        {(WORKFLOW_TRANSITIONS[editState.workflow_status] ?? []).length === 0 && (
+                          <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${WORKFLOW_META[editState.workflow_status]?.color ?? ""}`}>
+                            {WORKFLOW_META[editState.workflow_status]?.label ?? editState.workflow_status}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* SEO extended */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-xs font-semibold text-owl-mist mb-1 flex items-center gap-1">
+                          <Tag className="h-3 w-3" /> Primary Keyword
+                        </label>
+                        <input
+                          type="text"
+                          value={editState.primary_keyword}
+                          onChange={(e) => setEditState((s) => s ? { ...s, primary_keyword: e.target.value } : s)}
+                          placeholder="e.g. children's music education"
+                          className="w-full rounded-lg border border-owl-cream-deep px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-owl-mist mb-1">Secondary Keywords <span className="font-normal">(comma-separated)</span></label>
+                        <input
+                          type="text"
+                          value={editState.secondary_keywords}
+                          onChange={(e) => setEditState((s) => s ? { ...s, secondary_keywords: e.target.value } : s)}
+                          placeholder="keyword one, keyword two"
+                          className="w-full rounded-lg border border-owl-cream-deep px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-owl-mist mb-1">OG Title</label>
+                        <input
+                          type="text"
+                          value={editState.og_title}
+                          onChange={(e) => setEditState((s) => s ? { ...s, og_title: e.target.value } : s)}
+                          className="w-full rounded-lg border border-owl-cream-deep px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-owl-mist mb-1">OG Description</label>
+                        <input
+                          type="text"
+                          value={editState.og_description}
+                          onChange={(e) => setEditState((s) => s ? { ...s, og_description: e.target.value } : s)}
+                          className="w-full rounded-lg border border-owl-cream-deep px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Newsletter eligible + editorial priority */}
+                    <div className="flex flex-wrap items-center gap-6">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-medium text-owl-ink">Newsletter eligible</span>
+                        <button
+                          type="button"
+                          onClick={() => setEditState((s) => s ? { ...s, newsletter_eligible: !s.newsletter_eligible } : s)}
+                          className={`relative inline-flex h-5 w-9 rounded-full transition-colors ${editState.newsletter_eligible ? "bg-owl-teal" : "bg-owl-cream-deep"}`}
+                          role="switch"
+                          aria-checked={editState.newsletter_eligible}
+                        >
+                          <span className={`absolute top-0.5 left-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${editState.newsletter_eligible ? "translate-x-4" : ""}`} />
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label className="text-sm font-medium text-owl-ink">Editorial priority</label>
+                        <input
+                          type="number"
+                          min={1}
+                          max={10}
+                          value={editState.editorial_priority}
+                          onChange={(e) => setEditState((s) => s ? { ...s, editorial_priority: Number(e.target.value) } : s)}
+                          className="w-16 rounded-lg border border-owl-cream-deep px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-owl-teal/40"
+                        />
+                        <span className="text-xs text-owl-mist">/ 10</span>
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-3">
