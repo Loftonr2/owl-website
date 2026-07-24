@@ -39,9 +39,14 @@ interface NLCampaign {
   tip_title: string | null;
   tip_body: string | null;
   tip_age_range: string | null;
+  tip_takeaway: string | null;
   health_alert_title: string | null;
   health_alert_body: string | null;
   health_alert_url: string | null;
+  health_alert_product_name: string | null;
+  health_alert_brand: string | null;
+  health_alert_recall_date: string | null;
+  health_alert_source_name: string | null;
   promo_product_slug: string | null;
   promo_button_label: string | null;
   promo_button_url: string | null;
@@ -522,6 +527,11 @@ function EditorPanel({
               onChange={(e) => set("tip_age_range", e.target.value)} className="input-base"
               placeholder="Infant – 12" />
           </Field>
+          <Field label="OWL takeaway (shown at bottom of tip block)">
+            <input type="text" value={field("tip_takeaway") ?? ""}
+              onChange={(e) => set("tip_takeaway", e.target.value)} className="input-base"
+              placeholder="Connection, consistency, and age-appropriate support help children grow with confidence." />
+          </Field>
         </div>
       </Panel>
 
@@ -542,6 +552,29 @@ function EditorPanel({
               onChange={(e) => set("health_alert_url", e.target.value)} className="input-base"
               placeholder="https://www.fda.gov/recalls" />
           </Field>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Product name">
+              <input type="text" value={field("health_alert_product_name") ?? ""}
+                onChange={(e) => set("health_alert_product_name", e.target.value)} className="input-base"
+                placeholder="e.g. Organic Apple Pouches" />
+            </Field>
+            <Field label="Brand">
+              <input type="text" value={field("health_alert_brand") ?? ""}
+                onChange={(e) => set("health_alert_brand", e.target.value)} className="input-base"
+                placeholder="e.g. Happy Baby" />
+            </Field>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Recall date">
+              <input type="date" value={field("health_alert_recall_date") ?? ""}
+                onChange={(e) => set("health_alert_recall_date", e.target.value)} className="input-base" />
+            </Field>
+            <Field label="Source agency">
+              <input type="text" value={field("health_alert_source_name") ?? ""}
+                onChange={(e) => set("health_alert_source_name", e.target.value)} className="input-base"
+                placeholder="e.g. USDA FSIS, CPSC, FDA" />
+            </Field>
+          </div>
         </div>
       </Panel>
 

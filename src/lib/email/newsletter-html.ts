@@ -181,7 +181,7 @@ export function generateNewsletterHtml(data: NewsletterIssueData): string {
                   </tr></table>
                   <p style="margin:8px 0 4px;font-size:12px;font-weight:700;color:#0da89f;">${data.tip_title}</p>
                   <p style="margin:0;font-size:11px;color:#4b5563;line-height:1.6;">${data.tip_body}</p>
-                  <p style="margin:8px 0 0;font-size:10px;font-weight:600;color:#e95b6e;">&#9829; Consistency + Connection = Confidence</p>
+                  ${data.tip_takeaway ? `<p style="margin:8px 0 0;padding:8px;background:#fef9c3;border-left:3px solid #d97706;border-radius:4px;font-size:10px;font-style:italic;color:#92400e;"><strong>OWL takeaway:</strong> ${data.tip_takeaway}</p>` : `<p style="margin:8px 0 0;font-size:10px;font-weight:600;color:#e95b6e;">&#9829; Consistency + Connection = Confidence</p>`}
                 </td></tr>
               </table>
             </td>` : ""}

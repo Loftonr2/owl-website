@@ -13,8 +13,9 @@ export async function GET(_req: NextRequest) {
         "id, issue_number, title, archive_slug, status, publication_date, scheduled_for, " +
         "recipients_count, open_count, click_count, " +
         "promo_headline, promo_discount_pct, note_title, note_body, " +
-        "tip_title, tip_body, tip_age_range, " +
+        "tip_title, tip_body, tip_age_range, tip_takeaway, " +
         "health_alert_title, health_alert_body, health_alert_url, " +
+        "health_alert_product_name, health_alert_brand, health_alert_recall_date, health_alert_source_name, " +
         "promo_product_slug, promo_button_label, promo_button_url, promo_subheading, " +
         "promo_starts_at, promo_expires_at, news_mode, blog_mode"
       )

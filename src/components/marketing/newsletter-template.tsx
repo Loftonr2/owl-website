@@ -55,11 +55,17 @@ export interface NewsletterIssueData {
   tip_title?: string | null;
   tip_body?: string | null;
   tip_age_range?: string | null;
+  tip_takeaway?: string | null;
+  tip_illustration_url?: string | null;
 
   // Health alert (optional)
   health_alert_title?: string | null;
   health_alert_body?: string | null;
   health_alert_url?: string | null;
+  health_alert_product_name?: string | null;
+  health_alert_brand?: string | null;
+  health_alert_recall_date?: string | null;
+  health_alert_source_name?: string | null;
 
   // Content
   news_articles: NewsletterArticleCard[];
@@ -279,9 +285,11 @@ export function NewsletterTemplate({ data }: { data: NewsletterIssueData }) {
               {data.tip_title}
             </h3>
             <p className="mt-2 text-xs leading-relaxed text-gray-600">{data.tip_body}</p>
-            <p className="mt-3 text-[11px] font-medium" style={{ color: "#e95b6e" }}>
-              ♥ Consistency + Connection = Confidence
-            </p>
+            {data.tip_takeaway && (
+              <p className="mt-3 border-t border-amber-200 pt-3 text-[11px] font-semibold italic" style={{ color: "#b45309" }}>
+                OWL takeaway: {data.tip_takeaway}
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -300,6 +308,15 @@ export function NewsletterTemplate({ data }: { data: NewsletterIssueData }) {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f97316" strokeWidth="2.5" className="mt-0.5 shrink-0" aria-hidden><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               <div className="flex-1">
                 <p className="text-xs text-gray-600">{data.health_alert_body}</p>
+                {(data.health_alert_product_name || data.health_alert_brand) && (
+                  <p className="mt-1 text-[11px] font-semibold text-red-700">
+                    {[data.health_alert_brand, data.health_alert_product_name].filter(Boolean).join(" — ")}
+                    {data.health_alert_recall_date && ` · Recall date: ${data.health_alert_recall_date}`}
+                  </p>
+                )}
+                {data.health_alert_source_name && (
+                  <p className="mt-0.5 text-[10px] text-gray-400">Source: {data.health_alert_source_name}</p>
+                )}
               </div>
               {data.health_alert_url && (
                 <Link
