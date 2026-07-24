@@ -107,6 +107,7 @@ export default function AboutPage() {
       {/* Hero */}
       <NewsHeroBanner
         src="/videos/about-hero.mp4"
+        poster="/images/heroes/about-hero-poster.webp"
         eyebrow="Meet Larissa"
         title={
           <>Welcome to Our{" "}<span className="text-owl-teal">Heartfelt Journey.</span></>

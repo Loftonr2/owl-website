@@ -59,6 +59,7 @@ export default async function BlogPage() {
       {/* ── Cinematic overlay hero (blog variant) ── */}
       <NewsHeroBanner
         src="/videos/blog-hero.mp4"
+        poster="/images/heroes/blog-hero-poster.webp"
         title="Parenting Tips, Inspiration & Real-Life Support"
         subtitle="Encouraging your journey, every step of the way."
         ctaLabel="Explore Articles"

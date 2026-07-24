@@ -143,6 +143,7 @@ export default function MusicPage() {
       {/* 1 — Music hero */}
       <NewsHeroBanner
         src="/videos/music-hero.mp4"
+        poster="/images/heroes/music-hero-poster.webp"
         eyebrow="Music"
         title={
           <>

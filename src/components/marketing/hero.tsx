@@ -8,6 +8,7 @@ export function Hero() {
   return (
     <NewsHeroBanner
       src="/videos/landing-hero.mp4"
+      poster="/images/heroes/landing-hero-poster.webp"
       eyebrow="OWL Sing Together — With Larissa"
       title={
         <>

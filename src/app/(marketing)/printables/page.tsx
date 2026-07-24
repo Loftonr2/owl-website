@@ -25,6 +25,7 @@ export default function PrintablesPage() {
     <>
       <NewsHeroBanner
         src="/videos/printables-hero.mp4"
+        poster="/images/heroes/printables-hero-poster.webp"
         eyebrow="Printables"
         title={
           <>Free + Premium Printables for{" "}<span className="text-owl-teal">Home & Classroom</span></>

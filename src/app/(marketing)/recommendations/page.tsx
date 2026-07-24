@@ -141,6 +141,7 @@ export default function RecommendationsPage() {
       {/* 1 — Editorial hero (cream / sparkles + stars) */}
       <NewsHeroBanner
         src="/videos/blog-hero.mp4"
+        poster="/images/heroes/blog-hero-poster.webp"
         eyebrow="Larissa's Picks"
         title={
           <>

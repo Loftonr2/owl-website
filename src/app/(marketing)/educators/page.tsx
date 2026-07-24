@@ -137,6 +137,7 @@ export default function EducatorsPage() {
       {/* 1 — Classroom-focused hero */}
       <NewsHeroBanner
         src="/videos/educators-hero.mp4"
+        poster="/images/heroes/educators-hero-poster.webp"
         eyebrow="For Educators"
         title={
           <>

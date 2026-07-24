@@ -169,6 +169,7 @@ export default function ShopPage() {
       {/* 1 — Cinematic hero (matches Blog/News page height) */}
       <NewsHeroBanner
         src="/videos/shop-hero.mp4"
+        poster="/images/heroes/shop-hero-poster.webp"
         title="Everything You Need. Moments You’ll Love."
         subtitle="Apparel, stickers, drinkware, flashcards, and more — each one designed to make learning feel like play."
         ctaLabel="Shop Now"

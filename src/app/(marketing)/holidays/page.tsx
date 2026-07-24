@@ -109,6 +109,7 @@ export default function HolidaysPage() {
       {/* Hero */}
       <NewsHeroBanner
         src="/videos/holidays-hero.mp4"
+        poster="/images/heroes/holidays-hero-poster.webp"
         eyebrow="Holidays"
         title={
           <>Celebrate Learning{" "}<span className="text-owl-teal">All Year.</span></>

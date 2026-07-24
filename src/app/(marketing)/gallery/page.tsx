@@ -77,6 +77,7 @@ export default function GalleryPage() {
       {/* Hero */}
       <NewsHeroBanner
         src="/videos/gallery-hero.mp4"
+        poster="/images/heroes/gallery-hero-poster.webp"
         eyebrow="OWL Image Gallery"
         title={
           <>Explore, Inspire, and{" "}<span className="text-owl-teal">Create Together</span></>

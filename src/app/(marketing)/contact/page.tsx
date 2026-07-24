@@ -153,6 +153,7 @@ export default function ContactPage() {
       {/* Hero */}
       <NewsHeroBanner
         src="/videos/about-hero.mp4"
+        poster="/images/heroes/about-hero-poster.webp"
         eyebrow="Contact & Licensing"
         title={
           <>We&apos;d Love to{" "}<span className="text-owl-teal">Hear from You.</span></>

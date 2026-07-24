@@ -57,6 +57,7 @@ export default async function NewsPage() {
       {/* ── Cinematic overlay hero ── */}
       <NewsHeroBanner
         src="/videos/news-hero.mp4"
+        poster="/images/heroes/news-hero-poster.webp"
         title="News & Updates"
         subtitle="Updates, stories, and resources for families who believe in the power of music, play, and togetherness."
         ctaLabel="Stay Informed"

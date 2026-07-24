@@ -27,6 +27,7 @@ export default async function NewsletterPage() {
     <>
       <NewsHeroBanner
         src="/videos/newsletter-hero.mp4"
+        poster="/images/heroes/newsletter-hero-poster.webp"
         eyebrow="The OWL Weekly"
         title={<>A small letter from Larissa, <span className="text-owl-teal">every Sunday.</span></>}
         subtitle="Five minutes to read. One short video, one printable, one cultural note, one small parenting win. Written like a note to a friend."

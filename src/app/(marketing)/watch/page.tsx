@@ -63,6 +63,7 @@ export default function WatchPage() {
       {/* Hero */}
       <NewsHeroBanner
         src="/videos/watch-hero.mp4"
+        poster="/images/heroes/watch-hero-poster.webp"
         eyebrow="Watch"
         title={
           <>Watch, Sing, and{" "}<span className="text-owl-teal">Learn Together.</span></>

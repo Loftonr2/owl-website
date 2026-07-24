@@ -1,46 +1,59 @@
 "use client";
 
 /**
- * NewsHeroBanner  —  the OWL site-wide cinematic hero standard.
+ * NewsHeroBanner  —  OWL site-wide cinematic hero standard.
  *
- * This is the ONLY marketing hero component. It replaces VideoHeroBanner
- * across every marketing page.
+ * Design
+ * ------
+ * Fixed cinematic heights (h-64 → lg:h-[30rem]) matching the approved Blog
+ * and News page dimensions.  Text is overlaid bottom-left on a dark gradient.
  *
- * Design rationale
- * ----------------
- * VideoHeroBanner (old) rendered at full 16:9 (~720 px) plus a cream text
- * band below — total ~900 px. NewsHeroBanner uses fixed cinematic heights
- * (h-64 -> lg:h-[30rem]) with text overlaid on the video, giving every
- * page a consistent 256-480 px hero with zero poster-image flash.
+ * Loading strategy (poster-first)
+ * --------------------------------
+ * 1. Poster image appears IMMEDIATELY — no blank hero, no flash.
+ * 2. Video loads behind the poster with preload="metadata".
+ * 3. When video fires `onCanPlay` the video fades in (250 ms) and the
+ *    poster fades out simultaneously.
+ * 4. If video fails or autoplay is blocked the poster stays visible forever.
  *
- * Video: autoplay * muted * loop * playsInline * preload="metadata"
- *        object-cover * NO poster — the video itself is the first frame.
+ * Crop
+ * ----
+ * object-position defaults to "center top" so faces, logos, and important
+ * upper-frame content are preserved.  Overflow clips at the bottom.
+ * Pass objectPosition to override per-page (e.g. "50% 15%").
  *
- * Props (mirrors VideoHeroBanner for easy migration):
- *   src       — video path from public/
- *   eyebrow   — small-caps label above heading (optional)
- *   title     — main h1; ReactNode so callers can embed coloured spans
- *   subtitle  — paragraph below heading (optional)
- *   ctaLabel  — primary CTA label (optional)
- *   ctaHref   — primary CTA href (optional)
- *   ctaLabel2 — secondary CTA label (optional, outline style)
- *   ctaHref2  — secondary CTA href (optional)
- *   meta      — footnote / quote below CTAs (optional)
+ * Accessibility
+ * -------------
+ * • prefers-reduced-motion: video is paused, poster stays.
+ * • aria-hidden on video and poster (decorative).
+ * • All interactive elements (links, buttons) remain keyboard-reachable.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { Button } from "@/components/ui/button";
 
 export interface NewsHeroBannerProps {
-  /** Path to the video file served from public/, e.g. "/videos/music-hero.mp4" */
+  /** Path to the optimised MP4 served from public/videos/ */
   src: string;
+  /**
+   * Path to a WebP/JPEG poster frame from public/images/heroes/.
+   * Shown immediately while the video loads.
+   * Falls back to a dark bg-owl-ink if omitted.
+   */
+  poster?: string;
+  /**
+   * video object-position CSS value.
+   * Default "center top" keeps faces/logos visible; only change per-page
+   * after visual testing.
+   */
+  objectPosition?: string;
   /** Small-caps eyebrow label rendered above the heading */
   eyebrow?: string;
   /**
    * Main heading — accepts ReactNode so call sites can include coloured spans.
-   * e.g. <>Hello <span className="text-owl-teal">World</span></>
    */
   title: React.ReactNode;
   /** Subtitle paragraph below the heading */
@@ -60,6 +73,8 @@ export interface NewsHeroBannerProps {
 
 export function NewsHeroBanner({
   src,
+  poster,
+  objectPosition = "center top",
   eyebrow,
   title,
   subtitle,
@@ -71,20 +86,27 @@ export function NewsHeroBanner({
   className,
 }: NewsHeroBannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    const htmlOff = document.documentElement.dataset.motion === "off";
+    const motionOff = prefersReduced || htmlOff;
+    setReducedMotion(motionOff);
+
     const video = videoRef.current;
-    if (!video) return;
-    const html = document.documentElement;
-    const motionOff =
-      html.dataset.motion === "off" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (motionOff) {
-      video.pause();
-      return;
-    }
-    video.play().catch(() => {});
+    if (!video || motionOff) return;
+
+    video.play().catch(() => {
+      // Autoplay blocked — poster stays visible, no error state needed
+    });
   }, []);
+
+  const showVideo = videoReady && !videoError && !reducedMotion;
 
   return (
     <div
@@ -94,25 +116,53 @@ export function NewsHeroBanner({
         className
       )}
     >
-      {/* Video background: no poster — the video IS the first visible frame */}
-      <video
-        ref={videoRef}
-        src={src}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-hidden
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+      {/* ── Poster image (visible immediately, fades once video plays) ── */}
+      {poster && (
+        <Image
+          src={poster}
+          alt=""
+          fill
+          priority
+          aria-hidden
+          sizes="100vw"
+          className={cn(
+            "object-cover transition-opacity duration-300 ease-in-out",
+            // Keep visible until video is playing; always visible on error / reduced-motion
+            showVideo ? "opacity-0" : "opacity-100"
+          )}
+          style={{ objectPosition }}
+        />
+      )}
 
-      {/* Gradient overlay: darkest at bottom-left for text readability */}
+      {/* ── Video background ── */}
+      {!videoError && !reducedMotion && (
+        <video
+          ref={videoRef}
+          src={src}
+          poster={poster}        /* native poster = instant bg on first render */
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden
+          onCanPlay={() => setVideoReady(true)}
+          onPlaying={() => setVideoReady(true)}
+          onError={() => setVideoError(true)}
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-in-out",
+            showVideo ? "opacity-100" : "opacity-0"
+          )}
+          style={{ objectPosition }}
+        />
+      )}
+
+      {/* ── Gradient overlay — darkest at bottom-left for text readability ── */}
       <div
         aria-hidden
         className="absolute inset-0 bg-gradient-to-tr from-owl-ink/85 via-owl-ink/45 to-owl-ink/10"
       />
 
-      {/* Text content anchored to bottom-left */}
+      {/* ── Text content anchored to bottom-left ── */}
       <div className="absolute bottom-0 left-0 px-6 pb-8 pt-4 sm:px-10 sm:pb-10 md:px-14 md:pb-14 max-w-2xl">
         {eyebrow && (
           <p className="mb-2 font-display text-xs font-bold uppercase tracking-[0.22em] text-owl-teal/90">
