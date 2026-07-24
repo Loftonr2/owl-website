@@ -6,6 +6,7 @@
     { "path": "/api/cron/executive-report", "schedule": "0 11 * * 1" },
     { "path": "/api/cron/refresh-coupons", "schedule": "0 10 * * 3" },
     { "path": "/api/cron/sync-affiliates", "schedule": "30 10 * * 1" },
-    { "path": "/api/cron/update-crm-metrics", "schedule": "45 10 * * 1" }
+    { "path": "/api/cron/update-crm-metrics", "schedule": "45 10 * * 1" },
+    { "path": "/api/cron/weekly-content-digest", "schedule": "0 8 * * 0" }
   ]
 }
