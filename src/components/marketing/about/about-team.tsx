@@ -121,8 +121,20 @@ export function AboutTeam() {
     <>
       <section
         aria-labelledby="owl-team-heading"
-        className="bg-owl-cream py-16 md:py-24"
+        className="bg-owl-cream"
       >
+        {/* ── Approved section artwork ─────────────────────────────────────── */}
+        <figure className="overflow-hidden">
+          <Image
+            src="/images/about/redesign/owl-team.png"
+            alt="The OWL Team — Larissa Pola, Creator, CEO, and Founder; and Rick Lofton, COO, CTO, and Marketing Director."
+            width={2061}
+            height={763}
+            className="w-full h-auto"
+          />
+        </figure>
+
+        <div className="py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-6 sm:px-10">
           {/* Eyebrow + heading */}
           <div className="mb-12 text-center">
@@ -212,6 +224,7 @@ export function AboutTeam() {
               </article>
             ))}
           </div>
+        </div>
         </div>
       </section>
 
