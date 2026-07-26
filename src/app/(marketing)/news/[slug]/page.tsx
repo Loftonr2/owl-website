@@ -20,7 +20,7 @@ import {
   isNewsCategorySlug,
   findNewsArticleBySlug,
 } from "@/lib/seed/news";
-import { getCategoryFallbackImage } from "@/lib/content-images";
+import { resolveContentCardImage } from "@/lib/content-images";
 
 export const dynamic = "force-dynamic";
 
@@ -167,9 +167,12 @@ export default async function NewsSlugPage({ params }: { params: Promise<Params>
   const relatedFiltered = related.filter((a) => a.slug !== article.slug).slice(0, 3);
   const readTime = estimateReadTime(article.body);
 
-  const heroImage =
-    article.featured_image ??
-    getCategoryFallbackImage(article.category, "news");
+  const heroImage = resolveContentCardImage({
+    slug: article.slug,
+    featured_image: article.featured_image,
+    category: article.category,
+    content_type: "news",
+  });
 
   const ld = JSON.stringify(
     articleSchema({

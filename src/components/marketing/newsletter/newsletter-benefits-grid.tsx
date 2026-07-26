@@ -46,14 +46,14 @@ export function NewsletterBenefitsGrid() {
         />
       </div>
 
-      {/* Desktop: full natural-aspect-ratio (2123 × 741) */}
-      <div className="hidden md:block" aria-hidden="true">
+      {/* Desktop: ~80% width centered (≈20% size reduction from full-bleed) */}
+      <div className="hidden md:flex md:justify-center md:px-[10%]" aria-hidden="true">
         <Image
           src="/images/newsletter/redesign/weekly-benefits.png"
           alt=""
           width={2123}
           height={741}
-          sizes="100vw"
+          sizes="(min-width: 768px) 80vw, 100vw"
           className="w-full h-auto"
         />
       </div>

@@ -4,13 +4,19 @@ import type { JobFn, ServiceClient } from "@/lib/cron/runner";
 /**
  * publish-scheduled-content
  * ─────────────────────────
- * Publishes approved / scheduled news articles and blog posts at 7:00 AM
- * America/New_York every day. The Vercel cron fires hourly; this job checks
- * the local ET hour and exits early if it's not the publish window.
+ * Publishes approved / scheduled news articles and blog posts.
+ *
+ * Schedule: vercel.json fires this once daily at 12:00 UTC.
+ *   - EST (UTC-5): 7:00 AM ET  ← exact target
+ *   - EDT (UTC-4): 8:00 AM ET  ← acceptable DST offset (within business hours)
+ *
+ * No ET-hour guard is needed because the Vercel Hobby plan allows only one
+ * cron invocation per path per day. The job runs once and publishes everything
+ * whose publish_date ≤ NOW().
  *
  * Idempotency: after publishing, it writes a row to content_publish_events
- * (post_id + local_date_et unique index). A second run on the same calendar day
- * skips already-processed posts silently.
+ * (post_id + local_date_et unique index). A re-triggered "Run Now" on the same
+ * calendar day skips already-processed posts silently.
  *
  * Eligibility rules:
  *  - status = 'scheduled' AND workflow_status = 'scheduled'
@@ -24,14 +30,6 @@ function etDateString(): string {
   return new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
 }
 
-/** Current hour (0-23) in America/New_York. */
-function etHour(): number {
-  return parseInt(
-    new Date().toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: "America/New_York" }),
-    10
-  );
-}
-
 type PostRow = {
   id: string;
   title: string;
@@ -40,20 +38,7 @@ type PostRow = {
 };
 
 export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
-  const hour = etHour();
   const localDate = etDateString();
-
-  // ── Time-window guard ──────────────────────────────────────────────────────
-  // Run only during the 7:00–7:59 AM ET window.
-  // The hourly cron fires at the top of each hour; we proceed only for hour 7.
-  // This prevents redundant DB writes at other hours while still being DST-safe.
-  if (hour !== 7) {
-    return {
-      status: "skipped",
-      summary: `ET hour is ${hour}, not 7. Waiting for publish window.`,
-      detail: { etHour: hour, etDate: localDate },
-    };
-  }
 
   // ── Find eligible posts ────────────────────────────────────────────────────
   const nowIso = new Date().toISOString();
@@ -147,7 +132,7 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
   }
 
   const summary = [
-    `Published ${published} post(s) at 7 AM ET (${localDate}).`,
+    `Published ${published} post(s) at 12:00 UTC / ~7 AM ET (${localDate}).`,
     skipped   ? `${skipped} already processed.`  : "",
     failed    ? `${failed} FAILED — see errors.` : "",
   ].filter(Boolean).join(" ");

@@ -77,22 +77,23 @@ export function NewsletterIssuePreview({ latestIssue }: Props) {
         />
       </div>
 
-      {/* Desktop: padding-bottom crop — shows top 55% of the 1881×836 image.
-          padding-bottom = (480 / 1881) × 100 = 25.5%
-          At any viewport width W: container height = 0.255 × W
-          Image fills container with object-top, showing rows 0–480 of 836. */}
-      <div
-        className="relative hidden w-full overflow-hidden md:block"
-        style={{ paddingBottom: "25.5%" }}
-        aria-hidden="true"
-      >
-        <Image
-          src="/images/newsletter/redesign/newsletter-preview.png"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-top"
-        />
+      {/* Desktop: ~80% width centered + padding-bottom crop — shows top 55% of the 1881×836 image.
+          The wrapper provides the 80% centering (px-[10%]).
+          padding-bottom = (480 / 1881) × 100 = 25.5% of the inner container width,
+          which at 80vw ≈ 20.4% of viewport height (correct crop). */}
+      <div className="hidden md:flex md:justify-center md:px-[10%]" aria-hidden="true">
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ paddingBottom: "25.5%" }}
+        >
+          <Image
+            src="/images/newsletter/redesign/newsletter-preview.png"
+            alt=""
+            fill
+            sizes="(min-width: 768px) 80vw, 100vw"
+            className="object-cover object-top"
+          />
+        </div>
       </div>
 
       {/* ── Real "View Latest Issue" button ─────────────────────────── */}

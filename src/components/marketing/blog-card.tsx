@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Chip } from "@/components/ui/chip";
-import { getCategoryFallbackImage } from "@/lib/content-images";
+import { resolveContentCardImage } from "@/lib/content-images";
 
 export type BlogCardProps = {
   slug: string;
@@ -31,10 +31,13 @@ export function BlogCard({
 }: BlogCardProps) {
   const href = contentType === "news" ? `/news/${slug}` : `/blog/${slug}`;
 
-  // Always resolve to a real image - no letter placeholders.
-  const imageSrc =
-    featuredImage ||
-    getCategoryFallbackImage(category ?? "", contentType);
+  // Always resolve to a real image — never a page header or hero banner.
+  const imageSrc = resolveContentCardImage({
+    slug,
+    featured_image: featuredImage ?? null,
+    category: category ?? "",
+    content_type: contentType,
+  });
 
   return (
     <Link
