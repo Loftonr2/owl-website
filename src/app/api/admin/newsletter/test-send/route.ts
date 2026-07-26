@@ -8,13 +8,24 @@ export const dynamic = "force-dynamic";
 
 /**
  * POST /api/admin/newsletter/test-send
- * Generates HTML for a campaign and sends a test email to the specified address.
+ *
+ * Sends a test email for a newsletter campaign to a single specified address.
+ *
+ * Safety guarantees:
+ *  - Does NOT change campaign status (stays 'draft')
+ *  - Does NOT increment sent/delivered counts
+ *  - Does NOT consume any coupon entitlement
+ *  - Subject is prefixed with "TEST — " so it's clearly labelled
+ *  - Logs to newsletter_test_deliveries (separate from production logs)
  *
  * Body: { campaignId: string; to: string }
+ *
+ * Returns: { ok, to, subject, resendMessageId }
  */
 export async function POST(req: NextRequest) {
   try {
-    const { campaignId, to } = await req.json() as { campaignId: string; to: string };
+    const body = await req.json() as { campaignId?: string; to?: string };
+    const { campaignId, to } = body;
 
     if (!campaignId || !to) {
       return NextResponse.json(
@@ -23,11 +34,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Fetch campaign
+    // Fetch campaign (do NOT filter by status — test sends work on drafts)
     const sb = supabaseServiceRole();
     const { data: campaign, error } = await sb
       .from("newsletter_campaigns")
-      .select("archive_slug, title, subject")
+      .select("id, archive_slug, title, subject, issue_number")
       .eq("id", campaignId)
       .single();
 
@@ -35,31 +46,74 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Campaign not found." }, { status: 404 });
     }
 
-    // Resolve newsletter data (needs archive_slug)
-    const archiveSlug = campaign.archive_slug ?? campaignId;
+    const c = campaign as {
+      id: string;
+      archive_slug: string | null;
+      title: string;
+      subject: string | null;
+      issue_number: number | null;
+    };
+
+    // Resolve newsletter data (uses archive_slug)
+    const archiveSlug = c.archive_slug ?? c.id;
     const issueData = await resolveNewsletterIssue(archiveSlug);
 
     if (!issueData) {
       return NextResponse.json(
-        { error: "Could not resolve newsletter issue data. Make sure archive_slug is set and the campaign has content." },
+        {
+          error:
+            "Could not resolve newsletter issue data. Make sure archive_slug is set " +
+            "and the campaign has note_body and tip_body content.",
+        },
         { status: 422 }
       );
     }
 
-    // Generate email HTML
+    // Generate production-identical email HTML
     const html = generateNewsletterHtml(issueData);
+    const text = html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
-    // Send via Resend
-    // Strip HTML for plain text fallback
-    const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-    await sendEmail({
-      to,
-      subject: `[TEST] ${campaign.subject ?? campaign.title}`,
-      html,
-      text,
+    // Use "TEST — " prefix so recipients can clearly identify test messages
+    const issueLabel = c.issue_number ? `Issue #${c.issue_number}` : c.title;
+    const baseSubject = c.subject ?? c.title;
+    const testSubject = `TEST — ${baseSubject}`;
+
+    // Send via Resend — throws if RESEND_API_KEY is missing
+    let resendMessageId: string | null = null;
+    let sendError: string | null = null;
+
+    try {
+      const result = await sendEmail({ to, subject: testSubject, html, text });
+      resendMessageId = result.id;
+    } catch (emailErr) {
+      sendError = String(emailErr);
+    }
+
+    // Log to newsletter_test_deliveries regardless of outcome
+    await sb.from("newsletter_test_deliveries").insert({
+      campaign_id: c.id,
+      recipient_email: to,
+      subject: testSubject,
+      resend_message_id: resendMessageId,
+      status: sendError ? "failed" : "sent",
+      error: sendError,
+      template_version: `issue-${issueLabel}`,
     });
 
-    return NextResponse.json({ ok: true, to, subject: campaign.subject ?? campaign.title });
+    if (sendError) {
+      console.error("[/api/admin/newsletter/test-send POST] send failed:", sendError);
+      return NextResponse.json(
+        { ok: false, error: `Email send failed: ${sendError}` },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      ok: true,
+      to,
+      subject: testSubject,
+      resendMessageId,
+    });
   } catch (err) {
     console.error("[/api/admin/newsletter/test-send POST]", err);
     return NextResponse.json({ error: "Test send failed." }, { status: 500 });
