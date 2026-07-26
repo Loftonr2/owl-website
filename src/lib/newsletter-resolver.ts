@@ -1,6 +1,6 @@
 
 import "server-only";
-import { supabaseServer } from "@/lib/clients/supabase-server";
+import { supabaseServer, supabaseServiceRole } from "@/lib/clients/supabase-server";
 import { SEED_PRODUCTS } from "@/lib/seed/products";
 import { siteConfig } from "@/lib/site-config";
 import type { NewsletterIssueData, NewsletterArticleCard } from "@/components/marketing/newsletter-template";
@@ -155,6 +155,34 @@ export async function resolveNewsletterIssue(
     blog_posts: blogPosts,
     utm_campaign: `owl_weekly_issue_${campaign.issue_number ?? 1}`,
   };
+}
+
+/**
+ * getLatestNewsletterPreview
+ * ──────────────────────────
+ * Returns lightweight metadata for the latest newsletter campaign regardless
+ * of status. Used by the /newsletter landing page preview card only — never
+ * exposes body content or sends emails.
+ */
+export async function getLatestNewsletterPreview(): Promise<{
+  issue_number: number;
+  title: string;
+  archive_slug: string;
+  publication_date: string | null;
+} | null> {
+  try {
+    const sb = supabaseServiceRole();
+    const { data } = await sb
+      .from("newsletter_campaigns")
+      .select("issue_number,title,archive_slug,publication_date")
+      .not("issue_number", "is", null)
+      .order("issue_number", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    return data ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**
