@@ -48,7 +48,33 @@ export function NewsletterIssuePreview({ latestIssue }: Props) {
         <div className="grid grid-cols-1 gap-14 md:grid-cols-2 md:items-center">
 
           {/* ── Left: copy + CTA ─────────────────────────────── */}
-          <div>
+          <div className="relative">
+            {/* Decorative: gold star top-right */}
+            <div className="absolute -right-4 top-0 text-[#FFB21A]" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-7 w-7">
+                <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
+              </svg>
+            </div>
+            {/* Decorative: teal music note */}
+            <div className="absolute -right-2 bottom-10 text-[#1A9994]" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 opacity-60">
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
+              </svg>
+            </div>
+            {/* Decorative: coral outlined star */}
+            <div className="absolute left-0 bottom-0 text-[#FF5A43]" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 opacity-50">
+                <path
+                  d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
             <p className="font-display text-xs font-semibold uppercase tracking-widest text-[#1A9994]">
               Latest Issue
             </p>
@@ -64,33 +90,39 @@ export function NewsletterIssuePreview({ latestIssue }: Props) {
               lands in your inbox every Sunday morning.
             </p>
 
-            {/* Curved arrow doodle */}
+            {/* Curved teal arrow pointing right toward preview card */}
             <div className="mt-3 flex items-center gap-2">
               <svg
-                viewBox="0 0 60 40"
+                viewBox="0 0 80 40"
                 fill="none"
-                className="h-8 w-12 text-[#1A9994]/50"
+                className="h-8 w-16 text-[#1A9994]/55"
                 aria-hidden="true"
               >
                 <path
-                  d="M4 36 C10 20, 30 4, 54 10"
+                  d="M4 30 C20 30, 50 8, 74 18"
                   stroke="currentColor"
-                  strokeWidth="2"
-                  strokeDasharray="4 3"
+                  strokeWidth="2.5"
+                  strokeDasharray="5 4"
                   strokeLinecap="round"
                   fill="none"
                 />
-                <path d="M50 6l6 5-7 1z" fill="currentColor" />
+                {/* arrowhead pointing right */}
+                <path d="M70 12l8 6-8 4z" fill="currentColor" />
               </svg>
-              <span className="font-body text-sm italic text-[#1A9994]/60">Take a look →</span>
+              <span className="font-body text-sm italic text-[#1A9994]/60">
+                Take a look →
+              </span>
             </div>
 
-            {/* Coral CTA button */}
+            {/* Coral CTA button — bright #FF5A43 matching approved asset */}
             <div className="mt-8">
               <Link
                 href={issueHref}
                 aria-label={`Read OWL Weekly Issue #${latestIssue.issue_number}: ${latestIssue.title}`}
-                className="inline-flex items-center gap-2 rounded-full bg-[#E89F8E] px-8 py-3.5 font-display text-base font-bold text-white shadow-[0_4px_16px_rgba(232,159,142,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D98878] hover:shadow-[0_6px_20px_rgba(232,159,142,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E89F8E] focus-visible:ring-offset-2"
+                className="inline-flex items-center gap-2 rounded-full px-8 py-3.5 font-display text-base font-bold text-white shadow-[0_4px_16px_rgba(255,90,67,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(255,90,67,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF5A43] focus-visible:ring-offset-2"
+                style={{
+                  background: "linear-gradient(135deg, #FF5A43 0%, #FF8A4C 100%)",
+                }}
               >
                 View Latest Issue
                 <ArrowRight className="h-4 w-4" aria-hidden />
