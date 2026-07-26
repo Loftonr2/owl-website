@@ -80,11 +80,12 @@ export default async function NewsletterPage() {
       </SectionReveal>
 
       {/* ── See What's Inside (latest issue preview) ────────────────── */}
-      {latestPreview && (
-        <SectionReveal delay={0.05}>
-          <NewsletterIssuePreview latestIssue={latestPreview} />
-        </SectionReveal>
-      )}
+      {/* Always rendered — the approved asset provides the visual; the
+          "View Latest Issue" button inside the component is conditional
+          on latestPreview being non-null. */}
+      <SectionReveal delay={0.05}>
+        <NewsletterIssuePreview latestIssue={latestPreview} />
+      </SectionReveal>
 
       {/* ── Final CTA ───────────────────────────────────────────────── */}
       <SectionReveal delay={0.05}>
