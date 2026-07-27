@@ -26,7 +26,7 @@ export default function AboutPage() {
         eyebrow="Meet the Team"
         title={
           <>
-            Welcome to Our{ }
+            Welcome to Our{" "}
             <span className="text-owl-teal">Heartfelt Journey.</span>
           </>
         }
