@@ -28,6 +28,31 @@ export const metadata = pageMetadata({
   path: "/watch",
 });
 
+/**
+ * /watch — v3 (Visual-track Phase 5, video-nook).
+ *
+ * Page sections:
+ *   1. Video-nook hero (CinematicHero, sequenceSlug="watch-archive", slug="watch")
+ *   2. Featured videos rail (MediaRail — poster-first <VideoCard>s)
+ *   3. Search + filter chips (age × theme)
+ *   4. Browse by theme/category icons (StaggerGrid)
+ *   5. Full archive grid (MediaRail)
+ *   6. Printable download CTA (cream-deep band)
+ *   7. Streaming CTA (StreamingPlatforms)
+ *   8. Newsletter band
+ *
+ * Poster-first guarantee:
+ *   Every <VideoCard> uses <VideoPoster> internally, which resolves through
+ *   `resolveVideoPoster(posterSrc, youtubeId)`:
+ *     1. local file → 2. YouTube CDN → 3. tonal placeholder.
+ *   NO <iframe> mounts on this page. Player is only loaded on the detail page
+ *   AFTER the visitor clicks the play badge. Bundle stays small, no autoplay,
+ *   COPPA-safe.
+ *
+ * Why thumbnails look like tonal panels today: every seed entry has
+ * `youtubeId: null` AND `posterSrc: null`. Set either in src/lib/seed/videos.ts
+ * to switch a card to a real thumbnail. No code change needed.
+ */
 export default async function WatchPage() {
   const latestVideos = await getLatestChannelVideos();
 
@@ -54,7 +79,7 @@ export default async function WatchPage() {
           <SectionIntro
             eyebrow="Hand-picked"
             title="Featured This Week"
-            subtitle="Three videos Larissa is highlighting right now -- paired printables included."
+            subtitle="Three videos Larissa is highlighting right now — paired printables included."
           />
           <MediaRail
             ariaLabel="Featured OWL videos"
@@ -67,7 +92,7 @@ export default async function WatchPage() {
                 key={v.id}
                 slug={v.id}
                 title={v.title}
-                ageRange="0-8"
+                ageRange="0–8"
                 duration="Video"
                 tone="teal"
                 youtubeId={v.id}

@@ -53,7 +53,7 @@ export function VideoCard({
     <Link
       href={linkHref}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      aria-label={`Open "${title}" -- ages ${ageRange}, ${duration}`}
+      aria-label={`Open "${title}" — ages ${ageRange}, ${duration}`}
       className={[
         "group block h-full overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-white",
         "shadow-owl-1 transition-all duration-300 ease-owl",

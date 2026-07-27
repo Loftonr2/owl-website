@@ -1,0 +1,365 @@
+{
+  "generatedDate": "2026-07-27",
+  "note": "All articles listed here are currently using blog-image fallbacks from NEWS_SLUG_IMAGES in content-images.ts. Generate topic-specific AI images for each and: (1) save to public/images/news/generated/{filename}, (2) git add + commit, (3) update Supabase featured_image via SQL or CRM.",
+  "generationTool": "Higgsfield",
+  "targetDirectory": "public/images/news/generated/",
+  "targetDimensions": "1600x900 (16:9)",
+  "styleGuide": "Photorealistic, high definition, warm natural lighting, diverse families, real people, no text/logos/watermarks, safe uplifting educational scenarios, OWL visual tone",
+  "pendingArticles": [
+    {
+      "slug": "newborn-first-two-weeks",
+      "title": "Newborn 101: The First Two Weeks Survival Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/why-owl-is-built-for-your-childs-future.png",
+      "targetFilename": "news-newborn-first-two-weeks.png",
+      "visualScene": "A tired but happy new parent holding a newborn in soft morning light at home, gentle warmth, realistic nursery setting",
+      "prompt": "Photorealistic scene: exhausted but smiling new parent in warm pajamas cradling a sleeping newborn, soft golden morning light through sheer curtains, cozy home nursery, no text, no logos, 16:9"
+    },
+    {
+      "slug": "tummy-time-guide",
+      "title": "Tummy Time: Why It Matters and How to Make It Work",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/sensory-activities-for-babies-under-12-months.png",
+      "targetFilename": "news-tummy-time-guide.png",
+      "visualScene": "Baby on tummy on a colorful play mat, lifting head, parent encouraging from nearby, bright natural light",
+      "prompt": "Photorealistic: healthy baby doing tummy time on colorful soft play mat, lifting head and looking curious, smiling parent lying nearby encouraging, bright natural living room light, 16:9, no text"
+    },
+    {
+      "slug": "screen-time-babies-toddlers",
+      "title": "Screen Time for Babies and Toddlers: What the Research Really Says",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/20-screen-free-activities-for-rainy-days.png",
+      "targetFilename": "news-screen-time-babies-toddlers.png",
+      "visualScene": "Toddler looking at a tablet with a concerned parent nearby, cozy living room, realistic family scene",
+      "prompt": "Photorealistic: curious toddler reaching toward tablet screen while thoughtful parent watches nearby, warm living room, natural afternoon light, 16:9, no text, no watermarks"
+    },
+    {
+      "slug": "babyproofing-room-by-room",
+      "title": "Babyproofing Your Home: Room-by-Room Safety Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/how-to-talk-to-kids-about-hard-things.png",
+      "targetFilename": "news-babyproofing-room-by-room.png",
+      "visualScene": "Parent installing safety lock on cabinet while baby explores the kitchen floor, bright safe home",
+      "prompt": "Photorealistic: parent installing baby-safety cabinet lock while baby in diaper explores nearby on safe kitchen floor, bright clean modern kitchen, natural light, 16:9, no text"
+    },
+    {
+      "slug": "vaccines-first-year",
+      "title": "Vaccines in the First Year: Your Complete Immunization Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/stem-activities-for-kids-ages-5-8.png",
+      "targetFilename": "news-vaccines-first-year.png",
+      "visualScene": "Pediatrician with parent and baby at a well-baby visit, warm clinic, reassuring professional interaction",
+      "prompt": "Photorealistic: friendly pediatrician interacting warmly with parent and chubby baby at a well-baby checkup, bright modern clinic, natural light, diverse family, no text, 16:9"
+    },
+    {
+      "slug": "baby-poop-color-guide",
+      "title": "Baby Poop: Color, Consistency, and What It All Means",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/counting-mat-games-for-toddlers.png",
+      "targetFilename": "news-baby-poop-color-guide.png",
+      "visualScene": "Parent changing baby diaper with a curious expression, warm nursery, relatable new parent moment",
+      "prompt": "Photorealistic: humorous-yet-relatable parent changing baby diaper with puzzled expression, warm cozy nursery, natural light, no text, 16:9"
+    },
+    {
+      "slug": "baby-language-development",
+      "title": "Baby Language Development Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/proven-ways-to-get-your-baby-talking-faster.png",
+      "targetFilename": "news-baby-language-development.png",
+      "visualScene": "Parent and baby face-to-face, baby babbling, parent responding with animated expression, warm close-up",
+      "prompt": "Photorealistic close-up: parent and baby making eye contact, baby opening mouth to babble, parent responding joyfully, warm indoor light, 16:9, no text"
+    },
+    {
+      "slug": "baby-rashes-skin-conditions",
+      "title": "Baby Rashes Skin Conditions",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/why-diverse-dolls-matter-the-research.png",
+      "targetFilename": "news-baby-rashes-skin-conditions.png",
+      "visualScene": "Parent examining baby skin gently, calm reassuring moment, natural light",
+      "prompt": "Photorealistic: concerned but calm parent gently inspecting baby's arm, warm natural lighting, close nurturing moment, 16:9, no text"
+    },
+    {
+      "slug": "toddler-tantrums-guide",
+      "title": "Toddler Tantrums Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/owl-emotion-tiles-help-toddlers-name-feelings.png",
+      "targetFilename": "news-toddler-tantrums-guide.png",
+      "visualScene": "Toddler mid-tantrum, patient parent kneeling to eye level, calm loving response, real parenting moment",
+      "prompt": "Photorealistic: small toddler in mid-tantrum on floor, patient parent crouching to eye level with calm loving expression, bright home environment, 16:9, no text"
+    },
+    {
+      "slug": "developmental-red-flags",
+      "title": "Developmental Red Flags: When to Talk to Your Pediatrician",
+      "category": "resources",
+      "status": "published",
+      "priority": "HIGH",
+      "currentFallback": "/images/blog/best-educational-gifts-for-3-year-olds-2026.png",
+      "targetFilename": "news-developmental-red-flags.png",
+      "visualScene": "Pediatrician and parent watching toddler play with blocks during development assessment, warm clinic",
+      "prompt": "Photorealistic: warm pediatrician and parent watching focused toddler playing with colorful blocks, bright child-friendly clinic, developmental assessment setting, 16:9, no text"
+    },
+    {
+      "slug": "baby-reflux-spitup",
+      "title": "Baby Reflux and Spit-Up Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/montessori-at-home-principles-every-parent.png",
+      "targetFilename": "news-baby-reflux-spitup.png",
+      "visualScene": "Parent burping baby over shoulder with cloth, casual home setting, relatable new parent moment",
+      "prompt": "Photorealistic: parent gently patting baby's back while burping, baby over shoulder with cloth, warm home setting, natural light, 16:9, no text"
+    },
+    {
+      "slug": "baby-teething-guide",
+      "title": "Baby Teething Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/science-of-music-and-language-development.png",
+      "targetFilename": "news-baby-teething-guide.png",
+      "visualScene": "Baby gnawing on teething ring, drooling, parent watching with gentle smile, close warm shot",
+      "prompt": "Photorealistic close-up: drooling baby happily gnawing teething ring, parent smiling gently nearby, warm cozy home, natural light, 16:9, no text"
+    },
+    {
+      "slug": "baby-fever-guide",
+      "title": "Baby Fever: When to Worry and When to Wait",
+      "category": "resources",
+      "status": "published",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/phonics-vs-sight-words-what-parents-need-to-know.png",
+      "targetFilename": "news-baby-fever-guide.png",
+      "visualScene": "Parent taking baby's temperature with digital thermometer, concern and care on parent's face, warm home",
+      "prompt": "Photorealistic: worried but calm parent gently holding digital thermometer to baby's forehead, warm nursery lighting, caring close moment, 16:9, no text"
+    },
+    {
+      "slug": "baby-formula-guide",
+      "title": "Baby Formula Guide",
+      "category": "resources",
+      "status": "published",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/build-the-perfect-reading-corner-for-under-50.png",
+      "targetFilename": "news-baby-formula-guide.png",
+      "visualScene": "Parent carefully preparing formula bottle in clean kitchen, baby waiting in bouncer, organized setting",
+      "prompt": "Photorealistic: parent measuring formula powder into bottle in bright clean kitchen, happy baby in bouncer nearby, warm natural light, 16:9, no text"
+    },
+    {
+      "slug": "why-is-my-baby-crying",
+      "title": "Why Is My Baby Crying So Much? A Complete Guide for New Parents",
+      "category": "resources",
+      "status": "published",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/how-to-teach-your-child-to-read-in-12-weeks.png",
+      "targetFilename": "news-why-is-my-baby-crying.png",
+      "visualScene": "Exhausted but loving parent soothing crying baby at night, soft bedroom light, real new parent struggle",
+      "prompt": "Photorealistic: tired but determined parent soothing crying baby in dimly lit bedroom, nighttime, warm lamp glow, real emotional moment, 16:9, no text"
+    },
+    {
+      "slug": "toddler-biting-hitting",
+      "title": "Toddler Biting and Hitting: Why It Happens and How to Stop It",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/owl-emotion-tiles-help-toddlers-name-feelings.png",
+      "targetFilename": "news-toddler-biting-hitting.png",
+      "prompt": "Photorealistic: patient parent calmly redirecting frustrated toddler, warm playroom, positive parenting moment, 16:9, no text"
+    },
+    {
+      "slug": "baby-sleep-regressions",
+      "title": "Baby Sleep Regressions: What They Are and How to Survive Them",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/montessori-at-home-principles-every-parent.png",
+      "targetFilename": "news-baby-sleep-regressions.png",
+      "prompt": "Photorealistic: bleary-eyed parent holding wide-awake baby at 3am, dimly lit nursery, relatable exhausted-parent moment, 16:9, no text"
+    },
+    {
+      "slug": "bonding-secure-attachment",
+      "title": "Bonding with Your Baby: The Science of Secure Attachment",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/why-diverse-dolls-matter-the-research.png",
+      "targetFilename": "news-bonding-secure-attachment.png",
+      "prompt": "Photorealistic: parent and baby gazing lovingly at each other, skin-to-skin or close cuddling, warm golden natural light, tender bonding moment, 16:9, no text"
+    },
+    {
+      "slug": "toddler-wont-listen",
+      "title": "Why Won't My Toddler Listen? Strategies That Actually Work",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/how-to-talk-to-kids-about-hard-things.png",
+      "targetFilename": "news-toddler-wont-listen.png",
+      "prompt": "Photorealistic: parent kneeling to toddler's eye level, calm positive redirection, warm home living room, 16:9, no text"
+    },
+    {
+      "slug": "picky-eater",
+      "title": "My Toddler Only Eats 5 Foods: The Picky Eater Survival Guide",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "MEDIUM",
+      "currentFallback": "/images/blog/sensory-activities-for-babies-under-12-months.png",
+      "targetFilename": "news-picky-eater.png",
+      "prompt": "Photorealistic: frustrated toddler turning away from healthy food at dining table, patient parent nearby, bright kitchen, 16:9, no text"
+    },
+    {
+      "slug": "growth-charts",
+      "title": "Understanding Baby and Toddler Growth Charts",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/best-educational-gifts-for-3-year-olds-2026.png",
+      "targetFilename": "news-growth-charts.png",
+      "prompt": "Photorealistic: pediatrician measuring baby's height/length at checkup, parent watching with interest, bright clinic, 16:9, no text"
+    },
+    {
+      "slug": "chores-by-age",
+      "title": "Age-Appropriate Chores for Children Ages 2-5",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/20-screen-free-activities-for-rainy-days.png",
+      "targetFilename": "news-chores-by-age.png",
+      "prompt": "Photorealistic: small child helping parent fold laundry or pick up toys, warm home, positive teamwork moment, 16:9, no text"
+    },
+    {
+      "slug": "indoor-activities",
+      "title": "40 Indoor Activities for Toddlers and Preschoolers When You're Stuck Inside",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/sensory-activities-for-babies-under-12-months.png",
+      "targetFilename": "news-indoor-activities.png",
+      "prompt": "Photorealistic: two young children doing colorful arts and crafts at kitchen table, rainy window visible, cozy engaged play, 16:9, no text"
+    },
+    {
+      "slug": "night-terrors",
+      "title": "Night Terrors vs. Nightmares: What's Happening and What to Do",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/montessori-at-home-principles-every-parent.png",
+      "targetFilename": "news-night-terrors.png",
+      "prompt": "Photorealistic: parent comforting distressed child waking at night, soft nighttime bedroom glow, calm reassuring parent, 16:9, no text"
+    },
+    {
+      "slug": "nap-transition",
+      "title": "When Do Toddlers Stop Napping? The Complete Nap Transition Guide",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/montessori-at-home-principles-every-parent.png",
+      "targetFilename": "news-nap-transition.png",
+      "prompt": "Photorealistic: toddler fighting sleep in their crib or bed, droopy eyed but refusing nap, cute afternoon light, 16:9, no text"
+    },
+    {
+      "slug": "crib-to-bed",
+      "title": "Moving from Crib to Toddler Bed: When and How to Make the Switch",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/why-owl-is-built-for-your-childs-future.png",
+      "targetFilename": "news-crib-to-bed.png",
+      "prompt": "Photorealistic: excited toddler exploring their new big-kid bed with bed rails, cozy inviting bedroom, warm light, 16:9, no text"
+    },
+    {
+      "slug": "strong-willed-child",
+      "title": "Parenting a Strong-Willed Child: Strategies That Actually Work",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/how-to-talk-to-kids-about-hard-things.png",
+      "targetFilename": "news-strong-willed-child.png",
+      "prompt": "Photorealistic: determined toddler with arms crossed but parent calmly waiting nearby, warm home, positive parenting, 16:9, no text"
+    },
+    {
+      "slug": "autism-signs",
+      "title": "Early Signs of Autism in Babies and Toddlers: What Parents Should Know",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/is-your-4-year-old-ready-for-kindergarten.png",
+      "targetFilename": "news-autism-signs.png",
+      "prompt": "Photorealistic: child playing independently with focused concentration, parent gently observing with thoughtful expression, warm home setting, 16:9, no text"
+    },
+    {
+      "slug": "daycare-costs",
+      "title": "The Real Cost of Daycare and Preschool in 2026: A Guide for New Parents",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/why-owl-is-built-for-your-childs-future.png",
+      "targetFilename": "news-daycare-costs.png",
+      "prompt": "Photorealistic: parent dropping smiling child off at bright cheerful daycare entrance, warm morning light, positive first-day moment, 16:9, no text"
+    },
+    {
+      "slug": "toddler-travel",
+      "title": "Traveling with Toddlers and Young Children: The Complete Survival Guide",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/20-screen-free-activities-for-rainy-days.png",
+      "targetFilename": "news-toddler-travel.png",
+      "prompt": "Photorealistic: family at airport or train station with stroller and bags, toddler exploring nearby, upbeat travel adventure, 16:9, no text"
+    },
+    {
+      "slug": "sharing-turn-taking",
+      "title": "Teaching Toddlers to Share and Take Turns: What the Research Says",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/owl-emotion-tiles-help-toddlers-name-feelings.png",
+      "targetFilename": "news-sharing-turn-taking.png",
+      "prompt": "Photorealistic: two toddlers sharing a toy together with big smiles, playgroup setting, warm natural light, 16:9, no text"
+    },
+    {
+      "slug": "potty-training-regression",
+      "title": "Potty Training Regression: Why It Happens and How to Handle It",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/how-to-talk-to-kids-about-hard-things.png",
+      "targetFilename": "news-potty-training-regression.png",
+      "prompt": "Photorealistic: patient parent encouraging toddler sitting on training potty in bright cheerful bathroom, no text, 16:9"
+    },
+    {
+      "slug": "educational-toys-apps",
+      "title": "The Best Educational Toys and Apps for Children Ages 0-5 (And What to Skip)",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/best-educational-gifts-for-3-year-olds-2026.png",
+      "targetFilename": "news-educational-toys-apps.png",
+      "prompt": "Photorealistic: young child happily playing with colorful wooden educational toys, bright playroom, learning through play, 16:9, no text"
+    },
+    {
+      "slug": "screen-addiction",
+      "title": "Is My Child Addicted to Screens? Signs, Science, and Solutions",
+      "category": "resources",
+      "status": "scheduled",
+      "priority": "LOW",
+      "currentFallback": "/images/blog/20-screen-free-activities-for-rainy-days.png",
+      "targetFilename": "news-screen-addiction.png",
+      "prompt": "Photorealistic: child transfixed by tablet screen while parent gently offers book or toy instead, warm living room, realistic family moment, 16:9, no text"
+    }
+  ]
+}

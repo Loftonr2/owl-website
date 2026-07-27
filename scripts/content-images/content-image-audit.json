@@ -1,0 +1,141 @@
+{
+  "auditDate": "2026-07-27",
+  "auditedBy": "Claude automated audit",
+  "summary": {
+    "rootCause": "Bulk news image import (Jul 14 2026) created placeholder images by downloading the same stock photo and renaming it for each article. Two main placeholder groups identified by MD5 hash: cf9a17007c8655892a289eba4e4e37a0 (359KB, 22 identical long-name files) and f6c818938bda933d0bedd9448f0f76b5 (152KB, 18 identical short-name files). Six scrambled records have slug/title/image mismatches (titles from wrong articles were inserted). Blog images are all correct and unique.",
+    "blogPublishedAudited": 20,
+    "blogScheduledAudited": 0,
+    "blogDraftAudited": 19,
+    "newsPublishedAudited": 19,
+    "newsScheduledAudited": 22,
+    "newsDraftAudited": 3,
+    "blogIncorrectImages": 0,
+    "newsIncorrectImages": 34,
+    "dbRecordsCleared": 34,
+    "dbRecordsKept": 10,
+    "uniqueRealImagesKept": 4,
+    "higgsfieldImagesKept": 6,
+    "stillRequiringGeneration": 34,
+    "fix": "Added NEWS_SLUG_IMAGES tier-2 fallback in content-images.ts. Cleared 34 placeholder DB values so resolver uses blog-image fallbacks by slug. 10 records kept with real unique images."
+  },
+  "duplicateGroups": [
+    {
+      "md5": "f6c818938bda933d0bedd9448f0f76b5",
+      "sizeBytes": 152853,
+      "description": "Generic placeholder — same image used for 18+ scheduled/published news articles with short slug names",
+      "files": [
+        "autism-signs.jpg", "baby-sleep-regressions.jpg", "babyproofing-room-by-room.jpg",
+        "bonding-secure-attachment.jpg", "chores-by-age.jpg", "crib-to-bed.jpg",
+        "daycare-costs.jpg", "educational-toys-apps.jpg", "growth-charts.jpg",
+        "indoor-activities.jpg", "nap-transition.jpg", "newborn-first-two-weeks.jpg",
+        "night-terrors.jpg", "potty-training-regression.jpg", "screen-addiction.jpg",
+        "screen-time-babies-toddlers.jpg", "sharing-turn-taking.jpg", "strong-willed-child.jpg",
+        "toddler-biting-hitting.jpg", "toddler-travel.jpg", "tummy-time-guide.jpg",
+        "vaccines-first-year.jpg"
+      ]
+    },
+    {
+      "md5": "cf9a17007c8655892a289eba4e4e37a0",
+      "sizeBytes": 359762,
+      "description": "Generic placeholder — same image used for 22 articles with long descriptive filenames",
+      "files": [
+        "40-indoor-activities-for-toddlers.jpg", "age-appropriate-chores-for-children-ages-25.jpg",
+        "baby-sleep-regressions-what-they-are-and-how-to-survive-them.jpg",
+        "babyproofing-your-home-room-by-room-safety-guide.jpg",
+        "bonding-with-your-baby-the-science-of-secure-attachment.jpg",
+        "early-signs-of-autism-in-babies-and-toddlers-what-parents-should-know.jpg",
+        "is-my-child-addicted-to-screens-signs-science-and-solutions.jpg",
+        "moving-from-crib-to-toddler-bed.jpg", "newborn-101-the-first-two-weeks-survival-guide.jpg",
+        "night-terrors-vs-nightmares.jpg", "parenting-a-strong-willed-child-strategies-that-actually-work.jpg",
+        "potty-training-regression-why-it-happens-and-how-to-handle-it.jpg",
+        "screen-time-for-babies-and-toddlers-what-the-research-really-says.jpg",
+        "teaching-toddlers-to-share-and-take-turns-what-the-research-says.jpg",
+        "the-best-educational-toys-and-apps-for-children-ages-05-and-what-to-skip.jpg",
+        "the-real-cost-of-daycare-and-preschool-in-2026-a-guide-for-new-parents.jpg",
+        "toddler-biting-and-hitting-why-it-happens-and-how-to-stop-it.jpg",
+        "traveling-with-toddlers-and-young-children-the-complete-survival-guide.jpg",
+        "tummy-time-why-it-matters-and-how-to-make-it-work.jpg",
+        "understanding-baby-and-toddler-growth-charts.jpg",
+        "vaccines-in-the-first-year-your-complete-immunization-guide.jpg",
+        "when-do-toddlers-stop-napping.jpg"
+      ]
+    },
+    {
+      "md5": "c325a74026f05283138576948224c904",
+      "sizeBytes": 26019,
+      "description": "Tiny placeholder (26KB) — same image for 3 articles",
+      "files": ["baby-fever-guide.jpg", "baby-poop-color-guide.jpg", "baby-teething-guide.jpg"]
+    }
+  ],
+  "scrambledRecords": [
+    {
+      "slug": "baby-teething-guide",
+      "dbTitle": "Baby Spitting Up and Reflux: What's Normal and What's Not",
+      "correctTitle": "Baby Teething Guide (expected)",
+      "dbImage": "/images/news/baby-spitting-up-and-reflux-whats-normal-and-whats-not.jpg",
+      "issue": "Slug and title/image belong to different articles — imported out of order"
+    },
+    {
+      "slug": "baby-reflux-spitup",
+      "dbTitle": "Developmental Red Flags: When to Talk to Your Pediatrician",
+      "correctTitle": "Baby Reflux / Spit-Up guide (expected)",
+      "dbImage": "/images/news/developmental-red-flags-when-to-talk-to-your-pediatrician.jpg",
+      "issue": "Slug and title/image belong to different articles"
+    },
+    {
+      "slug": "developmental-red-flags",
+      "dbTitle": "Toddler Tantrums: What They Are, Why They Happen, and How to Survive Them",
+      "correctTitle": "Developmental Red Flags guide (expected)",
+      "dbImage": "/images/news/toddler-tantrums-what-they-are-why-they-happen-and-how-to-survive-them.jpg",
+      "issue": "Slug and title/image belong to different articles"
+    },
+    {
+      "slug": "toddler-tantrums-guide",
+      "dbTitle": "Baby Rashes and Skin Conditions: A Visual Guide for New Parents",
+      "correctTitle": "Toddler Tantrums guide (expected)",
+      "dbImage": "/images/news/baby-rashes-and-skin-conditions-a-visual-guide-for-new-parents.png",
+      "issue": "Slug and title/image belong to different articles"
+    },
+    {
+      "slug": "baby-language-development",
+      "dbTitle": "Baby Poop: Color, Consistency, and What It All Means",
+      "correctTitle": "Baby Language Development guide (expected)",
+      "dbImage": "/images/news/baby-poop-color-consistency-and-what-it-all-means.png",
+      "issue": "Slug and title/image belong to different articles"
+    },
+    {
+      "slug": "baby-poop-color-guide",
+      "dbTitle": "Vaccines in the First Year: Your Complete Immunization Guide",
+      "correctTitle": "Baby Poop Color Guide (expected)",
+      "dbImage": "/images/news/vaccines-in-the-first-year-your-complete-immunization-guide.jpg",
+      "issue": "Slug and title/image belong to different articles. Image was also a placeholder."
+    }
+  ],
+  "blogRecords": {
+    "status": "ALL_VALID",
+    "publishedCount": 20,
+    "note": "All 20 published blog articles have unique, topic-specific images in git. No fixes required.",
+    "articles": [
+      {"slug": "why-owl-is-built-for-your-childs-future", "image": "/images/blog/why-owl-is-built-for-your-childs-future.png", "status": "VALID"},
+      {"slug": "meet-larissa-the-owl-character", "image": "/images/blog/meet-larissa-the-owl-character.png", "status": "VALID"},
+      {"slug": "sensory-activities-for-babies-under-12-months", "image": "/images/blog/sensory-activities-for-babies-under-12-months.png", "status": "VALID"},
+      {"slug": "why-diverse-dolls-matter-the-research", "image": "/images/blog/why-diverse-dolls-matter-the-research.png", "status": "VALID"},
+      {"slug": "phonics-vs-sight-words-what-parents-need-to-know", "image": "/images/blog/phonics-vs-sight-words-what-parents-need-to-know.png", "status": "VALID"},
+      {"slug": "counting-mat-games-for-toddlers", "image": "/images/blog/counting-mat-games-for-toddlers.png", "status": "VALID"},
+      {"slug": "owl-emotion-tiles-help-toddlers-name-feelings", "image": "/images/blog/owl-emotion-tiles-help-toddlers-name-feelings.png", "status": "VALID"},
+      {"slug": "best-educational-gifts-for-3-year-olds-2026", "image": "/images/blog/best-educational-gifts-for-3-year-olds-2026.png", "status": "VALID"},
+      {"slug": "how-to-build-a-homeschool-routine", "image": "/images/blog/how-to-build-a-homeschool-routine.png", "status": "VALID"},
+      {"slug": "science-of-music-and-language-development", "image": "/images/blog/science-of-music-and-language-development.png", "status": "VALID"},
+      {"slug": "20-screen-free-activities-for-rainy-days", "image": "/images/blog/20-screen-free-activities-for-rainy-days.png", "status": "VALID"},
+      {"slug": "is-your-4-year-old-ready-for-kindergarten", "image": "/images/blog/is-your-4-year-old-ready-for-kindergarten.png", "status": "VALID"},
+      {"slug": "proven-ways-to-get-your-baby-talking-faster", "image": "/images/blog/proven-ways-to-get-your-baby-talking-faster.png", "status": "VALID"},
+      {"slug": "montessori-at-home-principles-every-parent", "image": "/images/blog/montessori-at-home-principles-every-parent.png", "status": "VALID"},
+      {"slug": "bilingual-baby-advantage", "image": "/images/blog/bilingual-baby-advantage.png", "status": "VALID"},
+      {"slug": "how-to-teach-your-child-to-read-in-12-weeks", "image": "/images/blog/how-to-teach-your-child-to-read-in-12-weeks.png", "status": "VALID"},
+      {"slug": "stem-activities-for-kids-ages-5-8", "image": "/images/blog/stem-activities-for-kids-ages-5-8.png", "status": "VALID"},
+      {"slug": "build-the-perfect-reading-corner-for-under-50", "image": "/images/blog/build-the-perfect-reading-corner-for-under-50.png", "status": "VALID"},
+      {"slug": "owl-deals-discounts-and-bundles", "image": "/images/blog/owl-deals-discounts-and-bundles.png", "status": "VALID"},
+      {"slug": "how-to-talk-to-kids-about-hard-things", "image": "/images/blog/how-to-talk-to-kids-about-hard-things.png", "status": "VALID"}
+    ]
+  }
+}
