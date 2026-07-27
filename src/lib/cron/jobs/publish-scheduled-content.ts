@@ -1,5 +1,6 @@
 import "server-only";
 import type { JobFn, ServiceClient } from "@/lib/cron/runner";
+import { isValidEditorialImage } from "@/lib/content-images";
 
 /**
  * publish-scheduled-content
@@ -33,8 +34,10 @@ function etDateString(): string {
 type PostRow = {
   id: string;
   title: string;
+  slug: string;
   content_type: string;
   publish_date: string;
+  featured_image: string | null;
 };
 
 export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
@@ -45,7 +48,7 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
 
   const { data: due, error: fetchErr } = await db
     .from("content_posts")
-    .select("id, title, content_type, publish_date")
+    .select("id, title, slug, content_type, publish_date, featured_image")
     .in("status", ["scheduled"])
     .eq("workflow_status", "scheduled")
     .in("content_type", ["news", "blog"])
@@ -94,9 +97,31 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
   // ── Publish ────────────────────────────────────────────────────────────────
   let published = 0;
   let failed = 0;
+  let blockedNoImage = 0;
   const errors: string[] = [];
 
   for (const post of toPublish) {
+    // ── Image guard: reject articles without a valid topic-specific image ──
+    const imgCheck = isValidEditorialImage(
+      post.featured_image,
+      post.content_type as "blog" | "news",
+      post.slug,
+    );
+
+    if (!imgCheck.valid) {
+      // Keep in scheduled state — do not publish without a valid image.
+      // Write a warning to the publish events table so the CRM shows the reason.
+      await db.from("content_publish_events").insert({
+        post_id: post.id,
+        local_date_et: localDate,
+        status: "blocked_no_image",
+        error: `Image guard: ${imgCheck.reason}. Add a valid featured_image to publish.`,
+      }).maybeSingle();
+      blockedNoImage++;
+      errors.push(`[${post.slug}] Blocked — image guard: ${imgCheck.reason}`);
+      continue;
+    }
+
     // Transactional: update status first, then record event.
     const { error: updateErr } = await db
       .from("content_posts")
@@ -133,8 +158,9 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
 
   const summary = [
     `Published ${published} post(s) at 12:00 UTC / ~7 AM ET (${localDate}).`,
-    skipped   ? `${skipped} already processed.`  : "",
-    failed    ? `${failed} FAILED — see errors.` : "",
+    skipped        ? `${skipped} already processed.`        : "",
+    blockedNoImage ? `${blockedNoImage} BLOCKED (no valid image — kept in scheduled state).` : "",
+    failed         ? `${failed} FAILED — see errors.`        : "",
   ].filter(Boolean).join(" ");
 
   return {
@@ -144,6 +170,7 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
       etDate: localDate,
       published,
       skipped,
+      blockedNoImage,
       failed,
       ...(errors.length ? { errors } : {}),
     },

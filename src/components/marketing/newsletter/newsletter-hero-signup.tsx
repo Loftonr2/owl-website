@@ -41,7 +41,7 @@ export function NewsletterHeroSignup() {
         aria-hidden="true"
       >
         <Image
-          src="/images/newsletter/redesign/join-owl-weekly.png"
+          src="/images/newsletter/join-owl-newsletter.png"
           alt=""
           fill
           sizes="100vw"
@@ -54,10 +54,10 @@ export function NewsletterHeroSignup() {
           Tablet (sm–md): 90% width. Desktop (md+): 80% width. */}
       <div className="hidden md:flex md:justify-center md:px-[10%]" aria-hidden="true">
         <Image
-          src="/images/newsletter/redesign/join-owl-weekly.png"
+          src="/images/newsletter/join-owl-newsletter.png"
           alt=""
-          width={2142}
-          height={734}
+          width={1774}
+          height={887}
           sizes="(min-width: 768px) 80vw, 100vw"
           className="w-full h-auto"
           priority

@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-07-27",
+  "model": "nano_banana_2",
+  "aspect_ratio": "16:9",
+  "resolution": "1k",
+  "note": "Higgsfield does not support programmatic file-path selection. Images are generated via MCP tool and then downloaded + saved by the agent. Job IDs below track each generation.",
+  "items": [
+    {
+      "slug": "owl-featured-in-early-childhood-educator-guide",
+      "content_type": "news",
+      "title": "OWL Sing Together Featured in 2026 Early Childhood Educator Guide",
+      "output_path": "public/images/news/generated/news-owl-featured-in-early-childhood-educator-guide.jpg",
+      "higgsfield_job_id": "4d2852ec-276a-4a2c-986d-a607e007e60d",
+      "prompt": "Warm photorealistic editorial image: diverse group of early childhood educators sitting together at a round table reviewing printed curriculum guides and educational resources, professional yet welcoming classroom environment, soft natural window light, multicultural adults in their 30s-50s, engaged and collaborative, no text no logos no watermarks, family-safe, 4K quality",
+      "status": "pending"
+    },
+    {
+      "slug": "owl-family-spotlight-july-2026",
+      "content_type": "news",
+      "title": "OWL Family Spotlight: Learning Across Three Languages",
+      "output_path": "public/images/news/generated/news-owl-family-spotlight-july-2026.jpg",
+      "higgsfield_job_id": "ed136eed-7279-4d5f-8a04-4f3e18fcfbc1",
+      "prompt": "Warm photorealistic editorial image: a multigenerational family of three generations sitting together on a living room floor, parent reading a bilingual picture book to a toddler while grandparent watches affectionately, cozy home environment with soft warm lighting, diverse family with natural authentic expressions, no text no logos no watermarks, family-safe, 4K quality",
+      "status": "pending"
+    },
+    {
+      "slug": "owl-live-family-music-session-july-2026",
+      "content_type": "news",
+      "title": "Join Our First Live Family Music Session - July 2026",
+      "output_path": "public/images/news/generated/news-owl-live-family-music-session-july-2026.jpg",
+      "higgsfield_job_id": "674db5ed-629c-41a7-a7f9-d755700dbea9",
+      "prompt": "Warm photorealistic editorial image: joyful group of parents and young children ages 2-6 sitting in a circle on colorful rugs during a live music session, an adult facilitator playing acoustic guitar at front, children singing and clapping enthusiastically, bright community center space with natural light, diverse multicultural families, no text no logos no watermarks, family-safe, 4K quality",
+      "status": "pending"
+    },
+    {
+      "slug": "free-summer-printable-pack-now-available",
+      "content_type": "news",
+      "title": "Free Summer Learning Printable Pack - Now Available",
+      "output_path": "public/images/news/generated/news-free-summer-printable-pack-now-available.jpg",
+      "higgsfield_job_id": "ccadf323-910a-40e7-af00-0a5ed6565d0e",
+      "prompt": "Warm photorealistic editorial image: bright summer scene with a child aged 4-6 sitting at a sunlit kitchen table happily coloring a printable activity sheet, crayon box beside them, parent standing nearby smiling, warm golden summer morning light streaming through window, cozy family home, no text no logos no watermarks, family-safe, 4K quality",
+      "status": "pending"
+    },
+    {
+      "slug": "owl-sing-together-launches-blog-and-news-center",
+      "content_type": "news",
+      "title": "OWL Sing Together Launches New Blog and News Center",
+      "output_path": "public/images/news/generated/news-owl-sing-together-launches-blog-and-news-center.jpg",
+      "higgsfield_job_id": "7a9a3eda-87fd-430c-85fa-2ee49b16a118",
+      "prompt": "Warm photorealistic editorial image: a parent and young child ages 3-5 sitting together at a cozy desk exploring an educational website on a laptop, child pointing at the screen excitedly, parent smiling and engaged, warm home office environment with natural light, diverse family, bookshelf visible in background, no text no logos no watermarks, family-safe, 4K quality",
+      "status": "pending"
+    },
+    {
+      "slug": "breastfeeding-101",
+      "content_type": "news",
+      "title": "Breastfeeding 101: Everything New Moms Need to Know",
+      "output_path": "public/images/news/generated/news-breastfeeding-101.jpg",
+      "higgsfield_job_id": "529200bc-0e8b-4ce7-9938-67ea2d3cb017",
+      "prompt": "Warm photorealistic editorial image: a new mother in her late 20s sitting in a comfortable nursing chair breastfeeding her newborn baby, soft morning light from a nearby window, peaceful nursery environment with soft pastel tones, mother looking down at baby with a tender expression, no text no logos no watermarks, family-safe and respectful, 4K quality",
+      "status": "pending"
+    }
+  ]
+}

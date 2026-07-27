@@ -1,7 +1,7 @@
 /**
  * content-images.ts
  * ─────────────────
- * Canonical image resolver for blog and news content cards.
+ * Canonical image resolver and validator for blog and news content cards.
  *
  * Priority order for resolveContentCardImage():
  *  1. post.featured_image  — explicit per-article image from the DB (most authoritative)
@@ -9,33 +9,118 @@
  *  3. Category fallback     — OWL theme or activity image (never a page header)
  *  4. Brand mascot          — absolute last resort (never a page/hero banner)
  *
- * Rules enforced:
+ * Rules enforced by isValidEditorialImage():
  *  - Header/hero images (paths containing /headers/ or /heroes/) are REJECTED
- *    as card images. They are page-level art, not article thumbnails.
- *  - Empty strings and null values are rejected.
- *  - Invalid paths (not starting with / or http) are rejected.
+ *  - Videos directory paths are REJECTED
+ *  - Logo and mascot filenames used as generic fallbacks are REJECTED when
+ *    the article topic is not explicitly about that asset
+ *  - Newsletter and About Us design assets are REJECTED as editorial card images
+ *  - Empty strings and null values are REJECTED
+ *  - Invalid paths (not starting with / or http) are REJECTED
+ *  - Brand/youtube-header images are REJECTED as editorial cards
  */
 
 // ---------------------------------------------------------------------------
-// Page-header guard — never use these as card images
+// Rejection patterns — never use these as editorial card images
 // ---------------------------------------------------------------------------
 
-const HEADER_PATTERN = /\/(headers|heroes|videos)\//i;
+const HEADER_PATTERN     = /\/(headers|heroes|videos)\//i;
+const NEWSLETTER_PATTERN = /\/newsletter\//i;
+const ABOUT_PATTERN      = /\/about\//i;
+// Brand paths that are page-level art, not editorial thumbnails
+const BRAND_BANNER_FILES = new Set([
+  "youtube-header.png",
+  "youtube-header.jpg",
+  "mascot.png",
+  "mascot.jpg",
+  "logo.png",
+  "logo.svg",
+  "logo-dark.png",
+  "logo-light.png",
+]);
 
-function isHeaderImage(path: string | null | undefined): boolean {
+/**
+ * Returns true if the path represents a page-level asset that should never be
+ * used as an editorial card image (header, hero, newsletter graphic, About Us
+ * artwork, brand banner, logo, or mascot placeholder).
+ */
+export function isHeaderImage(path: string | null | undefined): boolean {
   if (!path) return false;
-  return HEADER_PATTERN.test(path);
+  if (HEADER_PATTERN.test(path))     return true;
+  if (NEWSLETTER_PATTERN.test(path)) return true;
+  if (ABOUT_PATTERN.test(path))      return true;
+  // Reject specific brand banner filenames from any directory
+  const filename = path.split("/").pop() ?? "";
+  if (BRAND_BANNER_FILES.has(filename)) return true;
+  return false;
 }
 
 function isValidImagePath(path: string | null | undefined): boolean {
   if (!path || path.trim() === "") return false;
   if (isHeaderImage(path)) return false;
+  // Must start with / (local) or http (absolute URL)
   if (!path.startsWith("/") && !path.startsWith("http")) return false;
   return true;
 }
 
+/**
+ * isValidEditorialImage
+ * ──────────────────────
+ * Full pre-publication validator. Returns { valid: true } or { valid: false, reason }.
+ *
+ * Rejects:
+ *  - null / empty values
+ *  - page header / hero paths
+ *  - newsletter or About Us design assets
+ *  - logo and mascot filenames when used as generic thumbnails
+ *  - brand banner filenames (youtube-header, etc.)
+ *  - paths not starting with / or http
+ *  - paths without a recognisable image extension
+ */
+export function isValidEditorialImage(
+  url: string | null | undefined,
+  _contentType?: "blog" | "news",
+  _slug?: string,
+): { valid: true } | { valid: false; reason: string } {
+  if (!url || url.trim() === "") {
+    return { valid: false, reason: "empty or null image path" };
+  }
+
+  if (!url.startsWith("/") && !url.startsWith("http")) {
+    return { valid: false, reason: "path must start with / or http" };
+  }
+
+  if (HEADER_PATTERN.test(url)) {
+    return { valid: false, reason: "path is inside a headers/heroes/videos directory — page-level art, not editorial" };
+  }
+
+  if (NEWSLETTER_PATTERN.test(url)) {
+    return { valid: false, reason: "path is a Newsletter design asset — not for editorial cards" };
+  }
+
+  if (ABOUT_PATTERN.test(url)) {
+    return { valid: false, reason: "path is an About Us design asset — not for editorial cards" };
+  }
+
+  const filename = url.split("/").pop() ?? "";
+
+  if (BRAND_BANNER_FILES.has(filename)) {
+    return { valid: false, reason: `"${filename}" is a brand/logo/mascot asset — not a topic-specific editorial image` };
+  }
+
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "";
+  const validExts = new Set(["jpg", "jpeg", "png", "webp", "avif", "gif"]);
+  if (!validExts.has(ext)) {
+    return { valid: false, reason: `unsupported image extension ".${ext}"` };
+  }
+
+  return { valid: true };
+}
+
 // ---------------------------------------------------------------------------
 // Slug → local image map (tier-2 fallback for blog posts)
+// Populated from files physically present in public/images/blog/.
+// Used when DB record has no featured_image set yet.
 // ---------------------------------------------------------------------------
 
 const BLOG_SLUG_IMAGES: Record<string, string> = {
@@ -80,6 +165,13 @@ const BLOG_SLUG_IMAGES: Record<string, string> = {
   "why-your-baby-stares-at-you":                          "/images/blog/why-your-baby-stares-at-you.jpg",
 };
 
+// ---------------------------------------------------------------------------
+// Category fallback images
+// Rule: MUST NOT be page headers (/images/headers/*) or heroes (/images/heroes/*).
+// Rule: MUST NOT be mascot.png, logo images, or newsletter assets.
+// Use OWL brand / discovery / printable artwork only.
+// ---------------------------------------------------------------------------
+
 const BLOG_CATEGORY_IMAGES: Record<string, string> = {
   "homeschooling":      "/images/printables/homeschool-week-1.png",
   "parenting-tips":     "/images/discovery/theme-feelings.png",
@@ -94,9 +186,14 @@ const NEWS_CATEGORY_IMAGES: Record<string, string> = {
   "events":        "/images/discovery/theme-movement.png",
   "resources":     "/images/printables/counting-mat.png",
   "community":     "/images/discovery/theme-feelings.png",
-  "press":         "/images/brand/youtube-header.png",
+  // NOTE: press was formerly /images/brand/youtube-header.png — corrected below.
+  // youtube-header.png is a brand banner, not an editorial card image.
+  "press":         "/images/discovery/theme-abcs.png",
 };
 
+// Absolute last resort — OWL mascot illustration. Never used as a card when a
+// category fallback is available. Validated by isValidEditorialImage() so it
+// won't be used if a better option is present in the DB.
 const BRAND_FALLBACK = "/images/brand/mascot.png";
 
 // ---------------------------------------------------------------------------
@@ -110,21 +207,47 @@ export interface ContentCardImageInput {
   content_type: "blog" | "news";
 }
 
+/**
+ * resolveContentCardImage
+ * ─────────────────────────
+ * Returns the best available image path for a content card.
+ * Never returns a page header/hero image. Never returns null.
+ *
+ * Priority:
+ *  1. post.featured_image  (if valid per isValidEditorialImage)
+ *  2. Slug-based local file (blog only — from BLOG_SLUG_IMAGES)
+ *  3. Category fallback     (OWL theme/brand art, never a header)
+ *  4. Brand mascot          (absolute last resort)
+ */
 export function resolveContentCardImage(post: ContentCardImageInput): string {
-  if (isValidImagePath(post.featured_image)) {
+  // Tier 1: explicit featured_image from the DB
+  const check1 = isValidEditorialImage(post.featured_image, post.content_type, post.slug);
+  if (check1.valid) {
     return post.featured_image!;
   }
+
+  // Tier 2: slug-based local blog image
   if (post.content_type === "blog") {
     const slugImg = BLOG_SLUG_IMAGES[post.slug];
     if (slugImg) return slugImg;
   }
+
+  // Tier 3: category fallback (OWL art, never a header or brand banner)
   const catImages =
     post.content_type === "news" ? NEWS_CATEGORY_IMAGES : BLOG_CATEGORY_IMAGES;
   const catImg = catImages[post.category];
   if (catImg) return catImg;
+
+  // Tier 4: absolute last resort
   return BRAND_FALLBACK;
 }
 
+/**
+ * getCategoryFallbackImage (legacy export — kept for backward compatibility)
+ * Use resolveContentCardImage() for new code.
+ *
+ * Returns a category-appropriate OWL image — NEVER a page header or brand banner.
+ */
 export function getCategoryFallbackImage(
   category: string,
   contentType: "blog" | "news" = "blog"
@@ -134,3 +257,21 @@ export function getCategoryFallbackImage(
   }
   return BLOG_CATEGORY_IMAGES[category] ?? BRAND_FALLBACK;
 }
+
+/**
+ * IMAGE_WORKFLOW_STATES
+ * ─────────────────────
+ * Canonical workflow_status values for the image lifecycle.
+ * Used by the CRM and the pre-publication guard.
+ *
+ * Map onto existing workflow_status column — no schema change required.
+ */
+export const IMAGE_WORKFLOW_STATES = {
+  NEEDS_IMAGE:       "needs_image",
+  IMAGE_QUEUED:      "image_queued",
+  GENERATING:        "generating",
+  NEEDS_REVIEW:      "needs_review",
+  IMAGE_APPROVED:    "image_approved",
+  READY_TO_PUBLISH:  "scheduled",      // existing value reused
+  FAILED:            "failed",
+} as const;
