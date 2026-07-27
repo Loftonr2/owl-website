@@ -27,7 +27,7 @@ import {
   getNewsUICategory,
   type UINewsCategory,
 } from "@/lib/news-categories";
-import { getCategoryFallbackImage } from "@/lib/content-images";
+import { resolveContentCardImage } from "@/lib/content-images";
 
 const PAGE_SIZE = 10;
 
@@ -92,9 +92,12 @@ export function NewsPageClient({ articles }: NewsPageClientProps) {
           >
             {visibleArticles.map((article) => {
               const uiCat = getNewsUICategory(article.slug, article.category);
-              const image =
-                article.featuredImage ??
-                getCategoryFallbackImage(article.category, "news");
+              const image = resolveContentCardImage({
+                slug: article.slug,
+                featured_image: article.featuredImage,
+                category: article.category,
+                content_type: "news",
+              });
               return (
                 <li key={article.slug}>
                   <NewsCard

@@ -27,7 +27,7 @@ import {
   getBlogUICategory,
   type UINewsCategory,
 } from "@/lib/blog-categories";
-import { getCategoryFallbackImage } from "@/lib/content-images";
+import { resolveContentCardImage } from "@/lib/content-images";
 
 const PAGE_SIZE = 10;
 
@@ -108,9 +108,12 @@ export function BlogPageClient({ articles }: BlogPageClientProps) {
           >
             {visibleArticles.map((article) => {
               const uiCat = getBlogUICategory(article.slug, article.category);
-              const image =
-                article.featuredImage ??
-                getCategoryFallbackImage(article.category, "blog");
+              const image = resolveContentCardImage({
+                slug: article.slug,
+                featured_image: article.featuredImage,
+                category: article.category,
+                content_type: "blog",
+              });
               return (
                 <li key={article.slug}>
                   <NewsCard
