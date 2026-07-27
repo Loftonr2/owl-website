@@ -34,14 +34,15 @@ export function AboutMission() {
   return (
     <section
       aria-labelledby="owl-mission-heading"
-      className="bg-white py-16 md:py-24"
+      className="bg-white py-10 md:py-14"
     >
       {/* Screen-reader heading — visual heading is rendered inside the artwork image */}
       <h2 id="owl-mission-heading" className="sr-only">
         Our Mission — Building Brighter Tomorrows Through Music and Connection
       </h2>
 
-      <div className="mx-auto max-w-4xl px-6 sm:px-10">
+      {/* 65% desktop · 82% tablet · 94% mobile */}
+      <div className="mx-auto w-[94%] sm:w-[82%] lg:w-[65%]">
 
         {/* ── Approved section artwork ─────────────────────────────────────── */}
         <figure className="overflow-hidden rounded-3xl shadow-owl-3">
@@ -56,7 +57,7 @@ export function AboutMission() {
         </figure>
 
         {/* ── See More toggle ──────────────────────────────────────────────── */}
-        <div className="mt-8 flex justify-center">
+        <div className="mt-6 flex justify-center">
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
@@ -108,7 +109,7 @@ export function AboutMission() {
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="overflow-hidden"
             >
-              <div className="mt-6 rounded-3xl bg-owl-cream px-8 py-10 sm:px-12">
+              <div className="mt-4 rounded-3xl bg-owl-cream px-8 py-8 sm:px-10">
                 <div className="space-y-4 text-base leading-relaxed text-owl-ink/80">
                   {ALL_PARAGRAPHS.map((p) => (
                     <p key={p.slice(0, 30)}>{p}</p>
