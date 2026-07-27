@@ -3,18 +3,18 @@
 /**
  * AboutTeam
  * ─────────
- * "THE OWL TEAM" section — two interactive cards with circular portraits.
- * Clicking any card (or its "Read Full Bio" button) opens an accessible
- * biography modal (TeamMemberModal).
+ * "THE OWL TEAM" section.
  *
- * Design source: OWL Team.png (supplied approved asset)
- * Portrait images: larissa-portrait.png / rick-portrait.png (extracted
- * from OWL Team.png via Python crop script).
+ * Displays the approved owl-team.png artwork as the sole visual.
+ * Two minimal buttons beneath the artwork open full biography modals for
+ * Larissa Pola and Rick Lofton. No card grid is rendered — the approved
+ * image IS the visual design.
+ *
+ * Image sizing: 65% desktop · 82% tablet · 94% mobile (centred)
  */
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { Heart } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { TeamMemberModal, type TeamMember } from "./team-member-modal";
 
@@ -100,9 +100,10 @@ const TEAM_MEMBERS: TeamMember[] = [
   },
 ];
 
+// ── Main section ──────────────────────────────────────────────────────────────
+
 export function AboutTeam() {
   const [activeMember, setActiveMember] = useState<TeamMember | null>(null);
-  // Refs for returning focus after modal close
   const triggerRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const getTriggerRef = (id: string) => (el: HTMLButtonElement | null) => {
@@ -115,116 +116,56 @@ export function AboutTeam() {
 
   const triggerRef = {
     current: activeMember ? (triggerRefs.current.get(activeMember.id) ?? null) : null,
-  };
+  } as React.RefObject<HTMLElement | null>;
 
   return (
     <>
       <section
         aria-labelledby="owl-team-heading"
-        className="bg-owl-cream"
+        className="bg-owl-cream py-10 md:py-14"
       >
-        {/* ── Approved section artwork ─────────────────────────────────────── */}
-        <figure className="overflow-hidden">
-          <Image
-            src="/images/about/redesign/owl-team.png"
-            alt="The OWL Team — Larissa Pola, Creator, CEO, and Founder; and Rick Lofton, COO, CTO, and Marketing Director."
-            width={2061}
-            height={763}
-            className="w-full h-auto"
-          />
-        </figure>
+        <h2 id="owl-team-heading" className="sr-only">
+          Meet the Heart Behind OWL
+        </h2>
 
-        <div className="py-12 md:py-16">
-        <div className="mx-auto max-w-7xl px-6 sm:px-10">
-          {/* Eyebrow + heading */}
-          <div className="mb-12 text-center">
-            <p className="font-display text-xs font-bold uppercase tracking-[0.25em] text-owl-teal">
-              THE OWL TEAM
-            </p>
-            <div className="mt-2 flex items-center justify-center gap-3" aria-hidden="true">
-              <div className="h-px w-8 bg-owl-teal/50" />
-              <svg width="12" height="11" viewBox="0 0 12 11" fill="currentColor" className="text-owl-teal">
-                <path d="M6 10.2S1 6.8 1 3.9a2.5 2.5 0 015 0 2.5 2.5 0 015 0C11 6.8 6 10.2 6 10.2z" />
-              </svg>
-              <div className="h-px w-8 bg-owl-teal/50" />
-            </div>
-            <h2
-              id="owl-team-heading"
-              className="mt-4 font-display text-3xl font-extrabold text-owl-ink sm:text-4xl"
-            >
-              Meet the Heart Behind OWL
-            </h2>
-          </div>
+        {/* ── Approved section artwork — 65% desktop · 82% tablet · 94% mobile ── */}
+        <div className="mx-auto w-[94%] sm:w-[82%] lg:w-[65%]">
+          <figure className="overflow-hidden rounded-3xl shadow-owl-2">
+            <Image
+              src="/images/about/redesign/owl-team.png"
+              alt="The OWL Team — Larissa Pola, Creator, CEO, and Founder; and Rick Lofton, COO, CTO, and Marketing Director."
+              width={2061}
+              height={763}
+              className="w-full h-auto"
+            />
+          </figure>
+        </div>
 
-          {/* Team cards grid */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        {/* ── Two accessible biography triggers — no card recreation ── */}
+        <div className="mx-auto mt-8 w-[94%] sm:w-[82%] lg:w-[65%]">
+          <p className="mb-4 text-center font-display text-xs font-bold uppercase tracking-[0.2em] text-owl-teal/80">
+            Read their full biographies
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
             {TEAM_MEMBERS.map((member) => (
-              <article
+              <button
                 key={member.id}
-                className={cn(
-                  "group relative flex flex-col rounded-3xl bg-white p-8 shadow-owl-2",
-                  "cursor-pointer transition-all duration-300 ease-owl",
-                  "hover:-translate-y-1 hover:shadow-owl-3",
-                  "focus-within:ring-2 focus-within:ring-owl-teal focus-within:ring-offset-2"
-                )}
+                ref={getTriggerRef(member.id)}
+                type="button"
                 onClick={() => openModal(member)}
+                aria-label={`Read ${member.name}'s full biography`}
+                className={cn(
+                  "rounded-full bg-owl-teal px-6 py-2.5",
+                  "font-display text-sm font-bold text-white",
+                  "transition-all duration-150 hover:bg-owl-teal-deep",
+                  "focus-visible:outline-none focus-visible:ring-2",
+                  "focus-visible:ring-owl-teal focus-visible:ring-offset-2"
+                )}
               >
-                <div className="flex items-start gap-6">
-                  {/* Circular portrait */}
-                  <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full ring-4 ring-owl-teal/20 shadow-owl-1">
-                    <Image
-                      src={member.imageSrc}
-                      alt={member.imageAlt}
-                      fill
-                      className="object-cover object-top"
-                      sizes="112px"
-                    />
-                  </div>
-
-                  {/* Name + role + short bio */}
-                  <div className="flex-1 pt-1">
-                    <h3 className="font-display text-xl font-extrabold text-owl-ink">
-                      {member.name}
-                    </h3>
-                    <p className="mt-0.5 font-display text-sm font-semibold text-owl-teal">
-                      {member.role}
-                    </p>
-                    <p className="mt-3 text-sm leading-relaxed text-owl-ink/75">
-                      {member.shortBio}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Teal outline heart + Read Full Bio */}
-                <div className="mt-6 flex items-center justify-between">
-                  <Heart
-                    className="h-5 w-5 text-owl-teal"
-                    strokeWidth={1.5}
-                    aria-hidden="true"
-                  />
-                  <button
-                    ref={getTriggerRef(member.id)}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openModal(member);
-                    }}
-                    aria-label={`Read ${member.name}'s full biography`}
-                    className={cn(
-                      "rounded-full border-2 border-owl-teal px-5 py-2",
-                      "font-display text-xs font-bold text-owl-teal",
-                      "transition-all duration-150",
-                      "hover:bg-owl-teal hover:text-white",
-                      "focus-visible:outline-none focus-visible:ring-2",
-                      "focus-visible:ring-owl-teal focus-visible:ring-offset-2"
-                    )}
-                  >
-                    Read Full Bio
-                  </button>
-                </div>
-              </article>
+                {member.name}
+              </button>
             ))}
           </div>
-        </div>
         </div>
       </section>
 
@@ -232,7 +173,7 @@ export function AboutTeam() {
       <TeamMemberModal
         member={activeMember}
         onClose={closeModal}
-        triggerRef={triggerRef as React.RefObject<HTMLElement | null>}
+        triggerRef={triggerRef}
       />
     </>
   );
