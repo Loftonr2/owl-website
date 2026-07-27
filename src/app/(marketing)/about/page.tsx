@@ -4,12 +4,10 @@ import { pageMetadata } from "@/lib/seo/metadata";
 import { NewsHeroBanner } from "@/components/marketing/news-hero-banner";
 import { SectionReveal } from "@/components/marketing/section-reveal";
 
-// About Us redesign sections
-import { AboutNewsletterHeader } from "@/components/marketing/about/about-newsletter-header";
+// About Us sections — Mission · Why OWL · Team only
 import { AboutMission } from "@/components/marketing/about/about-mission";
 import { AboutWhyOwlExists } from "@/components/marketing/about/about-why-owl-exists";
 import { AboutTeam } from "@/components/marketing/about/about-team";
-import { AboutLowerNewsletter } from "@/components/marketing/about/about-lower-newsletter";
 
 export const metadata = pageMetadata({
   title: "About OWL Sing Together — Our Mission, Team, and Story",
@@ -21,14 +19,14 @@ export const metadata = pageMetadata({
 export default function AboutPage() {
   return (
     <>
-      {/* 1 — Existing video hero — DO NOT ALTER */}
+      {/* 1 — Existing video hero */}
       <NewsHeroBanner
         src="/videos/about-hero.mp4"
         poster="/images/heroes/about-hero-poster.webp"
         eyebrow="Meet the Team"
         title={
           <>
-            Welcome to Our{" "}
+            Welcome to Our{ }
             <span className="text-owl-teal">Heartfelt Journey.</span>
           </>
         }
@@ -42,27 +40,19 @@ export default function AboutPage() {
         }
       />
 
-      {/* 2 — "Join OWL Weekly" newsletter header + form, directly beneath hero */}
-      <AboutNewsletterHeader />
-
-      {/* 3 — Our Mission (collapsible card) */}
+      {/* 2 — Our Mission */}
       <SectionReveal offset={16}>
         <AboutMission />
       </SectionReveal>
 
-      {/* 4 — Why OWL Exists (7 reason cards + mascot) */}
+      {/* 3 — Why OWL Exists */}
       <SectionReveal offset={20}>
         <AboutWhyOwlExists />
       </SectionReveal>
 
-      {/* 5 — The OWL Team (clickable cards + biography modals) */}
+      {/* 4 — The OWL Team */}
       <SectionReveal offset={16}>
         <AboutTeam />
-      </SectionReveal>
-
-      {/* 6 — "Let's Keep Singing Together" lower newsletter CTA */}
-      <SectionReveal offset={16}>
-        <AboutLowerNewsletter />
       </SectionReveal>
     </>
   );
