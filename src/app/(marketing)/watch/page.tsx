@@ -13,50 +13,23 @@ import { GlassPanel } from "@/components/ui/glass-panel";
 import { VideoCard } from "@/components/marketing/video-card";
 import { MediaRail } from "@/components/marketing/media-rail";
 import { SectionReveal } from "@/components/marketing/section-reveal";
-// VideoCard + MediaRail still used by featured rail above
 import { StreamingPlatforms } from "@/components/marketing/streaming-platforms";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
 import { OwlDiscoveryArcade } from "@/components/marketing/owl-discovery-arcade";
 import { BrowseVideosSection } from "@/components/marketing/browse-videos-section";
 
 import { SEED_VIDEOS } from "@/lib/seed/videos";
+import { getLatestChannelVideos } from "@/lib/youtube/get-latest-channel-videos";
 
 export const metadata = pageMetadata({
-  title: "Watch — OWL Video Library",
+  title: "Watch -- OWL Video Library",
   description:
     "Multicultural music videos that grow with your child. Sort by age, theme, holiday, and format.",
   path: "/watch",
 });
 
-/**
- * /watch — v3 (Visual-track Phase 5, video-nook).
- *
- * Page sections:
- *   1. Video-nook hero (CinematicHero, sequenceSlug="watch-archive", slug="watch")
- *   2. Featured videos rail (MediaRail — poster-first <VideoCard>s)
- *   3. Search + filter chips (age × theme)
- *   4. Browse by theme/category icons (StaggerGrid)
- *   5. Full archive grid (MediaRail)
- *   6. Printable download CTA (cream-deep band)
- *   7. Streaming CTA (StreamingPlatforms)
- *   8. Newsletter band
- *
- * Poster-first guarantee:
- *   Every <VideoCard> uses <VideoPoster> internally, which resolves through
- *   `resolveVideoPoster(posterSrc, youtubeId)`:
- *     1. local file → 2. YouTube CDN → 3. tonal placeholder.
- *   NO <iframe> mounts on this page. Player is only loaded on the detail page
- *   AFTER the visitor clicks the play badge. Bundle stays small, no autoplay,
- *   COPPA-safe.
- *
- * Why thumbnails look like tonal panels today: every seed entry has
- * `youtubeId: null` AND `posterSrc: null`. Set either in src/lib/seed/videos.ts
- * to switch a card to a real thumbnail. No code change needed.
- */
-
-
-export default function WatchPage() {
-  const featured = SEED_VIDEOS.slice(0, 3);
+export default async function WatchPage() {
+  const latestVideos = await getLatestChannelVideos();
 
   return (
     <>
@@ -68,20 +41,20 @@ export default function WatchPage() {
         title={
           <>Watch, Sing, and{" "}<span className="text-owl-teal">Learn Together.</span></>
         }
-        subtitle="Free multicultural sing-along videos for children Birth–14. New songs every month."
+        subtitle="Free multicultural sing-along videos for children Birth-14. New songs every month."
         ctaLabel="Browse Videos"
         ctaHref="#videos"
         ctaLabel2="Watch on YouTube"
         ctaHref2="https://www.youtube.com/@Owlsingtogetherchannel"
       />
 
-      {/* 2 — Featured videos rail */}
+      {/* 2 -- Featured videos rail */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream" id="featured">
           <SectionIntro
             eyebrow="Hand-picked"
-            title="Featured this week"
-            subtitle="Three videos Larissa is highlighting right now — paired printables included."
+            title="Featured This Week"
+            subtitle="Three videos Larissa is highlighting right now -- paired printables included."
           />
           <MediaRail
             ariaLabel="Featured OWL videos"
@@ -89,32 +62,31 @@ export default function WatchPage() {
             className="mt-8"
             stagger={0.07}
           >
-            {featured.map((v) => (
+            {latestVideos.map((v) => (
               <VideoCard
-                key={v.slug}
-                slug={v.slug}
+                key={v.id}
+                slug={v.id}
                 title={v.title}
-                ageRange={v.ageRange}
-                theme={v.theme}
-                duration={v.duration}
-                tone={v.tone}
-                posterSrc={v.posterSrc}
-                youtubeId={v.youtubeId}
+                ageRange="0-8"
+                duration="Video"
+                tone="teal"
+                youtubeId={v.id}
+                href={v.watchUrl}
               />
             ))}
           </MediaRail>
         </Section>
       </SectionReveal>
 
-      {/* 3+4 — OWL Discovery Arcade (search + theme browse) */}
+      {/* 3+4 -- OWL Discovery Arcade (search + theme browse) */}
       <OwlDiscoveryArcade />
 
-      {/* 5 — Browse Videos (6 preview + More Videos modal) */}
+      {/* 5 -- Browse Videos (6 preview + More Videos modal) */}
       <SectionReveal>
         <BrowseVideosSection videos={SEED_VIDEOS} />
       </SectionReveal>
 
-      {/* 6 — Printable download CTA */}
+      {/* 6 -- Printable download CTA */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="cream-deep">
           <div className="relative isolate overflow-hidden rounded-owl-hero bg-owl-amber-soft/40 p-8 shadow-owl-1 md:p-12">
@@ -142,10 +114,10 @@ export default function WatchPage() {
                   Always included
                 </p>
                 <ul className="mt-3 space-y-1.5 text-sm text-owl-ink">
-                  <li>🎵 Lyric sheet</li>
-                  <li>🎨 Coloring page</li>
-                  <li>📝 Parent guide</li>
-                  <li>🌍 EN/ES variant</li>
+                  <li>Lyric sheet</li>
+                  <li>Coloring page</li>
+                  <li>Parent guide</li>
+                  <li>EN/ES variant</li>
                 </ul>
               </GlassPanel>
             </div>
@@ -153,7 +125,7 @@ export default function WatchPage() {
         </Section>
       </SectionReveal>
 
-      {/* 7 — Streaming CTA */}
+      {/* 7 -- Streaming CTA */}
       <SectionReveal>
         <Section width="wide" pad="lg" bg="white">
           <SectionIntro
