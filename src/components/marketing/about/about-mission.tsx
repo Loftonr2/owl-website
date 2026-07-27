@@ -47,7 +47,7 @@ export function AboutMission() {
         {/* ── Approved section artwork ─────────────────────────────────────── */}
         <figure className="overflow-hidden rounded-3xl shadow-owl-3">
           <Image
-            src="/images/about/redesign/owl-mission.png"
+            src="/images/about/owl-mission-mascot.png"
             alt="OWL Mission — Building Brighter Tomorrows Through Music and Connection: our commitment to nurturing every child's love of learning through music, inclusivity, and community."
             width={1672}
             height={941}
