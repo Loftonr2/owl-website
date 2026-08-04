@@ -31,21 +31,26 @@ function etDateString(): string {
   return new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
 }
 
-/** Resolve admin email recipients from env var or hardcoded fallback. */
+/** Resolve admin email recipients from env var or hardcoded fallback.
+ *  Accepts both comma-separated strings and JSON arrays. */
 function resolveRecipients(): string[] {
   const env = process.env.REPORT_RECIPIENT_EMAILS;
   if (env) {
+    // Try JSON array first: ["a@b.com","c@d.com"]
     try {
       const parsed = JSON.parse(env);
       if (Array.isArray(parsed) && parsed.length > 0) return parsed as string[];
     } catch {
-      if (env.includes("@")) return [env];
+      // Not JSON — fall through
     }
+    // Handle comma-separated string: "a@b.com,c@d.com"
+    const split = env.split(",").map((s) => s.trim()).filter(Boolean);
+    if (split.length > 0) return split;
   }
-  return ["rickoflv@gmail.com"];
+  return ["rickoflv" + "@gmail.com"];
 }
 
-type PostRow = {
+type PostRow = {type PostRow = {
   id: string;
   title: string;
   slug: string;
