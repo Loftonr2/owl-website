@@ -123,7 +123,7 @@ export function NewsletterTemplate({ data }: { data: NewsletterIssueData }) {
           <div className="flex items-center gap-3">
             <div className="flex-shrink-0">
               <Image
-                src="/images/brand/owl-mascot.png"
+                src="/images/brand/mascot.png"
                 alt="OWL Mascot"
                 width={72}
                 height={72}
@@ -397,7 +397,7 @@ export function NewsletterTemplate({ data }: { data: NewsletterIssueData }) {
       >
         <div className="flex items-center justify-center gap-3">
           <Image
-            src="/images/brand/owl-mascot.png"
+            src="/images/brand/mascot.png"
             alt="OWL mascot"
             width={40}
             height={40}
