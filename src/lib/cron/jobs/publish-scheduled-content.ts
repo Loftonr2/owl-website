@@ -9,7 +9,7 @@ import { resend, EMAIL_FROM } from "@/lib/clients/resend";
  *
  * Schedule: vercel.json fires this once daily at 12:00 UTC.
  *   - EST (UTC-5): 7:00 AM ET  ← exact target
- *   - EDT (UTC-4): 8:00 AM ET  ← acceptable DST offset (within business hours)
+ *   - EDT (UTC-4): 8:00 AM ET  ← acceptable DST offseth (within business hours)
  *
  * Publishing eligibility is based on editorial workflow only:
  *   status = 'scheduled' AND workflow_status = 'scheduled' AND publish_date ≤ NOW()
@@ -50,7 +50,7 @@ function resolveRecipients(): string[] {
   return ["rickoflv" + "@gmail.com"];
 }
 
-type PostRow = {type PostRow = {
+type PostRow = {
   id: string;
   title: string;
   slug: string;
