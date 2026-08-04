@@ -25,7 +25,28 @@ interface CaptureResult {
       unit_amount?: { value?: string };
       quantity?: string;
     }>;
+    shipping?: {
+      name?: { full_name?: string };
+      address?: {
+        address_line_1?: string;
+        address_line_2?: string;
+        admin_area_2?: string;  // city
+        admin_area_1?: string;  // state/region
+        postal_code?: string;
+        country_code?: string;
+      };
+    };
   }>;
+}
+
+interface ShippingAddress {
+  name: string;
+  address_line_1: string;
+  address_line_2: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country_code: string;
 }
 
 interface SupabaseOrderPayload {
@@ -43,6 +64,7 @@ interface SupabaseOrderPayload {
   fulfillment_status: "unfulfilled";
   paypal_order_id: string;
   paypal_capture_id: string;
+  shipping_address: ShippingAddress | null;
   line_items: Array<{
     sku: string;
     name: string;
@@ -186,7 +208,7 @@ export async function POST(req: NextRequest) {
     if (paypalAmount !== expectedTotalStr) {
       console.error(
         `[capture-order] Amount mismatch for order ${orderID}: ` +
-          `expected $${expectedTotalStr}, PayPal reports $${paypalAmount}`
+          `expected ${expectedTotalStr}, PayPal reports ${paypalAmount}`
       );
       return NextResponse.json(
         { error: "Price mismatch — order rejected for security" },
@@ -231,8 +253,22 @@ export async function POST(req: NextRequest) {
 
     console.log(
       `[capture-order] Payment captured: ${captureId} — ` +
-        `${lineEntries.length} item(s) — $${expectedTotalStr} — ${customerEmail}`
+        `${lineEntries.length} item(s) — ${expectedTotalStr} — ${customerEmail}`
     );
+
+    // -- Extract shipping address (never logged) --------------------------------
+    const shippingUnit = captureData.purchase_units?.[0]?.shipping;
+    const shippingAddress: ShippingAddress | null = shippingUnit?.address
+      ? {
+          name: shippingUnit.name?.full_name ?? customerName,
+          address_line_1: shippingUnit.address.address_line_1 ?? "",
+          address_line_2: shippingUnit.address.address_line_2 ?? "",
+          city: shippingUnit.address.admin_area_2 ?? "",
+          state: shippingUnit.address.admin_area_1 ?? "",
+          postal_code: shippingUnit.address.postal_code ?? "",
+          country_code: shippingUnit.address.country_code ?? "",
+        }
+      : null;
 
     // -- Save to Supabase -------------------------------------------------------
     const totalCents = Math.round(expectedTotal * 100);
@@ -252,6 +288,7 @@ export async function POST(req: NextRequest) {
       fulfillment_status: "unfulfilled",
       paypal_order_id: orderID,
       paypal_capture_id: captureId,
+      shipping_address: shippingAddress,
       line_items: lineEntries.map((e) => ({
         sku: e.slug,
         name: e.name,
