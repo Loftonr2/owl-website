@@ -26,4 +26,5 @@ export const EMAIL_FROM = {
   hello: "OWL Sing Together <hello@owlsingtogether.com>",
   orders: "OWL Orders <orders@owlsingtogether.com>",
   educator: "OWL for Educators <educators@owlsingtogether.com>",
+  store: "OWL Sing Together <store@owlsingtogether.com>",
 } as const;
