@@ -19,7 +19,7 @@ export const siteConfig = {
   twitterHandle: "@OWLSingTogether",
   contactEmail: "hello@owlsingtogether.com",
   social: {
-    youtube: "https://www.youtube.com/@LearningTheABCs",
+    youtube: "https://www.youtube.com/@Owlsingtogetherchannel",
     instagram: "https://www.instagram.com/owlsingtogether",
     tiktok: "https://www.tiktok.com/@owlsingtogether",
     pinterest: "https://www.pinterest.com/owlsingtogether",
