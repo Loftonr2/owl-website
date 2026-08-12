@@ -17,6 +17,25 @@ export type BlogCardProps = {
   contentType?: "blog" | "news";
 };
 
+/**
+ * publishedAt is often a date-only string ("2026-08-12") from the
+ * `publish_date` column. Parsing a date-only string directly produces UTC
+ * midnight, which renders as the previous calendar day once the server
+ * (UTC) and the client (a timezone behind UTC) disagree — causing a
+ * hydration text mismatch (React error #418) in addition to showing the
+ * wrong date. Anchor date-only strings at local noon so server and client
+ * always agree on the calendar day.
+ */
+function formatCardDate(d: string): string {
+  const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(d);
+  const date = isDateOnly ? new Date(`${d}T12:00:00`) : new Date(d);
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export function BlogCard({
   slug,
   title,
@@ -62,11 +81,7 @@ export function BlogCard({
 
         <div className="mt-auto flex items-center justify-between pt-4">
           <p className="text-xs text-owl-mist/80">
-            {new Date(publishedAt).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {formatCardDate(publishedAt)}
           </p>
           {readTime != null && (
             <p className="text-xs text-owl-mist/70">{readTime} min read</p>
