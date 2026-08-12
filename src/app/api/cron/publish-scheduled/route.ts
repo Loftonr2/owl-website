@@ -1,10 +1,12 @@
 /**
  * GET /api/cron/publish-scheduled
  *
- * Daily content publisher — vercel.json fires this hourly (0 * * * *).
- * The job itself (publish-scheduled-content) checks whether the current local
- * hour in America/New_York is 7 and exits early at all other hours.
- * This makes the publish time DST-safe without a fixed UTC offset.
+ * Daily content publisher — vercel.json fires this once daily at 12:00 UTC
+ * ("0 12 * * *"), which lands at ~7-8 AM America/New_York depending on DST.
+ * The job (publish-scheduled-content) publishes every News/Blog post whose
+ * publish_date has passed, plus a per-content-type catch-up (see that file)
+ * that pulls the next scheduled post of any type forward if none is due —
+ * so News and Blog each reliably publish once per run, independently.
  *
  * Uses makeCronRoute so every run is logged to cron_job_logs and the
  * Automations CRM panel shows last_run_at / last_status automatically.

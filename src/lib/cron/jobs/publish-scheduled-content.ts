@@ -114,8 +114,39 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
     ((alreadyDone ?? []) as Array<{ post_id: string }>).map((r) => r.post_id)
   );
 
-  const toPublish = (due as PostRow[]).filter((p) => !alreadyDoneIds.has(p.id));
+  let toPublish = (due as PostRow[]).filter((p) => !alreadyDoneIds.has(p.id));
   const skipped   = (due as PostRow[]).length - toPublish.length;
+
+  // ── Per-content-type catch-up ──────────────────────────────────────────────
+  // News and Blog must each publish independently every day. If today's due
+  // queue has no post of a given content_type (e.g. the next scheduled Blog
+  // is still days away because of a gap in the schedule), pull the single
+  // earliest still-scheduled post of that type forward so that type is never
+  // skipped for a day it has eligible, completed content waiting.
+  // This does not affect a type that already has a due post today, and it
+  // never touches drafts (only rows already in status='scheduled').
+  const pulledForward: PostRow[] = [];
+  for (const contentType of ["news", "blog"] as const) {
+    const hasDueToday = toPublish.some((p) => p.content_type === contentType);
+    if (hasDueToday) continue;
+
+    const { data: nextUp } = await db
+      .from("content_posts")
+      .select("id, title, slug, content_type, publish_date, featured_image, category")
+      .eq("content_type", contentType)
+      .eq("status", "scheduled")
+      .eq("workflow_status", "scheduled")
+      .order("publish_date", { ascending: true })
+      .limit(1);
+
+    const candidate = (nextUp as PostRow[] | null)?.[0];
+    if (candidate) {
+      pulledForward.push(candidate);
+    }
+  }
+  if (pulledForward.length > 0) {
+    toPublish = [...toPublish, ...pulledForward];
+  }
 
   if (toPublish.length === 0) {
     return {
@@ -132,11 +163,17 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
   const failedRecords: FailedRecord[] = [];
   const errors: string[] = [];
 
+  const pulledForwardIds = new Set(pulledForward.map((p) => p.id));
+
   for (const post of toPublish) {
     // Publishing eligibility is editorial-only (workflow_status = 'scheduled').
     // Image quality is a display concern handled by resolveContentCardImage() in
     // the frontend. A null featured_image triggers the tier-2 slug map / tier-3
     // category mascot fallback — it does NOT block publishing.
+    //
+    // Posts pulled forward by the per-content-type catch-up (see above) get
+    // their publish_date corrected to "now" so the record reflects when the
+    // post actually went live rather than its original future schedule slot.
 
     const { error: updateErr } = await db
       .from("content_posts")
@@ -144,6 +181,7 @@ export const publishScheduledContent: JobFn = async (db: ServiceClient) => {
         status: "published",
         workflow_status: "published",
         updated_at: nowIso,
+        ...(pulledForwardIds.has(post.id) ? { publish_date: nowIso } : {}),
       })
       .eq("id", post.id)
       .eq("status", "scheduled")          // guard: only update if still scheduled
