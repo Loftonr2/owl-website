@@ -180,10 +180,13 @@ export function NewsTopicModal({
                       const image =
                         article.featuredImage ??
                         getCategoryFallbackImage(article.crmCategory, contentType);
-                      const dateStr = new Date(article.publishedAt).toLocaleDateString(
-                        "en-US",
-                        { month: "short", day: "numeric", year: "numeric" }
-                      );
+                      // See news-card.tsx for why we extract the date-only
+                      // prefix rather than parsing the full timestamptz
+                      // string directly (timezone-dependent off-by-one).
+                      const dateOnlyMatch = article.publishedAt.match(/^(\d{4}-\d{2}-\d{2})/);
+                      const dateStr = new Date(
+                        dateOnlyMatch ? `${dateOnlyMatch[1]}T12:00:00` : article.publishedAt
+                      ).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
                       return (
                         <li key={article.slug}>
                           <Link

@@ -42,14 +42,18 @@ export function NewsCard({
 }: NewsCardProps) {
   const linkHref = href ?? `/news/${slug}`;
 
-  // publishedAt is often a date-only string ("2026-08-12"). Parsing that
-  // directly yields UTC midnight, which can render as the previous
-  // calendar day once server (UTC) and client (a timezone behind UTC)
-  // disagree — causing a hydration text mismatch (React error #418) in
-  // addition to showing the wrong date. Anchor date-only strings at local
-  // noon so server and client always agree on the calendar day.
-  const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(publishedAt);
-  const dateStr = new Date(isDateOnly ? `${publishedAt}T12:00:00` : publishedAt).toLocaleDateString("en-US", {
+  // publishedAt is a Postgres timestamptz serialized as e.g.
+  // "2026-07-14 00:00:00+00" or "2026-07-14T00:00:00+00:00" -- almost
+  // always midnight UTC. Formatting that directly with toLocaleDateString
+  // renders the PREVIOUS calendar day once the client's timezone is behind
+  // UTC, and disagrees with the server's own render of the same string --
+  // a hydration text mismatch (React error #418) in addition to showing
+  // the wrong date. We only care about the calendar day, so pull the
+  // YYYY-MM-DD prefix out of whatever format we're given and re-anchor it
+  // at local noon; that date then renders identically on server and
+  // client regardless of either side's timezone.
+  const dateOnlyMatch = publishedAt.match(/^(\d{4}-\d{2}-\d{2})/);
+  const dateStr = new Date(dateOnlyMatch ? `${dateOnlyMatch[1]}T12:00:00` : publishedAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",

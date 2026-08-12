@@ -18,17 +18,19 @@ export type BlogCardProps = {
 };
 
 /**
- * publishedAt is often a date-only string ("2026-08-12") from the
- * `publish_date` column. Parsing a date-only string directly produces UTC
- * midnight, which renders as the previous calendar day once the server
- * (UTC) and the client (a timezone behind UTC) disagree — causing a
- * hydration text mismatch (React error #418) in addition to showing the
- * wrong date. Anchor date-only strings at local noon so server and client
- * always agree on the calendar day.
+ * publishedAt is a Postgres timestamptz serialized as e.g.
+ * "2026-07-14 00:00:00+00" -- almost always midnight UTC. Formatting that
+ * directly renders the PREVIOUS calendar day once the client's timezone is
+ * behind UTC, and disagrees with the server's own render of the same
+ * string -- a hydration text mismatch (React error #418) in addition to
+ * showing the wrong date. We only care about the calendar day, so pull the
+ * YYYY-MM-DD prefix out of whatever format we're given and re-anchor it at
+ * local noon; that date then renders identically on server and client
+ * regardless of either side's timezone.
  */
 function formatCardDate(d: string): string {
-  const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(d);
-  const date = isDateOnly ? new Date(`${d}T12:00:00`) : new Date(d);
+  const dateOnlyMatch = d.match(/^(\d{4}-\d{2}-\d{2})/);
+  const date = dateOnlyMatch ? new Date(`${dateOnlyMatch[1]}T12:00:00`) : new Date(d);
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
