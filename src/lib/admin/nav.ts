@@ -11,6 +11,7 @@ import {
   Workflow,
   Settings,
   Lightbulb,
+  ClipboardList,
   type LucideIcon,
 } from "lucide-react";
 import type { AppRole } from "@/lib/auth/role-utils";
@@ -41,5 +42,6 @@ export const ADMIN_NAV: NavItem[] = [
   { label: "Downloads",        href: "/admin/downloads",    icon: Download,        minRole: "support", description: "Curriculum + lead-magnet downloads" },
   { label: "Analytics",        href: "/admin/analytics",    icon: BarChart3,       minRole: "support", description: "Traffic, subscribers, top content" },
   { label: "Automations",      href: "/admin/automations",  icon: Workflow,        minRole: "admin",   description: "Scheduled jobs + run history" },
+  { label: "Reports",          href: "/admin/reports",      icon: ClipboardList,   minRole: "admin",   description: "Weekly report archive + delivery status" },
   { label: "Settings",         href: "/admin/settings",     icon: Settings,        minRole: "admin",   description: "Roles, integrations, feature flags" },
 ];
