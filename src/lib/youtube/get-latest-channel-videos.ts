@@ -25,6 +25,11 @@ export interface YouTubeFeaturedVideo {
 const CHANNEL_ID = "UCPeDZMf79CEO7dgpwJeCmMg";
 const REVALIDATE = 1800;
 const FALLBACK_IDS = ["zrtwck76T1I", "TzcY0JR6P5M", "Yr0mAPx8UMg"];
+// Hard upper bound on each live fetch. This section renders inside a
+// Suspense boundary (see FeaturedVideos / WatchPage), but the fetch is
+// still bounded so a slow/hanging YouTube response degrades to the
+// cached/fallback data quickly instead of holding a request open.
+const FETCH_TIMEOUT_MS = 5000;
 
 function videoFromId(id: string, title = "OWL Sing Together", publishedAt = ""): YouTubeFeaturedVideo {
   return {
@@ -38,18 +43,21 @@ function videoFromId(id: string, title = "OWL Sing Together", publishedAt = ""):
   };
 }
 
-async function fetchViaDataApi(apiKey: string): Promise<YouTubeFeaturedVideo[]> {
+async function fetchViaDataApi(apiKey: string, count: number): Promise<YouTubeFeaturedVideo[]> {
   const url = new URL("https://www.googleapis.com/youtube/v3/search");
   url.searchParams.set("part", "snippet");
   url.searchParams.set("channelId", CHANNEL_ID);
   url.searchParams.set("type", "video");
   url.searchParams.set("order", "date");
-  url.searchParams.set("maxResults", "6");
+  url.searchParams.set("maxResults", String(Math.max(count, 6)));
   url.searchParams.set("videoEmbeddable", "true");
   url.searchParams.set("videoSyndicated", "true");
   url.searchParams.set("key", apiKey);
 
-  const res = await fetch(url.toString(), { next: { revalidate: REVALIDATE } });
+  const res = await fetch(url.toString(), {
+    next: { revalidate: REVALIDATE },
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  });
   if (!res.ok) throw new Error(`YouTube Data API ${res.status}: ${res.statusText}`);
 
   interface ApiItem {
@@ -63,22 +71,25 @@ async function fetchViaDataApi(apiKey: string): Promise<YouTubeFeaturedVideo[]> 
   }
 
   const data = (await res.json()) as { items?: ApiItem[] };
-  return (data.items ?? []).slice(0, 3).map((item) => {
+  return (data.items ?? []).slice(0, count).map((item) => {
     const id = item.id.videoId;
     const thumb = item.snippet.thumbnails.maxres?.url ?? item.snippet.thumbnails.high?.url ?? `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
     return { id, title: item.snippet.title, description: item.snippet.description, thumbnailUrl: thumb, publishedAt: item.snippet.publishedAt, watchUrl: `https://www.youtube.com/watch?v=${id}`, embedUrl: `https://www.youtube-nocookie.com/embed/${id}` };
   });
 }
 
-async function fetchViaRss(): Promise<YouTubeFeaturedVideo[]> {
+async function fetchViaRss(count: number): Promise<YouTubeFeaturedVideo[]> {
   const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
-  const res = await fetch(feedUrl, { next: { revalidate: REVALIDATE } });
+  const res = await fetch(feedUrl, {
+    next: { revalidate: REVALIDATE },
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  });
   if (!res.ok) throw new Error(`YouTube RSS ${res.status}: ${res.statusText}`);
 
   const xml = await res.text();
   const entries = xml.match(/<entry>([\s\S]*?)<\/entry>/g) ?? [];
 
-  return entries.slice(0, 3).map((entry) => {
+  return entries.slice(0, count).map((entry) => {
     const id = (entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) ?? [])[1] ?? "";
     const rawTitle = (entry.match(/<title>([^<]*)<\/title>/) ?? [])[1] ?? "OWL Sing Together";
     const title = rawTitle.replace(/^<!\[CDATA\[/, "").replace(/\]\]>$/, "").trim();
@@ -88,32 +99,41 @@ async function fetchViaRss(): Promise<YouTubeFeaturedVideo[]> {
 }
 
 /**
- * Returns the latest 3 public, embeddable OWL Sing Together videos.
+ * Returns the latest N public, embeddable OWL Sing Together videos, newest
+ * first (`count` defaults to 3 for existing call sites).
  * Tries YouTube Data API -> RSS -> hardcoded fallback.
- * Never throws. Always returns exactly 3 items.
+ * Never throws. Always returns exactly `count` items (last-known-good /
+ * hardcoded fallback fills in if live sources are unavailable).
  */
-export async function getLatestChannelVideos(): Promise<YouTubeFeaturedVideo[]> {
+export async function getLatestChannelVideos(count = 3): Promise<YouTubeFeaturedVideo[]> {
   const apiKey = process.env.YOUTUBE_API_KEY;
 
   if (apiKey) {
     try {
-      const videos = await fetchViaDataApi(apiKey);
-      if (videos.length >= 3) return videos.slice(0, 3);
+      const videos = await fetchViaDataApi(apiKey, count);
+      if (videos.length >= count) return videos.slice(0, count);
     } catch (err) {
       console.warn("[getLatestChannelVideos] Data API failed, falling back to RSS:", err);
     }
   }
 
   try {
-    const videos = await fetchViaRss();
-    if (videos.length >= 3) return videos.slice(0, 3);
+    const videos = await fetchViaRss(count);
+    if (videos.length >= count) return videos.slice(0, count);
     if (videos.length > 0) {
-      const extra = FALLBACK_IDS.slice(videos.length).map((id) => videoFromId(id));
-      return [...videos, ...extra].slice(0, 3);
+      const extraIds = FALLBACK_IDS.slice(0, Math.max(count - videos.length, 0));
+      const extra = extraIds.map((id) => videoFromId(id));
+      return [...videos, ...extra].slice(0, count);
     }
   } catch (err) {
     console.warn("[getLatestChannelVideos] RSS failed, falling back to seed IDs:", err);
   }
 
-  return FALLBACK_IDS.map((id) => videoFromId(id));
+  // Absolute last resort: repeat/pad the hardcoded seed IDs to satisfy `count`
+  // without ever returning an empty homepage section.
+  const padded: YouTubeFeaturedVideo[] = [];
+  for (let i = 0; i < count; i++) {
+    padded.push(videoFromId(FALLBACK_IDS[i % FALLBACK_IDS.length]));
+  }
+  return padded;
 }

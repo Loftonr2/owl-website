@@ -36,11 +36,28 @@ export async function updateSession(request: NextRequest) {
         );
       },
     },
+    global: {
+      // Middleware runs on EVERY navigation (see src/middleware.ts matcher).
+      // A hung or slow Supabase Auth call here — with no timeout — stalls
+      // every route in the app, including plain marketing links like
+      // Blog/News that don't even need auth. Bound it hard: if Supabase
+      // doesn't answer in 4s, treat the request as unauthenticated rather
+      // than let navigation hang indefinitely.
+      fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+        fetch(input, { ...init, signal: AbortSignal.timeout(4000) }),
+    },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return { response, user };
+  try {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return { response, user };
+  } catch {
+    // Timed out or Supabase Auth unreachable — fail open for navigation.
+    // Protected routes (/admin, /studio, /portal, /account) will simply
+    // redirect to /login as if anonymous; public marketing routes
+    // (Blog, News, Watch, etc.) are entirely unaffected.
+    return { response, user: null };
+  }
 }

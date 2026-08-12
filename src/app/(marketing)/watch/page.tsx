@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import {
   Download,
   Music2,
@@ -53,9 +54,62 @@ export const metadata = pageMetadata({
  * `youtubeId: null` AND `posterSrc: null`. Set either in src/lib/seed/videos.ts
  * to switch a card to a real thumbnail. No code change needed.
  */
-export default async function WatchPage() {
+
+/**
+ * Isolated async data slice for the "Featured This Week" rail. Fetching the
+ * live YouTube feed here — instead of with a top-level `await` in
+ * `WatchPage` itself — means the hero, search/filter chips, and the rest of
+ * the page stream immediately. Only this rail waits on the network call,
+ * and it's bounded by <Suspense> below so a slow/unavailable YouTube feed
+ * can never hold up the rest of /watch (or its nav).
+ */
+async function WatchFeaturedRail() {
   const latestVideos = await getLatestChannelVideos();
 
+  return (
+    <MediaRail
+      ariaLabel="Featured OWL videos"
+      columns={{ md: 2, lg: 3 }}
+      className="mt-8"
+      stagger={0.07}
+    >
+      {latestVideos.map((v) => (
+        <VideoCard
+          key={v.id}
+          slug={v.id}
+          title={v.title}
+          ageRange="0–8"
+          duration="Video"
+          tone="teal"
+          youtubeId={v.id}
+          href={v.watchUrl}
+        />
+      ))}
+    </MediaRail>
+  );
+}
+
+function WatchFeaturedRailSkeleton() {
+  return (
+    <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div
+          key={i}
+          aria-hidden
+          className="overflow-hidden rounded-owl-card border border-owl-cream-deep bg-owl-white shadow-owl-1"
+        >
+          <div className="aspect-video w-full animate-pulse bg-owl-cream-deep/60" />
+          <div className="space-y-2 p-5">
+            <div className="h-4 w-3/4 animate-pulse rounded bg-owl-cream-deep/60" />
+            <div className="h-3 w-1/3 animate-pulse rounded-full bg-owl-cream-deep/40" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default function WatchPage() {
   return (
     <>
       {/* Hero */}
@@ -81,25 +135,9 @@ export default async function WatchPage() {
             title="Featured This Week"
             subtitle="Three videos Larissa is highlighting right now — paired printables included."
           />
-          <MediaRail
-            ariaLabel="Featured OWL videos"
-            columns={{ md: 2, lg: 3 }}
-            className="mt-8"
-            stagger={0.07}
-          >
-            {latestVideos.map((v) => (
-              <VideoCard
-                key={v.id}
-                slug={v.id}
-                title={v.title}
-                ageRange="0–8"
-                duration="Video"
-                tone="teal"
-                youtubeId={v.id}
-                href={v.watchUrl}
-              />
-            ))}
-          </MediaRail>
+          <Suspense fallback={<WatchFeaturedRailSkeleton />}>
+            <WatchFeaturedRail />
+          </Suspense>
         </Section>
       </SectionReveal>
 

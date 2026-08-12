@@ -3,34 +3,30 @@ import { ArrowRight } from "lucide-react";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { VideoCard } from "./video-card";
 import { MediaRail } from "./media-rail";
-import { SEED_VIDEOS } from "@/lib/seed/videos";
+import { getLatestChannelVideos } from "@/lib/youtube/get-latest-channel-videos";
 
 /**
- * Featured Videos row — v3 (homepage row pulls from the real seed).
+ * Featured Videos row — v4 (live YouTube feed, homepage).
+ *
+ * Pulls the newest public uploads directly from the OWL Sing Together
+ * YouTube channel via `getLatestChannelVideos()` (YouTube Data API -> RSS ->
+ * last-known-good hardcoded fallback; never throws, never returns empty).
+ * Result is cached/revalidated server-side every 30 minutes
+ * (`REVALIDATE = 1800` in get-latest-channel-videos.ts) — the browser never
+ * fetches YouTube directly, so this never blocks navigation or hydration.
+ *
+ * No source-code edit is required when OWL uploads a new video: it appears
+ * here automatically after the next cache revalidation.
  *
  * Uses <MediaRail> so it scrolls horizontally on mobile with snap stops, and
- * becomes a 3-column grid on desktop. Each card is a <VideoCard> with a real
- * YouTube poster resolved via `resolveVideoPoster(posterSrc, youtubeId)`.
- *
- * Phase 5 (data) replaces the seed module with `videoArchiveQuery` from Sanity.
- * v3 of this row already reads from a single source of truth (SEED_VIDEOS),
- * so the Sanity swap will be a one-line change.
+ * becomes a 3-column grid on desktop. Each card renders a YouTube CDN
+ * thumbnail only (no iframe) via <VideoCard>/<VideoPoster> — clicking opens
+ * the video on YouTube (href = watchUrl), so this section never instantiates
+ * a player on initial homepage load.
  */
+export async function FeaturedVideos() {
+  const latestVideos = await getLatestChannelVideos(6);
 
-const FEATURED_SLUGS = [
-  "owl-sing-together-greatest-hits",
-  "learning-the-abcs",
-  "letter-sound-song",
-  "this-little-light-of-mine",
-  "the-radish-song",
-  "shell-be-comin-round-the-mountain",
-] as const;
-
-const FEATURED = FEATURED_SLUGS
-  .map((slug) => SEED_VIDEOS.find((v) => v.slug === slug))
-  .filter((v): v is NonNullable<typeof v> => Boolean(v));
-
-export function FeaturedVideos() {
   return (
     <Section width="wide" pad="lg" bg="cream">
       <SectionHeader
@@ -43,17 +39,16 @@ export function FeaturedVideos() {
         columns={{ md: 2, lg: 3 }}
         className="mt-8"
       >
-        {FEATURED.map((v) => (
+        {latestVideos.map((v) => (
           <VideoCard
-            key={v.slug}
-            slug={v.slug}
+            key={v.id}
+            slug={v.id}
             title={v.title}
-            ageRange={v.ageRange}
-            theme={v.theme}
-            duration={v.duration}
-            tone={v.tone}
-            posterSrc={v.posterSrc}
-            youtubeId={v.youtubeId}
+            ageRange="0–8"
+            duration="Video"
+            tone="teal"
+            youtubeId={v.id}
+            href={v.watchUrl}
           />
         ))}
       </MediaRail>

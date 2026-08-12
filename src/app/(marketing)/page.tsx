@@ -1,10 +1,12 @@
 import Script from "next/script";
+import { Suspense } from "react";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { organizationSchema, websiteSchema } from "@/lib/seo/structured-data";
 
 import { Hero } from "@/components/marketing/hero";
 import { TrustStrip } from "@/components/marketing/trust-strip";
 import { FeaturedVideos } from "@/components/marketing/featured-videos";
+import { FeaturedVideosSkeleton } from "@/components/marketing/featured-videos-skeleton";
 import { PrintableOfTheWeek } from "@/components/marketing/printable-of-the-week";
 import { SeasonalSpotlight } from "@/components/marketing/seasonal-spotlight";
 import { FeaturedPlaylists } from "@/components/marketing/featured-playlists";
@@ -68,8 +70,19 @@ export default function Home() {
       <TrustStrip />
 
       {/* Below the fold — gentle fade-in on scroll */}
+      {/*
+        FeaturedVideos is an async Server Component that fetches the live
+        YouTube feed (getLatestChannelVideos). It's wrapped in <Suspense> so
+        that section — and ONLY that section — waits on the network call.
+        The header/nav, Hero, and TrustStrip above are never blocked by it;
+        Next.js streams them immediately and swaps in the skeleton fallback
+        below until the videos resolve (bounded to ~5s by the fetch's own
+        AbortSignal timeout, with a hardcoded fallback if YouTube is down).
+      */}
       <SectionReveal>
-        <FeaturedVideos />
+        <Suspense fallback={<FeaturedVideosSkeleton />}>
+          <FeaturedVideos />
+        </Suspense>
       </SectionReveal>
       <SectionReveal>
         <PrintableOfTheWeek />
