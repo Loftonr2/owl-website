@@ -52,7 +52,13 @@ function DeliveryBadge({ status }: { status: string }) {
 
 function fmt(d: string | null) {
   if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  // period_start/period_end are date-only ("2026-08-05"); parsing those as
+  // UTC midnight and rendering in a timezone behind UTC shows the wrong
+  // (previous) calendar day. Anchor date-only strings at local noon so the
+  // displayed day always matches the stored calendar date.
+  const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(d);
+  const date = isDateOnly ? new Date(`${d}T12:00:00`) : new Date(d);
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
 export default function ReportsAdminPage() {
