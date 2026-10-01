@@ -13,7 +13,7 @@
  *
  *   If the env var is absent or empty the function falls back to the two
  *   required administrative recipients defined in DEFAULT_ADMIN_RECIPIENTS.
- *   Both addresses are always required — do not remove either one.
+ *   Both addresses are always required â do not remove either one.
  *
  * Usage:
  *   import { resolveAdminRecipients } from "@/lib/email/admin-recipients";
@@ -47,7 +47,7 @@ export function resolveAdminRecipients(): string[] {
       const jsonParsed = JSON.parse(env);
       if (Array.isArray(jsonParsed)) parsed = jsonParsed as string[];
     } catch {
-      // Not JSON — fall through to comma split
+      // Not JSON â fall through to comma split
     }
 
     const addresses = (parsed ?? env.split(","))
@@ -62,10 +62,6 @@ export function resolveAdminRecipients(): string[] {
   return [...DEFAULT_ADMIN_RECIPIENTS];
 }
 
-/**
- * Validate that both required administrative recipients are present in the
- * resolved list.  Returns an array of missing addresses (empty = all present).
- */
 export function getMissingRequiredRecipients(recipients: string[]): string[] {
   const normalised = recipients.map((r) => r.trim().toLowerCase());
   return DEFAULT_ADMIN_RECIPIENTS.filter(
