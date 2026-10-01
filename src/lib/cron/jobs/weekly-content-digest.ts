@@ -1,6 +1,7 @@
 import "server-only";
 import type { JobFn, ServiceClient } from "@/lib/cron/runner";
 import { resend, EMAIL_FROM } from "@/lib/clients/resend";
+import { resolveAdminRecipients } from "@/lib/email/admin-recipients";
 
 /**
  * Weekly Content Digest — every Sunday at 08:00 UTC.
@@ -16,22 +17,10 @@ import { resend, EMAIL_FROM } from "@/lib/clients/resend";
  *    and newsletter_campaigns with status IN ('draft','scheduled').
  */
 
-async function resolveRecipients(db: ServiceClient): Promise<string[]> {
-  const fromEnv = (process.env.REPORT_RECIPIENT_EMAILS ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  if (fromEnv.length) return fromEnv;
-
-  const { data } = await db
-    .from("app_settings")
-    .select("value")
-    .eq("key", "report_recipients")
-    .maybeSingle();
-  const value = (data as { value?: unknown } | null)?.value;
-  return Array.isArray(value)
-    ? value.filter((v): v is string => typeof v === "string")
-    : [];
+// resolveAdminRecipients() from @/lib/email/admin-recipients handles both env var and hardcoded fallback
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function resolveRecipients(_db: ServiceClient): Promise<string[]> {
+  return resolveAdminRecipients();
 }
 
 function fmtDate(iso: string | null): string {
