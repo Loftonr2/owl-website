@@ -15,6 +15,30 @@ import { resolveAdminRecipients } from "@/lib/email/admin-recipients";
 export const sendNewsletter: JobFn = async (db) => {
   const nowIso = new Date().toISOString();
 
+  // DST-safe guard: only proceed when Pacific local time is Sunday at 10:00 AM.
+  // The cron fires at both 17:00 UTC and 18:00 UTC every Sunday.
+  //   - During PDT (UTC-7): 17:00 UTC -> 10:00 AM Pacific [PASS]  |  18:00 UTC -> 11:00 AM Pacific [SKIP]
+  //   - During PST (UTC-8): 17:00 UTC ->  9:00 AM Pacific [SKIP]  |  18:00 UTC -> 10:00 AM Pacific [PASS]
+  // Exactly one of the two invocations will pass this guard each Sunday regardless of DST.
+  const _pacificNow = new Date(nowIso);
+  const _pacificWeekday = _pacificNow.toLocaleString("en-US", {
+    timeZone: "America/Los_Angeles",
+    weekday: "short",
+  });
+  const _pacificHour = parseInt(
+    _pacificNow.toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles",
+      hour: "2-digit",
+      hour12: false,
+    }),
+    10
+  );
+  if (_pacificWeekday !== "Sun" || _pacificHour !== 10) {
+    return {
+      status: "skipped",
+      summary: `DST guard: Pacific local time is ${_pacificWeekday} ${_pacificHour}:xx -- not Sunday 10 AM. Intentional no-op.`,
+    };
+  }
   const { data: campaign } = await db
     .from("newsletter_campaigns")
     .select("id, title, subject, html_body, from_name, from_email, status, scheduled_for")
