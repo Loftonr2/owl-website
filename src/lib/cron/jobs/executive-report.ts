@@ -1,6 +1,7 @@
 import "server-only";
 import type { JobFn, ServiceClient } from "@/lib/cron/runner";
 import { sendEmail } from "@/lib/email/resend";
+import { resolveAdminRecipients } from "@/lib/email/admin-recipients";
 
 type Metrics = Record<string, unknown>;
 type Json = Record<string, unknown>;
@@ -17,20 +18,11 @@ function fmtDate(iso: unknown): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-async function resolveRecipients(db: ServiceClient): Promise<string[]> {
-  const fromEnv = (process.env.REPORT_RECIPIENT_EMAILS ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  if (fromEnv.length) return fromEnv;
-
-  const { data } = await db
-    .from("app_settings")
-    .select("value")
-    .eq("key", "report_recipients")
-    .maybeSingle();
-  const value = (data as { value?: unknown } | null)?.value;
-  return Array.isArray(value) ? value.filter((v): v is string => typeof v === "string") : [];
+// resolveAdminRecipients() imported from @/lib/email/admin-recipients
+// Falls back to both rickoflv@gmail.com and larissapola777@gmail.com when REPORT_RECIPIENT_EMAILS is unset.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+async function resolveRecipients(_db: ServiceClient): Promise<string[]> {
+  return resolveAdminRecipients();
 }
 
 function row(label: string, value: string): string {
@@ -197,7 +189,7 @@ function stripHtml(html: string): string {
 /**
  * Generate the canonical weekly report object for [start, end], save it to
  * executive_reports (the weekly-report archive), and return everything needed
- * to email it. Used by BOTH the real weekly cron job and the admin test-send
+ * to email it. Used by BOTH the real weekly run and the admin test-send
  * route, so the archived record and the emailed report are always identical —
  * there is exactly one report object per period, not a separate copy for email.
  */
@@ -245,7 +237,8 @@ export async function generateAndSaveReport(
 
   const attentionItems: string[] = [
     ...failingJobs.map((j) => `${j.job_key} failed ${j.failures_this_period} time(s) this period — check cron_job_logs`),
-    ...errorRows.map((e) => `${e.job_key}: ${e.error ?? "unknown error"}`),
+    ...errorRows.map((e) => `${e.job_key}: ${e.error ?? "unknown error
+}`),
   ];
 
   const title = buildTitle(pStart, pEnd);
