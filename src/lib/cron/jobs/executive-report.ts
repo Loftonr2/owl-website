@@ -67,14 +67,14 @@ function publishedContentBullets(pc: Json): { published: string[]; upcoming: str
   const blog = Array.isArray(pc.blog) ? (pc.blog as Json[]) : [];
   const news = Array.isArray(pc.news) ? (pc.news as Json[]) : [];
   const published = [
-    ...blog.map((p) => `Blog — “${p.title}” (${fmtDate(p.published_at)})`),
-    ...news.map((p) => `News — “${p.title}” (${fmtDate(p.published_at)})`),
+    ...blog.map((p) => `Blog â â${p.title}â (${fmtDate(p.published_at)})`),
+    ...news.map((p) => `News â â${p.title}â (${fmtDate(p.published_at)})`),
   ];
   const upcoming: string[] = [];
   const nextBlog = pc.next_blog as Json | null;
   const nextNews = pc.next_news as Json | null;
-  if (nextBlog?.title) upcoming.push(`Next Blog — “${nextBlog.title}” (${fmtDate(nextBlog.publish_date)})`);
-  if (nextNews?.title) upcoming.push(`Next News — “${nextNews.title}” (${fmtDate(nextNews.publish_date)})`);
+  if (nextBlog?.title) upcoming.push(`Next Blog â â${nextBlog.title}â (${fmtDate(nextBlog.publish_date)})`);
+  if (nextNews?.title) upcoming.push(`Next News â â${nextNews.title}â (${fmtDate(nextNews.publish_date)})`);
   return { published, upcoming };
 }
 
@@ -84,7 +84,7 @@ function automationHealthBullets(items: Json[]): { bullets: string[]; failing: J
     const runs = Number(i.runs_this_period ?? 0);
     const fails = Number(i.failures_this_period ?? 0);
     const status = fails > 0 ? `${fails} failure(s)` : runs > 0 ? "healthy" : "no runs this period";
-    return `${i.job_key} — ${status}`;
+    return `${i.job_key} â ${status}`;
   });
   return { bullets, failing };
 }
@@ -99,7 +99,7 @@ function storeSummaryBullets(s: Json): string[] {
 }
 
 function buildTitle(start: string, end: string): string {
-  return `OWL Weekly Report · ${start} → ${end}`;
+  return `OWL Weekly Report Â· ${start} â ${end}`;
 }
 
 function buildExecutiveSummary(
@@ -116,7 +116,7 @@ function buildExecutiveSummary(
   ];
   const tail =
     automationFailures > 0
-      ? ` ${automationFailures} automation job${automationFailures === 1 ? "" : "s"} had a failure this period — see Items Requiring Attention.`
+      ? ` ${automationFailures} automation job${automationFailures === 1 ? "" : "s"} had a failure this period â see Items Requiring Attention.`
       : " All automations ran cleanly this period.";
   return `This week: ${parts.join(", ")}.${tail}`;
 }
@@ -143,7 +143,7 @@ function renderHtml(args: {
   return `
   <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;background:#fdfbf6;border:1px solid #ece5d8;border-radius:12px;padding:24px">
     <h1 style="font-size:20px;color:#0e7c7b;margin:0 0 4px">${title}</h1>
-    <p style="color:#5b6b6a;margin:0 0 16px">${start} → ${end}</p>
+    <p style="color:#5b6b6a;margin:0 0 16px">${start} â ${end}</p>
     <p style="color:#1f2d2c;background:#fff;border:1px solid #ece5d8;border-radius:8px;padding:12px 14px;margin:0 0 4px">${execSummary}</p>
 
     ${section("Website Changes &amp; Additions This Week", bulletList(websiteChanges))}
@@ -162,8 +162,8 @@ function renderHtml(args: {
         ${row("Affiliate revenue", money(m.affiliate_revenue_cents))}
       </table>
       ${topPosts.length ? `<p style="margin:12px 0 4px;font-weight:600;color:#1f2d2c">Recently published blog posts</p>${bulletList(topPosts.map((p) => `${p.title} (${fmtDate(p.publish_date)})`))}` : ""}
-      ${topProducts.length ? `<p style="margin:12px 0 4px;font-weight:600;color:#1f2d2c">Top products</p>${bulletList(topProducts.map((p) => `${p.title} — ${money(p.revenue_cents)}`))}` : ""}
-      ${topCoupons.length ? `<p style="margin:12px 0 4px;font-weight:600;color:#1f2d2c">Top coupons</p>${bulletList(topCoupons.map((c) => `${c.code} — ${c.redemptions} redemption(s)`))}` : ""}`
+      ${topProducts.length ? `<p style="margin:12px 0 4px;font-weight:600;color:#1f2d2c">Top products</p>${bulletList(topProducts.map((p) => `${p.title} â ${money(p.revenue_cents)}`))}` : ""}
+      ${topCoupons.length ? `<p style="margin:12px 0 4px;font-weight:600;color:#1f2d2c">Top coupons</p>${bulletList(topCoupons.map((c) => `${c.code} â ${c.redemptions} redemption(s)`))}` : ""}`
     )}
 
     ${section("Automation Health", bulletList(automationBullets))}
@@ -189,8 +189,8 @@ function stripHtml(html: string): string {
 /**
  * Generate the canonical weekly report object for [start, end], save it to
  * executive_reports (the weekly-report archive), and return everything needed
- * to email it. Used by BOTH the real weekly run and the admin test-send
- * route, so the archived record and the emailed report are always identical —
+ * to email it. Used by BOTH the real weekly cron job and the admin test-send
+ * route, so the archived record and the emailed report are always identical â
  * there is exactly one report object per period, not a separate copy for email.
  */
 export async function generateAndSaveReport(
@@ -236,9 +236,8 @@ export async function generateAndSaveReport(
   const storeBullets = storeSummaryBullets(storeSummary);
 
   const attentionItems: string[] = [
-    ...failingJobs.map((j) => `${j.job_key} failed ${j.failures_this_period} time(s) this period — check cron_job_logs`),
-    ...errorRows.map((e) => `${e.job_key}: ${e.error ?? "unknown error
-}`),
+    ...failingJobs.map((j) => `${j.job_key} failed ${j.failures_this_period} time(s) this period â check cron_job_logs`),
+    ...errorRows.map((e) => `${e.job_key}: ${e.error ?? "unknown error"}`),
   ];
 
   const title = buildTitle(pStart, pEnd);
@@ -287,7 +286,7 @@ export async function generateAndSaveReport(
 }
 
 /**
- * Weekly cron entry point — generates the report for the trailing 7 days,
+ * Weekly cron entry point â generates the report for the trailing 7 days,
  * saves it, and emails the configured recipient list.
  */
 export const executiveReport: JobFn = async (db) => {
@@ -339,7 +338,7 @@ export const executiveReport: JobFn = async (db) => {
 /**
  * Admin-triggered controlled test send. Generates (and archives) the SAME
  * canonical report a real weekly run would produce, but emails it only to
- * `testRecipient` — never the real recipient list — and marks the archived
+ * `testRecipient` â never the real recipient list â and marks the archived
  * row's delivery_status as "test_sent" so it's clearly distinguishable from
  * a real weekly send in the CRM archive.
  */
