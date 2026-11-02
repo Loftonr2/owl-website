@@ -119,10 +119,9 @@ export function ProductCard({
           decorative
           className="absolute left-3 bottom-3 h-8 w-8 opacity-90 drop-shadow-sm"
         />
+        {/* Coming Soon banner — full-width teal overlay at base of image */}
+        {isComingSoon && <ComingSoonRibbon variant="banner" />}
       </div>
-
-      {/* Layer 3 — ribbon overlay */}
-      {isComingSoon && <ComingSoonRibbon variant="corner" />}
 
       {/* Layer 4 — text content */}
       <div className="flex flex-1 flex-col p-4">
