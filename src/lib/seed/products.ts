@@ -80,7 +80,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Safe for all ages",
     ],
     featured: true,
-    isComingSoon: false,
+    isComingSoon: true,
   },
   {
     slug: "rhyme-time-game",
@@ -101,7 +101,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Ages 4–5",
     ],
     featured: true,
-    isComingSoon: false,
+    isComingSoon: true,
   },
   // ── EXTRA: actual uploaded image was "Big Feelings Poster Set" ($18.99),
   //    not the bundle from the prompt. Adding both — bundle gets the slot,
@@ -125,7 +125,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Classroom-ready",
     ],
     featured: true,
-    isComingSoon: false,
+    isComingSoon: true,
   },
   {
     slug: "bilingual-word-cards",
@@ -146,7 +146,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
       "Toddler safe",
     ],
     featured: true,
-    isComingSoon: false,
+    isComingSoon: true,
   },
   {
     slug: "abc-flash-cards",
@@ -161,7 +161,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     story: "26 illustrated multicultural character cards. One letter, one face, one story.",
     supportsLearningIn: ["Letter recognition", "Letter-sound", "Vocabulary"],
     featured: true,
-  isComingSoon: false,
+  isComingSoon: true,
   },
   {
     slug: "feelings-coloring",
@@ -176,7 +176,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     story: "32 pages of feelings-named scenes children can color while talking through their day.",
     supportsLearningIn: ["Emotion vocabulary", "Fine motor", "SEL"],
     featured: true,
-  isComingSoon: false,
+  isComingSoon: true,
   },
   {
     slug: "sticker-reward-chart",
@@ -234,7 +234,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     productSource: "printify",
     story: "A laminated, wipe-clean mat with number 1–20 and one-to-one counting practice spaces.",
     supportsLearningIn: ["Counting", "Numeral recognition", "1:1 correspondence"],
-  isComingSoon: false,
+  isComingSoon: true,
   },
   {
     slug: "emotion-tiles",
@@ -248,7 +248,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     productSource: "printify",
     story: "Twelve double-sided tiles with multicultural faces showing big feelings — perfect for circle time.",
     supportsLearningIn: ["Emotion vocabulary", "Empathy", "Storytelling"],
-  isComingSoon: false,
+  isComingSoon: true,
   },
   {
     slug: "kreadiness-checklist",
@@ -262,7 +262,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     productSource: "printify",
     story: "A 3-page laminated checklist tied to Common Core kindergarten standards and ELOF 60-month indicators.",
     supportsLearningIn: ["K-readiness", "Parent communication", "Standards alignment"],
-  isComingSoon: false,
+  isComingSoon: true,
   },
   // ── Plush sets — May 2026 ────────────────────────────────────────────────
   {
@@ -405,7 +405,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     productSource: "digital_product",
     story: "Count and color your way through numbers 1–20 with OWL. Each page pairs a numeral with matching objects to count and color.",
     supportsLearningIn: ["Counting", "Number recognition", "Fine motor", "Math concepts"],
-    isComingSoon: false,
+    isComingSoon: true,
   },
   {
     slug: "abc-coloring-book",
@@ -419,7 +419,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     productSource: "digital_product",
     story: "A is for Owl — 26 letter pages with OWL characters to color while learning the alphabet.",
     supportsLearningIn: ["Letter recognition", "Fine motor", "Early literacy", "Creative expression"],
-    isComingSoon: false,
+    isComingSoon: true,
   },
   {
     slug: "abcs-world-coloring",
@@ -433,7 +433,7 @@ export const SEED_PRODUCTS: SeedProduct[] = [
     productSource: "digital_product",
     story: "A Multicultural Alphabet Coloring Book — each letter features a child from a different culture with their traditional dress and a meaningful word.",
     supportsLearningIn: ["Letter recognition", "Multicultural awareness", "Fine motor", "Global vocabulary"],
-    isComingSoon: false,
+    isComingSoon: true,
   },
   // ── Sticker sets — May 2026 ──────────────────────────────────────────────
   {
