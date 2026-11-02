@@ -1,27 +1,15 @@
 import { cn } from "@/lib/cn";
 
 /**
- * ComingSoonRibbon — diagonal corner ribbon for non-live store products.
- *
- * The redesign brief requires:
- *   "All product cards in the store that are not yet live must show a visible
- *   'Coming Soon' ribbon."
- *
- * Default placement: top-right corner of a relatively-positioned <ProductCard>.
- * It uses the OWL amber palette so it reads as friendly anticipation, not warning.
- *
- * Usage:
- *   <ProductCard className="relative">
- *     {product.isComingSoon && <ComingSoonRibbon />}
- *     ...
- *   </ProductCard>
+ * ComingSoonRibbon — overlay badge for non-live store products.
  *
  * Variants:
- *   - "corner" (default) — 45° angled ribbon at the corner
- *   - "pill"             — a flat pill at top-left (less attention-grabbing)
+ *   - "corner" (default) — 45° angled ribbon at top-right corner
+ *   - "pill"             — flat pill at top-left (less attention-grabbing)
+ *   - "banner"           — full-width teal overlay at bottom of image area
  */
 
-export type ComingSoonVariant = "corner" | "pill";
+export type ComingSoonVariant = "corner" | "pill" | "banner";
 
 export interface ComingSoonRibbonProps {
   variant?: ComingSoonVariant;
@@ -35,6 +23,21 @@ export function ComingSoonRibbon({
   label = "Coming Soon",
   className,
 }: ComingSoonRibbonProps) {
+  if (variant === "banner") {
+    return (
+      <span
+        aria-label={label}
+        className={cn(
+          "pointer-events-none absolute bottom-0 left-0 right-0 z-ui",
+          "bg-owl-teal py-2 text-center text-xs font-extrabold uppercase tracking-[0.18em] text-white",
+          className
+        )}
+      >
+        {label}
+      </span>
+    );
+  }
+
   if (variant === "pill") {
     return (
       <span
