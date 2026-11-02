@@ -18,11 +18,19 @@ import Link from "next/link";
 import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/contexts/cart-context";
 import { CartPayPalCheckout } from "@/components/store/cart-paypal-checkout";
+import { SEED_PRODUCTS } from "@/lib/seed/products";
 import { cn } from "@/lib/cn";
+
+/** Returns true if the given slug is marked coming-soon in the seed. */
+function isComingSoonSlug(slug: string): boolean {
+  return SEED_PRODUCTS.some((p) => p.slug === slug && p.isComingSoon === true);
+}
 
 export function CartDrawer() {
   const { items, itemCount, subtotalFormatted, drawerOpen, closeDrawer, removeItem, updateQty } =
     useCart();
+
+  const hasComingSoonItems = items.some((item) => isComingSoonSlug(item.slug));
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -164,9 +172,16 @@ export function CartDrawer() {
                     {/* Details */}
                     <div className="flex flex-1 flex-col gap-1">
                       <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-semibold leading-tight text-owl-ink">
-                          {item.title}
-                        </p>
+                        <div className="flex flex-col gap-0.5">
+                          <p className="text-sm font-semibold leading-tight text-owl-ink">
+                            {item.title}
+                          </p>
+                          {isComingSoonSlug(item.slug) && (
+                            <span className="inline-flex items-center rounded-full bg-owl-teal/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-owl-teal">
+                              Coming soon — not available
+                            </span>
+                          )}
+                        </div>
                         <button
                           type="button"
                           aria-label={`Remove ${item.title}`}
@@ -245,8 +260,18 @@ export function CartDrawer() {
                 Shipping calculated at PayPal checkout · Taxes may apply
               </p>
 
-              {/* PayPal checkout reads from cart context */}
-              <CartPayPalCheckout onSuccess={closeDrawer} />
+              {/* Block checkout when coming-soon items are in the cart */}
+              {hasComingSoonItems ? (
+                <div className="rounded-2xl border border-owl-teal/20 bg-owl-teal/5 p-4 text-sm">
+                  <p className="font-semibold text-owl-teal">Some items aren&apos;t available yet</p>
+                  <p className="mt-1 text-owl-ink/70">
+                    Remove the items marked &ldquo;Coming soon&rdquo; above to proceed to checkout.
+                  </p>
+                </div>
+              ) : (
+                /* PayPal checkout reads from cart context */
+                <CartPayPalCheckout onSuccess={closeDrawer} />
+              )}
 
               <Link
                 href="/shop"
