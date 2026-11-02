@@ -2,7 +2,6 @@ import Script from "next/script";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Bell } from "lucide-react";
 import { AddToCartButton } from "@/components/store/add-to-cart-button";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Chip } from "@/components/ui/chip";
@@ -116,7 +115,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
                 decorative
                 className="absolute left-6 bottom-6 h-14 w-14 opacity-90 drop-shadow-sm"
               />
-              {isComingSoon && <ComingSoonRibbon variant="corner" />}
+              {isComingSoon && <ComingSoonRibbon variant="banner" />}
             </div>
 
             {galleryImages.length > 0 && (
@@ -184,24 +183,16 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
 
             <div className="mt-8">
               {isComingSoon ? (
-                <div className="space-y-3">
-                  <div className="rounded-2xl border border-owl-amber/30 bg-owl-amber/10 p-5 text-sm">
-                    <p className="font-semibold text-owl-amber">Coming Soon</p>
+                <div className="space-y-4">
+                  <div className="rounded-2xl border border-owl-teal/20 bg-owl-teal/5 p-5 text-sm">
+                    <p className="font-semibold text-owl-teal">Coming soon</p>
                     <p className="mt-1 text-owl-ink/70">
-                      Join the OWL Newsletter to be notified when this product becomes available.
+                      This product is not yet available to purchase.
                     </p>
                   </div>
-                  <div className="flex flex-col gap-3 sm:flex-row">
-                    <Button intent="primary" size="lg" asChild>
-                      <Link href="/newsletter">
-                        <Bell className="h-4 w-4" aria-hidden />
-                        Notify me when it drops
-                      </Link>
-                    </Button>
-                    <Button intent="tertiary" size="lg" asChild>
-                      <Link href="/shop">Keep browsing</Link>
-                    </Button>
-                  </div>
+                  <Button intent="tertiary" size="lg" asChild>
+                    <Link href="/shop">Keep browsing</Link>
+                  </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
