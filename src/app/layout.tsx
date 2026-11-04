@@ -3,6 +3,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/site-config";
 import { MotionSettingsProvider } from "@/components/motion/motion-settings";
+import { Analytics } from "@vercel/analytics/next";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -54,6 +55,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <MotionSettingsProvider>{children}</MotionSettingsProvider>
+        <Analytics />
       </body>
     </html>
   );
